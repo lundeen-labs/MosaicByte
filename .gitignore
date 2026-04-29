@@ -7,3 +7,12 @@ dist-ssr
 .env.local
 .DS_Store
 *.tsbuildinfo
+
+# Claude Code local overrides (per-developer; never committed)
+.claude/settings.local.json
+.claude/cache/
+
+# Playwright/test artifacts
+test-results/
+playwright-report/
+

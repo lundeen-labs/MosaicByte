@@ -2,6 +2,59 @@
 
 Production marketing site for the Lundeen Studio brand. Single source of truth for the implementation plan: `C:\tmp\lundeen-studio-research\phase-c-task-graph.md`.
 
+## Operating mode
+
+**Tyler is product. Claude is the developer.** Tyler describes intent and outcome. Claude implements: writes code, runs commands, runs tests, commits, deploys, audits, fixes, iterates. Default to action.
+
+- **Always run commands.** When verification is needed (tsc, lint, vitest, build, dev server, curl smoke check), run them — do not describe what to run. Permissions are pre-approved in `.claude/settings.json`.
+- **Make reasonable assumptions, ship, course-correct.** If the right answer is one of two reasonable defaults, pick the one that matches the design system and the existing convention, ship it, and note the choice. Do not ask.
+- **Never ask questions you can verify.** If `npm run lint` answers it, run it.
+- **Verify after every change.** A change is not done until tsc + lint + vitest + the relevant smoke check all pass. "It compiles" is not done; "it renders correctly in the preview" is.
+- **Commit logical chunks.** Each commit is a coherent feature/fix/refactor. Hand-write the message. Never amend pushed commits. Never `git push --force` to main.
+- **Destructive actions need explicit ask.** `git reset --hard`, `rm -rf`, dropping a table, force-pushing, deleting branches, `vercel --prod` — pause and confirm with Tyler.
+
+## Performance + UX targets
+
+The site IS the demo. The status strip publishes real metrics. If those metrics drop below "good," the positioning collapses. Treat them as production data.
+
+| Metric | Gate | Notes |
+|---|---|---|
+| LCP (mobile, real-user CrUX) | ≤ 1.5s | Target 0.8s — well inside CWV "good" (≤2.5s) |
+| INP (real-user) | ≤ 150ms | Target 100ms — well inside CWV "good" (≤200ms) |
+| CLS | ≤ 0.05 | Hard target zero with `font-display: swap` + reserved layout |
+| Lighthouse Performance (desktop, prod URL) | ≥ 95 | Block deploy on regression |
+| Lighthouse Accessibility | 100 | Non-negotiable; WCAG 2.1 AA |
+| Lighthouse Best Practices | 100 | Non-negotiable |
+| Lighthouse SEO | 100 | Non-negotiable |
+| Initial JS gzip (any route) | < 150 KB | Currently 142 KB — cutting close, watch for regressions |
+| Initial JS raw (any route) | < 200 KB | Currently 447 KB — documented deviation; lazy-mount MobileDrawer to fix |
+| Time to first paint on a 4G connection | ≤ 1.0s | Subjective; verify on devtools throttle before merging hero changes |
+
+UX targets that are not negotiable:
+- Every interactive element has a visible focus ring.
+- Every motion respects `prefers-reduced-motion`.
+- Every keyboard user can reach every CTA in DOM order without a mouse.
+- Every form input pairs with a `<label>` with `htmlFor`.
+- Every SVG with semantic content has a `<title>` and `aria-label`.
+- Skip-to-content link is the first focusable element on every page.
+- No layout shift on font load (Fraunces preconnected, swap allowed because hero is visible enough that FOUT is acceptable; CLS measured at 0.01 in dev).
+
+## SOLID for component architecture
+
+Apply at the component + module boundary level. Marketing-site code is mostly composition; the principles still bite when components grow past ~100 lines.
+
+- **Single Responsibility.** A component has one reason to change. `Hero.tsx` should not own pricing-tier rendering. `Layout.tsx` should not own the contact form. If a component starts handling >1 concern (data fetch + presentation + animation), split it.
+- **Open/Closed.** Components are open for extension via props, closed to direct edits. Adding a new pricing tier means appending to `COPY.services.tiers`, not editing `PricingTier.tsx`. New variants of `Button` go through the `variant` prop, not new files.
+- **Liskov Substitution.** A child component receiving a `cta: { label; href }` prop must work whether the href is internal (`/contact`) or external (`https://cal.com/...`). Don't assume `<Link>` everywhere — use `<Link>` for SPA paths and `<a>` for external/hash; `<Button asChild>` accepts both via Radix Slot.
+- **Interface Segregation.** Prop interfaces stay narrow. `Footer` does not need the same prop shape as `Navbar` even though both are layout. Don't ship one omnibus `<Layout {...everything}>` prop bag.
+- **Dependency Inversion.** Routes depend on `COPY` (an abstraction over copy text) and component contracts (`<HeroA props />`), not on concrete data sources or DOM structures. The `<Seo>` component depends on `react-helmet-async`'s `<Helmet>` interface, not on a specific document.head writer. Swapping helmet for `@unhead/react` should be a one-file change.
+
+Concrete checks when reviewing or writing component code:
+- Can this prop interface accept a future variant without an `if`? If not, parametrize it.
+- Is this component holding state it does not own? If yes, lift to the parent or `COPY`.
+- Is the file > 200 lines? If yes, split.
+- Are there magic strings (route paths, color tokens, copy fragments)? If yes, route them through `src/content/copy.ts` or `src/index.css` `@theme`.
+
 ## Project root
 
 `E:\source\repos\lundeen-studio` — always use absolute Windows paths.

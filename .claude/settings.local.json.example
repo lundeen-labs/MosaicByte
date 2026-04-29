@@ -1,0 +1,8 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "_comment": "Copy this file to settings.local.json and edit. settings.local.json is git-ignored. Local overrides apply on top of .claude/settings.json — useful for env vars Tyler does not want committed (RESEND_API_KEY, etc., though those should normally live in .env.local for the Vite/Vercel runtime).",
+  "permissions": {
+    "allow": []
+  },
+  "env": {}
+}
