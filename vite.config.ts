@@ -14,4 +14,10 @@ export default defineConfig({
     alias: { '@': path.resolve(__dirname, 'src') },
   },
   build: { target: 'es2022', sourcemap: true },
+  preview: {
+    allowedHosts: ['localhost', '127.0.0.1', 'host.docker.internal'],
+  },
+  server: {
+    allowedHosts: ['localhost', '127.0.0.1', 'host.docker.internal'],
+  },
 })
