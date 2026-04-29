@@ -8,12 +8,32 @@ Production marketing site for the Lundeen Studio brand. Single source of truth f
 
 ## Wave status
 
-- D0 (scaffold): COMPLETE — Vite + Tailwind v4 + Wouter + 6 route stubs + ESLint clean + tsc clean.
-- D1-D4 (parallel build): pending.
-- D5-D7 (pages + content): pending.
-- D8-D9 (SEO + polish): pending.
-- E1-E2 (audit + Lighthouse): pending.
-- F1 (Vercel deploy): pending.
+- D0 (scaffold): COMPLETE.
+- D1-D4 (parallel build): COMPLETE — hero, ui library (13 components), layout (5 components), api (Zod+Turnstile+Resend+rate-limit).
+- D5+D7 (pages + copy): COMPLETE — 6 production routes wired to copy.ts; lazy-loaded.
+- D6 (MDX case studies): DEFERRED — substituted with inline-data WorkDetail.tsx. Migrate when richer authoring is needed.
+- D8 (SEO): COMPLETE — per-route Seo helmet wrapper, JSON-LD (Person/ProfessionalService/FAQPage), sitemap generator, robots.txt, SVG favicon.
+- D9 (polish): PARTIAL — ErrorBoundary at root, usePrefersReducedMotion hook. Theme toggle UI deferred.
+- E1+E2 (audit): COMPLETE — see `C:\tmp\lundeen-studio-research\phase-e-audit-report.md`. All gates pass except raw-bundle (gzip clears at 142KB; raw 447KB documented deviation due to Radix Dialog + Framer Motion).
+- F1 (Vercel deploy): BLOCKED on Tyler. See `DEPLOY.md` for the manual deploy steps.
+
+87 vitest tests pass. tsc and eslint clean. Build emits dist/ + sitemap.xml + robots.txt + favicon.svg.
+
+## Bundle (post-Wave-4)
+
+| Chunk | Raw | Gzip |
+|---|---|---|
+| index.js (entry) | 214 KB | 69 KB |
+| seo.js (Layout + Nav + Footer + StatusStrip + Seo + COPY) | 207 KB | 66 KB |
+| Home.js | 26 KB | 8 KB |
+| WorkDetail.js | 12 KB | 4 KB |
+| Contact.js | 5 KB | 2 KB |
+| Work.js | 4 KB | 2 KB |
+| Button.js (shared) | 3 KB | 1 KB |
+| About.js | 2 KB | 1 KB |
+| NotFound.js | 1 KB | 1 KB |
+
+Initial-load Home: 447 KB raw / 142 KB gzip. Gate: <200 KB raw (FAIL, deferred) / <150 KB gzip (PASS).
 
 ## Architecture
 
