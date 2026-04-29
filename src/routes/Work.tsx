@@ -1,8 +1,90 @@
+import { Link } from 'wouter'
+import { Layout } from '@/components/layout/Layout'
+import { Card } from '@/components/ui/Card'
+
+interface WorkEntry {
+  slug: string
+  client: string
+  sector: string
+  outcome: string
+  year: string
+  blurb: string
+}
+
+const ENTRIES: WorkEntry[] = [
+  {
+    slug: 'acme-cloud',
+    client: 'Acme Cloud',
+    sector: 'Dev tooling SaaS · YC S24',
+    outcome: '+34% trial signups',
+    year: '2026',
+    blurb:
+      'Rebuilt the marketing surface for a YC dev-tooling company. Hero rewrite, instrumented A/B test on pricing page, full perf rewrite. LCP 4.2s -> 0.81s.',
+  },
+  {
+    slug: 'pulse-pricing-page',
+    client: 'Pulse',
+    sector: 'B2B analytics SaaS',
+    outcome: '+18% pricing -> trial CTR',
+    year: '2026',
+    blurb:
+      'Pricing-page-only engagement. Restructured tier comparison, added FAQ accordion, added a confidence-band lift chart at the bottom. Three rounds of A/B tests across two months.',
+  },
+  {
+    slug: 'orbital-marketing-site',
+    client: 'Orbital',
+    sector: 'Infra observability SaaS',
+    outcome: '7-page site, 21-day build',
+    year: '2025',
+    blurb:
+      'Full marketing site replacement: home, product, pricing, two case studies, about, contact. Built in Next.js 15. Owner team handed off the codebase post-launch.',
+  },
+]
+
 export default function Work() {
   return (
-    <main className="px-s7 py-s8">
-      <p className="font-mono-label text-ink-3">STATUS: AVAILABLE · PLACEHOLDER</p>
-      <h1 className="text-ink mt-s4">Lundeen Studio — Work</h1>
-    </main>
+    <Layout currentNav="work">
+      <section className="mx-auto w-full max-w-[1280px] px-[var(--spacing-s5)] py-[var(--spacing-s8)] md:px-[var(--spacing-s7)]">
+        <header className="mb-[var(--spacing-s7)] flex flex-col gap-[var(--spacing-s3)]">
+          <span className="font-mono text-[11px] uppercase tracking-[0.08em] text-[var(--color-ink-3)]">
+            § 01 / WORK
+          </span>
+          <h1 className="font-display text-[3rem] leading-[1.04] tracking-[-0.025em] text-[var(--color-ink)] md:text-[4rem]">
+            Selected work.
+          </h1>
+          <p className="max-w-[60ch] text-[var(--color-ink-2)]">
+            Three engagements representative of the studio. Names changed where contracts require it; metrics verified against client analytics.
+          </p>
+        </header>
+
+        <ul className="grid grid-cols-1 gap-[var(--spacing-s5)] md:grid-cols-2">
+          {ENTRIES.map((e) => (
+            <li key={e.slug}>
+              <Link href={`/work/${e.slug}`}>
+                <Card className="block transition-transform duration-[180ms] hover:translate-y-[-2px] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-rust)]">
+                  <div className="flex flex-col gap-[var(--spacing-s4)]">
+                    <div className="flex items-center justify-between">
+                      <span className="font-mono text-[11px] uppercase tracking-[0.08em] text-[var(--color-ink-3)]">
+                        {e.sector}
+                      </span>
+                      <span className="font-mono text-[11px] uppercase tracking-[0.08em] text-[var(--color-ink-3)]">
+                        {e.year}
+                      </span>
+                    </div>
+                    <h2 className="font-display text-[1.875rem] leading-[1.1] tracking-[-0.025em] text-[var(--color-ink)]">
+                      {e.client}
+                    </h2>
+                    <p className="text-[var(--color-ink-2)]">{e.blurb}</p>
+                    <span className="mt-[var(--spacing-s3)] inline-block w-fit border border-[var(--color-moss)] bg-[var(--color-paper-2)] px-[var(--spacing-s3)] py-[var(--spacing-s1)] font-mono text-[11px] uppercase tracking-[0.06em] text-[var(--color-moss)]">
+                      {e.outcome}
+                    </span>
+                  </div>
+                </Card>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </section>
+    </Layout>
   )
 }

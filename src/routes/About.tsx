@@ -1,8 +1,55 @@
+import { Layout } from '@/components/layout/Layout'
+import { Button } from '@/components/ui/Button'
+import { COPY } from '@/content/copy'
+
 export default function About() {
   return (
-    <main className="px-s7 py-s8">
-      <p className="font-mono-label text-ink-3">STATUS: AVAILABLE · PLACEHOLDER</p>
-      <h1 className="text-ink mt-s4">Lundeen Studio — About</h1>
-    </main>
+    <Layout currentNav="about">
+      <article className="mx-auto w-full max-w-[1280px] px-[var(--spacing-s5)] py-[var(--spacing-s8)] md:px-[var(--spacing-s7)]">
+        <header className="mb-[var(--spacing-s7)] flex flex-col gap-[var(--spacing-s4)]">
+          <span className="font-mono text-[11px] uppercase tracking-[0.08em] text-[var(--color-ink-3)]">
+            § {COPY.about.sectionMark.number} / {COPY.about.sectionMark.label}
+          </span>
+          <h1 className="max-w-[20ch] font-display text-[3rem] leading-[1.04] tracking-[-0.025em] text-[var(--color-ink)] md:text-[4.5rem]">
+            {COPY.about.heading}
+          </h1>
+          <p className="max-w-[60ch] text-[1.25rem] leading-[1.55] text-[var(--color-ink-2)]">
+            {COPY.about.lede}
+          </p>
+        </header>
+
+        <section className="mb-[var(--spacing-s8)] grid grid-cols-1 gap-[var(--spacing-s7)] md:grid-cols-[2fr_1fr]">
+          <div className="flex flex-col gap-[var(--spacing-s5)]">
+            {COPY.about.body.map((p, i) => (
+              <p key={i} className="text-[var(--color-ink)]">
+                {p}
+              </p>
+            ))}
+          </div>
+
+          <aside className="border-l border-[var(--color-paper-3)] pl-[var(--spacing-s5)]">
+            <h2 className="font-mono text-[11px] uppercase tracking-[0.08em] text-[var(--color-ink-3)]">
+              Credentials
+            </h2>
+            <dl className="mt-[var(--spacing-s4)] flex flex-col gap-[var(--spacing-s4)]">
+              {COPY.about.credentials.map((c) => (
+                <div key={c.label}>
+                  <dt className="font-mono text-[11px] uppercase tracking-[0.08em] text-[var(--color-ink-2)]">
+                    {c.label}
+                  </dt>
+                  <dd className="mt-[var(--spacing-s1)] text-[var(--color-ink)]">{c.detail}</dd>
+                </div>
+              ))}
+            </dl>
+          </aside>
+        </section>
+
+        <div className="border-t-2 border-[var(--color-ink)] pt-[var(--spacing-s7)]">
+          <Button asChild variant="primary" size="lg">
+            <a href="/contact">Start a conversation →</a>
+          </Button>
+        </div>
+      </article>
+    </Layout>
   )
 }
