@@ -1,10 +1,18 @@
 import { Layout } from '@/components/layout/Layout'
 import { Button } from '@/components/ui/Button'
+import { Seo } from '@/lib/seo'
+import { personJsonLd } from '@/lib/seo-data'
 import { COPY } from '@/content/copy'
 
 export default function About() {
   return (
     <Layout currentNav="about">
+      <Seo
+        title="About Tyler Lundeen — Lundeen Studio"
+        description={COPY.about.lede}
+        canonicalPath="/about"
+        jsonLd={personJsonLd}
+      />
       <article className="mx-auto w-full max-w-[1280px] px-[var(--spacing-s5)] py-[var(--spacing-s8)] md:px-[var(--spacing-s7)]">
         <header className="mb-[var(--spacing-s7)] flex flex-col gap-[var(--spacing-s4)]">
           <span className="font-mono text-[11px] uppercase tracking-[0.08em] text-[var(--color-ink-3)]">

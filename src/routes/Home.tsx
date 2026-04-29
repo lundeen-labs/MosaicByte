@@ -4,11 +4,19 @@ import { PricingTier } from '@/components/ui/PricingTier'
 import { ProcessTimeline } from '@/components/ui/ProcessTimeline'
 import { FAQAccordion } from '@/components/ui/FAQAccordion'
 import { Button } from '@/components/ui/Button'
+import { Seo } from '@/lib/seo'
+import { personJsonLd, orgJsonLd, faqJsonLd } from '@/lib/seo-data'
 import { COPY } from '@/content/copy'
 
 export default function Home() {
   return (
     <Layout>
+      <Seo
+        title={`${COPY.brand.full} — SaaS Landing Pages That Convert`}
+        description={COPY.brand.description}
+        canonicalPath="/"
+        jsonLd={[personJsonLd, orgJsonLd, faqJsonLd]}
+      />
       <HeroA
         eyebrow={COPY.hero.eyebrow}
         titleParts={{ ...COPY.hero.titleParts }}

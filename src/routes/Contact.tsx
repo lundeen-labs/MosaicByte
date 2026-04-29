@@ -1,6 +1,7 @@
 import { useState, type FormEvent } from 'react'
 import { Layout } from '@/components/layout/Layout'
 import { Button } from '@/components/ui/Button'
+import { Seo } from '@/lib/seo'
 import { COPY } from '@/content/copy'
 
 type Status = 'idle' | 'submitting' | 'success' | 'error'
@@ -82,6 +83,11 @@ export default function Contact() {
 
   return (
     <Layout>
+      <Seo
+        title="Contact — Lundeen Studio"
+        description="Tell me about your project. Two-week response on weekdays."
+        canonicalPath="/contact"
+      />
       <article className="mx-auto w-full max-w-[800px] px-[var(--spacing-s5)] py-[var(--spacing-s8)] md:px-[var(--spacing-s7)]">
         <header className="mb-[var(--spacing-s7)] flex flex-col gap-[var(--spacing-s4)]">
           <span className="font-mono text-[11px] uppercase tracking-[0.08em] text-[var(--color-ink-3)]">

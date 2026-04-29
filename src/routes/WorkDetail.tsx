@@ -2,6 +2,7 @@ import { useRoute, Link } from 'wouter'
 import { Layout } from '@/components/layout/Layout'
 import { MetricsBlock } from '@/components/ui/MetricsBlock'
 import { Button } from '@/components/ui/Button'
+import { Seo } from '@/lib/seo'
 
 interface CaseStudy {
   slug: string
@@ -133,6 +134,11 @@ export default function WorkDetail() {
 
   return (
     <Layout currentNav="work">
+      <Seo
+        title={`${study.client} — Lundeen Studio case study`}
+        description={`${study.engagement} for ${study.client} (${study.sector}). ${study.metrics[0]?.label}: ${study.metrics[0]?.value}.`}
+        canonicalPath={`/work/${study.slug}`}
+      />
       <article className="mx-auto w-full max-w-[1280px] px-[var(--spacing-s5)] py-[var(--spacing-s8)] md:px-[var(--spacing-s7)]">
         <header className="mb-[var(--spacing-s7)] flex flex-col gap-[var(--spacing-s4)]">
           <span className="font-mono text-[11px] uppercase tracking-[0.08em] text-[var(--color-ink-3)]">

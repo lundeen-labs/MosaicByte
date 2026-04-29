@@ -1,6 +1,7 @@
 import { Link } from 'wouter'
 import { Layout } from '@/components/layout/Layout'
 import { Card } from '@/components/ui/Card'
+import { Seo } from '@/lib/seo'
 
 interface WorkEntry {
   slug: string
@@ -44,6 +45,11 @@ const ENTRIES: WorkEntry[] = [
 export default function Work() {
   return (
     <Layout currentNav="work">
+      <Seo
+        title="Work — Lundeen Studio"
+        description="Selected case studies of high-conversion SaaS landing pages and marketing sites."
+        canonicalPath="/work"
+      />
       <section className="mx-auto w-full max-w-[1280px] px-[var(--spacing-s5)] py-[var(--spacing-s8)] md:px-[var(--spacing-s7)]">
         <header className="mb-[var(--spacing-s7)] flex flex-col gap-[var(--spacing-s3)]">
           <span className="font-mono text-[11px] uppercase tracking-[0.08em] text-[var(--color-ink-3)]">
