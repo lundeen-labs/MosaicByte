@@ -1,6 +1,5 @@
 import { Check } from 'lucide-react'
 import { cn } from '@/lib/utils'
-import { Button } from './Button'
 
 export interface PricingTierProps {
   eyebrow: string
@@ -14,9 +13,10 @@ export interface PricingTierProps {
 }
 
 /**
- * Pricing card with eyebrow / serif name / serif price / cadence / scope
- * list (Check icons) / primary CTA. `featured` adds a rust left border
- * and slight scale-up.
+ * Modern dark-agency pricing card.
+ *
+ * Featured variant gets a brighter border + a small "Most picked" ribbon.
+ * Scope list uses Lucide Check icons in the accent color.
  */
 export function PricingTier({
   eyebrow,
@@ -32,48 +32,68 @@ export function PricingTier({
     <article
       data-featured={featured}
       className={cn(
-        'relative flex flex-col gap-5 rounded-[var(--radius-r3)] bg-[var(--color-paper)] p-[26px]',
-        '[box-shadow:0_1px_0_var(--color-paper-3),0_0_0_1px_var(--color-paper-3)]',
-        featured &&
-          'border-l-[3px] border-l-[var(--color-rust)] [box-shadow:0_2px_0_var(--color-paper-3),0_0_0_1px_var(--color-ink)] scale-[1.015]',
+        'relative flex h-full flex-col gap-6 rounded-2xl p-7',
+        'bg-[var(--color-paper-2)]',
+        featured
+          ? 'border border-[var(--color-rust)]/40 ring-1 ring-[var(--color-rust)]/20'
+          : 'border border-[var(--color-paper-3)]',
         className,
       )}
     >
+      {featured ? (
+        <span className="absolute -top-3 left-7 inline-flex items-center gap-1 rounded-full bg-[var(--color-rust)] px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.06em] text-[#0A0A0A]">
+          Most picked
+        </span>
+      ) : null}
+
       <header className="flex flex-col gap-2">
-        <span className="font-mono text-[11px] uppercase tracking-[0.08em] text-[var(--color-rust)]">
+        <span className="text-[11px] font-medium uppercase tracking-[0.08em] text-[var(--color-ink-3)]">
           {eyebrow}
         </span>
-        <h3 className="font-display text-[1.5rem] leading-[1.2] tracking-[-0.015em] font-medium text-[var(--color-ink)] m-0">
+        <h3 className="font-display text-[1.5rem] font-semibold tracking-[-0.02em] text-[var(--color-ink)]">
           {name}
         </h3>
       </header>
 
-      <div className="flex items-baseline gap-2 border-y border-[var(--color-paper-3)] py-4">
-        <span className="font-display text-[3rem] leading-[1.04] tracking-[-0.025em] font-medium text-[var(--color-ink)]">
+      <div className="flex items-baseline gap-2">
+        <span className="font-display text-[2.5rem] font-semibold tracking-[-0.025em] text-[var(--color-ink)] md:text-[3rem]">
           {price}
         </span>
         {cadence ? (
-          <span className="font-body text-sm text-[var(--color-ink-3)]">{cadence}</span>
+          <span className="text-[13px] text-[var(--color-ink-3)]">{cadence}</span>
         ) : null}
       </div>
 
-      <ul className="flex flex-col gap-3 m-0 p-0 list-none flex-1">
-        {scope.map((item, i) => (
-          <li key={i} className="flex items-start gap-3 font-body text-base leading-[1.55] text-[var(--color-ink-2)]">
+      <ul role="list" className="flex flex-col gap-3 text-[14px] text-[var(--color-ink-2)]">
+        {scope.map((item) => (
+          <li key={item} className="flex items-start gap-2.5">
             <Check
               size={16}
-              strokeWidth={1.5}
+              strokeWidth={2}
               aria-hidden="true"
-              className="mt-1 shrink-0 text-[var(--color-rust)]"
+              className="mt-0.5 shrink-0 text-[var(--color-rust)]"
             />
             <span>{item}</span>
           </li>
         ))}
       </ul>
 
-      <Button asChild variant="primary" size="md" className="w-full">
-        <a href={cta.href}>{cta.label}</a>
-      </Button>
+      <a
+        href={cta.href}
+        className={cn(
+          'mt-auto inline-flex items-center justify-center gap-2 rounded-full',
+          'px-5 py-3 text-[14px] font-semibold transition-[background,color,transform] duration-[180ms]',
+          'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-rust)]',
+          featured
+            ? 'bg-[var(--color-rust)] text-[#0A0A0A] hover:bg-[var(--color-rust-2)] hover:translate-y-[-1px]'
+            : 'border border-[var(--color-paper-3)] text-[var(--color-ink)] hover:border-[var(--color-ink-2)] hover:bg-[var(--color-paper)]/40',
+        )}
+      >
+        {cta.label}
+        <span aria-hidden="true">→</span>
+      </a>
     </article>
   )
 }
+
+export default PricingTier

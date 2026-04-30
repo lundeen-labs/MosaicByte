@@ -1,10 +1,5 @@
 import { motion, useReducedMotion } from 'framer-motion'
 import { cn } from '@/lib/utils'
-import HeroEyebrow from './HeroEyebrow'
-import HeroTitle from './HeroTitle'
-import HeroSub from './HeroSub'
-import InstrumentGauge from './InstrumentGauge'
-import Marginalia from './Marginalia'
 
 interface HeroAProps {
   eyebrow: string
@@ -13,21 +8,23 @@ interface HeroAProps {
   primaryCta: { label: string; href: string }
   secondaryCta: { label: string; href: string }
   reassureLines: string[]
+  /** kept for back-compat; no longer rendered in the modern hero */
   gauge: { lcp: string; cls: string; inp: string; jsKb: string; a11y: string }
 }
 
-/**
- * 40ms stagger per design-system §7. Steps used:
- *   01: marginalia
- *   02: eyebrow
- *   03: title
- *   04: sub
- *   05: cta group
- *   06: reassure list (entire block, single fade)
- *   07: instrument gauge (right rail, slightly later)
- */
 const STEP = 0.04
+const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1]
 
+/**
+ * HeroA — modern dark-agency hero.
+ *
+ * Single-column composition: small eyebrow, massive Geist headline, sub,
+ * two-CTA row (primary green pill + ghost link), reassure line. No
+ * editorial decoration, no PAGE METRICS panel, no marginalia.
+ *
+ * Background uses a subtle radial accent glow behind the headline to add
+ * depth without dragging in glassmorphism. Respects prefers-reduced-motion.
+ */
 export default function HeroA({
   eyebrow,
   titleParts,
@@ -35,165 +32,125 @@ export default function HeroA({
   primaryCta,
   secondaryCta,
   reassureLines,
-  gauge,
 }: HeroAProps) {
   const reduce = useReducedMotion()
+  const animateProps = (delay: number) => ({
+    initial: reduce ? false : { opacity: 0, y: 16 },
+    animate: { opacity: 1, y: 0 },
+    transition: { duration: 0.6, ease: EASE, delay: reduce ? 0 : delay },
+  })
+
+  // Compose the title from parts. The "italic" segment becomes a bright accent
+  // colored span (no italic styling — we are off Fraunces and on Geist).
+  const fullTitle = `${titleParts.plain} ${titleParts.italic} ${titleParts.rest}`.trim()
 
   return (
-    <main
-      className="relative mx-auto"
-      style={{
-        maxWidth: '1440px',
-        padding: '88px 32px 60px',
-      }}
+    <section
+      aria-labelledby="hero-heading"
+      className="relative isolate overflow-hidden"
     >
+      {/* Accent glow */}
       <div
-        className="relative grid"
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 -z-10"
         style={{
-          gridTemplateColumns: 'repeat(12, 1fr)',
-          columnGap: '32px',
-          rowGap: '40px',
+          background:
+            'radial-gradient(60% 50% at 50% 0%, rgba(0,217,126,0.12) 0%, rgba(10,10,10,0) 60%)',
         }}
-      >
-        {/* Marginalia hangs in the gutter on desktop; hidden under 1100px via media query handled by component consumer if needed.
-            For first delivery we keep it visible. Section number is decorative.  */}
-        <div className="col-span-1 max-[1100px]:hidden">
-          <Marginalia number="§ 01" label="HERO" />
-        </div>
+      />
 
-        <section
-          className="col-span-8 max-[1100px]:col-span-12"
-          style={{ gridColumnStart: 'auto' }}
+      <div className="mx-auto max-w-[1280px] px-6 pt-24 pb-20 md:px-8 md:pt-32 md:pb-28">
+        <motion.p
+          {...animateProps(STEP * 1)}
+          className="inline-flex items-center gap-2 rounded-full border border-[var(--color-paper-3)] bg-[var(--color-paper-2)] px-3 py-1 text-[12px] font-medium text-[var(--color-ink-2)]"
         >
-          <HeroEyebrow delay={STEP * 2}>{eyebrow}</HeroEyebrow>
-
-          <HeroTitle
-            plain={titleParts.plain}
-            italic={titleParts.italic}
-            rest={titleParts.rest}
-            delay={STEP * 3}
+          <span
+            aria-hidden="true"
+            className="inline-block h-1.5 w-1.5 rounded-full bg-[var(--color-rust)]"
+            style={{ boxShadow: '0 0 8px var(--color-rust)' }}
           />
+          {eyebrow}
+        </motion.p>
 
-          <HeroSub delay={STEP * 4}>{sub}</HeroSub>
-
-          {/* CTA group — primary uses the letterpress block-shadow signature move (§11). */}
-          <motion.div
-            initial={reduce ? false : { opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{
-              duration: 0.72,
-              ease: [0.22, 1, 0.36, 1],
-              delay: reduce ? 0 : STEP * 5,
-            }}
-            className="flex items-center gap-[18px] mb-9 flex-wrap"
-          >
-            <a
-              href={primaryCta.href}
-              className="font-body font-semibold text-[1rem] inline-flex items-center gap-2.5 cursor-pointer transition-[transform,box-shadow,background] duration-[180ms]"
-              style={{
-                background: 'var(--color-rust)',
-                color: 'var(--color-paper)',
-                padding: '14px 22px',
-                border: '1.5px solid var(--color-ink)',
-                borderRadius: 'var(--radius-r2)',
-                boxShadow:
-                  '0 2px 0 var(--color-ink), 0 0 0 1.5px var(--color-ink)',
-                transitionTimingFunction: 'var(--ease-press)',
-              }}
-              onMouseDown={(e) => {
-                e.currentTarget.style.transform = 'translateY(2px)'
-                e.currentTarget.style.boxShadow =
-                  '0 0 0 var(--color-ink), 0 0 0 1.5px var(--color-ink)'
-              }}
-              onMouseUp={(e) => {
-                e.currentTarget.style.transform = ''
-                e.currentTarget.style.boxShadow =
-                  '0 2px 0 var(--color-ink), 0 0 0 1.5px var(--color-ink)'
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.transform = ''
-                e.currentTarget.style.boxShadow =
-                  '0 2px 0 var(--color-ink), 0 0 0 1.5px var(--color-ink)'
-              }}
-            >
-              {primaryCta.label}
-              <svg
-                width={18}
-                height={14}
-                viewBox="0 0 18 14"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth={1.5}
-                strokeLinecap="square"
-                aria-hidden="true"
-              >
-                <path d="M1 7H17M11 1L17 7L11 13" />
-              </svg>
-            </a>
-            <a
-              href={secondaryCta.href}
-              className="font-body font-medium text-[1rem] inline-flex items-center gap-2 transition-colors duration-[180ms]"
-              style={{
-                color: 'var(--color-ink)',
-                background: 'transparent',
-                padding: '14px 4px',
-                borderBottom: '1px solid var(--color-ink)',
-              }}
-            >
-              {secondaryCta.label}
-              <svg
-                width={14}
-                height={10}
-                viewBox="0 0 14 10"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth={1.5}
-                strokeLinecap="square"
-                aria-hidden="true"
-              >
-                <path d="M1 5H13M9 1L13 5L9 9" />
-              </svg>
-            </a>
-          </motion.div>
-
-          <motion.ul
-            initial={reduce ? false : { opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{
-              duration: 0.72,
-              ease: [0.22, 1, 0.36, 1],
-              delay: reduce ? 0 : STEP * 6,
-            }}
-            className="font-mono text-[0.75rem] text-ink-3 tracking-[0.04em] flex flex-col gap-1.5"
-            style={{ maxWidth: '48ch' }}
-          >
-            {reassureLines.map((line) => (
-              <li key={line} className="flex items-baseline gap-2">
-                <span className="text-rust font-bold text-[0.875rem]" aria-hidden="true">
-                  ›
-                </span>
-                <span>{line}</span>
-              </li>
-            ))}
-          </motion.ul>
-        </section>
-
-        <div
+        <motion.h1
+          {...animateProps(STEP * 2)}
+          id="hero-heading"
           className={cn(
-            'col-start-10 col-span-3',
-            'max-[1100px]:col-start-9 max-[1100px]:col-span-4',
-            'max-[900px]:col-start-1 max-[900px]:col-span-12',
+            'mt-8 max-w-[20ch]',
+            'font-display font-semibold',
+            'text-[clamp(2.75rem,7vw,5.5rem)] leading-[0.98] tracking-[-0.035em]',
+            'text-[var(--color-ink)]',
           )}
         >
-          <InstrumentGauge
-            lcp={gauge.lcp}
-            cls={gauge.cls}
-            inp={gauge.inp}
-            jsKb={gauge.jsKb}
-            a11y={gauge.a11y}
-          />
-        </div>
+          <span className="sr-only">{fullTitle}</span>
+          <span aria-hidden="true">
+            {titleParts.plain}{' '}
+            <span className="text-[var(--color-rust)]">{titleParts.italic}</span>{' '}
+            {titleParts.rest}
+          </span>
+        </motion.h1>
+
+        <motion.p
+          {...animateProps(STEP * 3)}
+          className="mt-8 max-w-[60ch] text-[1.125rem] leading-[1.55] text-[var(--color-ink-2)] md:text-[1.25rem]"
+        >
+          {sub}
+        </motion.p>
+
+        <motion.div
+          {...animateProps(STEP * 4)}
+          className="mt-10 flex flex-wrap items-center gap-3"
+        >
+          <a
+            href={primaryCta.href}
+            className={cn(
+              'inline-flex items-center gap-2 rounded-full',
+              'bg-[var(--color-rust)] text-[#0A0A0A]',
+              'px-6 py-3.5 text-[15px] font-semibold',
+              'transition-[background,transform] duration-[180ms]',
+              'hover:bg-[var(--color-rust-2)] hover:translate-y-[-1px]',
+              'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-rust)]',
+            )}
+          >
+            {primaryCta.label}
+            <span aria-hidden="true">→</span>
+          </a>
+          <a
+            href={secondaryCta.href}
+            className={cn(
+              'inline-flex items-center gap-2 rounded-full',
+              'border border-[var(--color-paper-3)] bg-transparent text-[var(--color-ink)]',
+              'px-6 py-3.5 text-[15px] font-medium',
+              'transition-[border-color,color,background] duration-[180ms]',
+              'hover:border-[var(--color-ink-2)] hover:bg-[var(--color-paper-2)]',
+              'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-rust)]',
+            )}
+          >
+            {secondaryCta.label}
+          </a>
+        </motion.div>
+
+        <motion.ul
+          {...animateProps(STEP * 5)}
+          className="mt-12 grid grid-cols-1 gap-3 text-[14px] text-[var(--color-ink-2)] md:grid-cols-3 md:gap-6"
+        >
+          {reassureLines.map((line) => (
+            <li key={line} className="flex items-start gap-2">
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 14 14"
+                fill="none"
+                aria-hidden="true"
+                className="mt-1 shrink-0 text-[var(--color-rust)]"
+              >
+                <path d="M11.5 3.5L5.5 9.5L2.5 6.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+              <span>{line}</span>
+            </li>
+          ))}
+        </motion.ul>
       </div>
-    </main>
+    </section>
   )
 }

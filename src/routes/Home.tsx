@@ -6,10 +6,36 @@ import { FAQAccordion } from '@/components/ui/FAQAccordion'
 import { Button } from '@/components/ui/Button'
 import { StackBadges } from '@/components/ui/StackBadges'
 import { WorkPreview } from '@/components/ui/WorkPreview'
-import { InstrumentationBlock } from '@/components/ui/InstrumentationBlock'
 import { Seo } from '@/lib/seo'
 import { personJsonLd, orgJsonLd, faqJsonLd } from '@/lib/seo-data'
 import { COPY } from '@/content/copy'
+
+interface SectionHeaderProps {
+  eyebrow: string
+  heading: string
+  intro?: string
+  align?: 'left' | 'center'
+}
+
+function SectionHeader({ eyebrow, heading, intro, align = 'left' }: SectionHeaderProps) {
+  return (
+    <header
+      className={
+        align === 'center'
+          ? 'mx-auto mb-12 flex max-w-[60ch] flex-col items-center gap-4 text-center'
+          : 'mb-12 flex max-w-[60ch] flex-col gap-4'
+      }
+    >
+      <span className="text-[12px] font-medium uppercase tracking-[0.08em] text-[var(--color-rust)]">
+        {eyebrow}
+      </span>
+      <h2 className="font-display text-[2.25rem] font-semibold leading-[1.08] tracking-[-0.025em] text-[var(--color-ink)] md:text-[3rem]">
+        {heading}
+      </h2>
+      {intro ? <p className="text-[var(--color-ink-2)]">{intro}</p> : null}
+    </header>
+  )
+}
 
 export default function Home() {
   return (
@@ -53,22 +79,18 @@ export default function Home() {
       <section
         id="services"
         aria-labelledby="services-heading"
-        className="mx-auto w-full max-w-[1280px] px-[var(--spacing-s5)] py-[var(--spacing-s8)] md:px-[var(--spacing-s7)]"
+        className="mx-auto w-full max-w-[1280px] px-6 py-24 md:px-8 md:py-32"
       >
-        <header className="mb-[var(--spacing-s7)] flex flex-col gap-[var(--spacing-s3)]">
-          <span className="font-mono text-[11px] uppercase tracking-[0.08em] text-[var(--color-ink-3)]">
-            § {COPY.services.sectionMark.number} / {COPY.services.sectionMark.label}
-          </span>
-          <h2
-            id="services-heading"
-            className="font-display text-[2.25rem] leading-[1.1] tracking-[-0.025em] text-[var(--color-ink)] md:text-[3rem]"
-          >
-            {COPY.services.heading}
-          </h2>
-          <p className="max-w-[48ch] text-[var(--color-ink-2)]">{COPY.services.intro}</p>
-        </header>
+        <SectionHeader
+          eyebrow="Services"
+          heading={COPY.services.heading}
+          intro={COPY.services.intro}
+        />
+        <h2 id="services-heading" className="sr-only">
+          {COPY.services.heading}
+        </h2>
 
-        <ul role="list" className="grid grid-cols-1 gap-[var(--spacing-s5)] md:grid-cols-3">
+        <ul role="list" className="grid grid-cols-1 gap-5 md:grid-cols-3">
           {COPY.services.tiers.map((tier) => (
             <li key={tier.name} className="flex">
               <PricingTier
@@ -84,10 +106,7 @@ export default function Home() {
           ))}
         </ul>
 
-        <aside
-          aria-label="Optional retainer"
-          className="mt-[var(--spacing-s7)] border-t border-[var(--color-paper-3)] pt-[var(--spacing-s6)]"
-        >
+        <aside aria-label="Optional retainer" className="mt-8">
           <PricingTier
             eyebrow={COPY.services.retainer.eyebrow}
             name={COPY.services.retainer.name}
@@ -102,82 +121,58 @@ export default function Home() {
       <section
         id="process"
         aria-labelledby="process-heading"
-        className="mx-auto w-full max-w-[1280px] border-t border-[var(--color-paper-3)] bg-[var(--color-paper-2)]/40 px-[var(--spacing-s5)] py-[var(--spacing-s8)] md:px-[var(--spacing-s7)]"
+        className="border-t border-[var(--color-paper-3)] bg-[var(--color-paper-2)]/30"
       >
-        <header className="mb-[var(--spacing-s7)] flex flex-col gap-[var(--spacing-s3)]">
-          <span className="font-mono text-[11px] uppercase tracking-[0.08em] text-[var(--color-plum)]">
-            § {COPY.process.sectionMark.number} / {COPY.process.sectionMark.label}
-          </span>
-          <h2
-            id="process-heading"
-            className="font-display text-[2.25rem] leading-[1.1] tracking-[-0.025em] text-[var(--color-ink)] md:text-[3rem]"
-          >
+        <div className="mx-auto w-full max-w-[1280px] px-6 py-24 md:px-8 md:py-32">
+          <SectionHeader eyebrow="Process" heading={COPY.process.heading} intro={COPY.process.intro} />
+          <h2 id="process-heading" className="sr-only">
             {COPY.process.heading}
           </h2>
-          <p className="max-w-[48ch] text-[var(--color-ink-2)]">{COPY.process.intro}</p>
-        </header>
-
-        <ProcessTimeline steps={COPY.process.steps.map((s) => ({ ...s }))} />
+          <ProcessTimeline steps={COPY.process.steps.map((s) => ({ ...s }))} />
+        </div>
       </section>
-
-      <InstrumentationBlock
-        sectionMark={{ ...COPY.instrumentation.sectionMark }}
-        heading={COPY.instrumentation.heading}
-        body={COPY.instrumentation.body}
-        metrics={COPY.instrumentation.metrics.map((m) => ({
-          label: m.label,
-          value: m.value,
-          unit: 'unit' in m ? m.unit : undefined,
-          target: m.target,
-          tone: m.tone,
-        }))}
-      />
 
       <section
         id="faq"
         aria-labelledby="faq-heading"
-        className="mx-auto w-full max-w-[1280px] px-[var(--spacing-s5)] py-[var(--spacing-s8)] md:px-[var(--spacing-s7)]"
+        className="mx-auto w-full max-w-[1280px] px-6 py-24 md:px-8 md:py-32"
       >
-        <header className="mb-[var(--spacing-s7)] flex flex-col gap-[var(--spacing-s3)]">
-          <span className="font-mono text-[11px] uppercase tracking-[0.08em] text-[var(--color-ink-3)]">
-            § {COPY.faq.sectionMark.number} / {COPY.faq.sectionMark.label}
-          </span>
-          <h2
-            id="faq-heading"
-            className="font-display text-[2.25rem] leading-[1.1] tracking-[-0.025em] text-[var(--color-ink)] md:text-[3rem]"
-          >
-            {COPY.faq.heading}
-          </h2>
-        </header>
-
+        <SectionHeader eyebrow="FAQ" heading={COPY.faq.heading} />
+        <h2 id="faq-heading" className="sr-only">
+          {COPY.faq.heading}
+        </h2>
         <FAQAccordion items={COPY.faq.items.map((i) => ({ ...i }))} />
       </section>
 
       <section
         id="next"
         aria-labelledby="next-heading"
-        className="mx-auto w-full max-w-[1280px] px-[var(--spacing-s5)] py-[var(--spacing-s8)] md:px-[var(--spacing-s7)]"
+        className="mx-auto w-full max-w-[1280px] px-6 py-24 md:px-8 md:py-32"
       >
-        <div className="flex flex-col items-start gap-[var(--spacing-s5)] border-t-2 border-[var(--color-ink)] pt-[var(--spacing-s7)] md:flex-row md:items-center md:justify-between">
-          <div className="flex max-w-[60ch] flex-col gap-[var(--spacing-s3)]">
-            <span className="font-mono text-[11px] uppercase tracking-[0.08em] text-[var(--color-rust)]">
-              § {COPY.cta.sectionMark.number} / {COPY.cta.sectionMark.label}
-            </span>
-            <h2
-              id="next-heading"
-              className="font-display text-[2rem] leading-[1.04] tracking-[-0.025em] text-[var(--color-ink)] md:text-[2.75rem]"
-            >
-              {COPY.cta.heading}
-            </h2>
-            <p className="text-[var(--color-ink-2)]">{COPY.cta.lede}</p>
-          </div>
-          <div className="flex flex-col gap-[var(--spacing-s3)] md:flex-row md:items-center">
-            <Button asChild variant="primary" size="lg">
-              <a href={COPY.cta.primary.href}>{COPY.cta.primary.label}</a>
-            </Button>
-            <Button asChild variant="ghost" size="lg">
-              <a href={COPY.cta.secondary.href}>{COPY.cta.secondary.label} →</a>
-            </Button>
+        <div className="rounded-3xl border border-[var(--color-paper-3)] bg-[var(--color-paper-2)] p-10 md:p-14">
+          <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
+            <div className="flex max-w-[40ch] flex-col gap-3">
+              <span className="text-[12px] font-medium uppercase tracking-[0.08em] text-[var(--color-rust)]">
+                Now booking
+              </span>
+              <h2
+                id="next-heading"
+                className="font-display text-[2rem] font-semibold leading-[1.08] tracking-[-0.025em] text-[var(--color-ink)] md:text-[2.5rem]"
+              >
+                {COPY.cta.heading}
+              </h2>
+              <p className="text-[var(--color-ink-2)]">{COPY.cta.lede}</p>
+            </div>
+            <div className="flex flex-col gap-3 md:flex-row md:items-center">
+              <Button asChild variant="primary" size="lg">
+                <a href={COPY.cta.primary.href}>
+                  {COPY.cta.primary.label} <span aria-hidden="true">→</span>
+                </a>
+              </Button>
+              <Button asChild variant="ghost" size="lg">
+                <a href={COPY.cta.secondary.href}>{COPY.cta.secondary.label}</a>
+              </Button>
+            </div>
           </div>
         </div>
       </section>

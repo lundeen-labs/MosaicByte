@@ -38,11 +38,17 @@ describe('PricingTier', () => {
     expect(link).toHaveAttribute('href', '/audit')
   })
 
-  it('featured tier sets data-featured="true" and adds rust border', () => {
+  it('featured tier sets data-featured="true" and adds an accent border', () => {
     render(<PricingTier {...baseProps} featured />)
     const article = screen.getByRole('article')
     expect(article).toHaveAttribute('data-featured', 'true')
-    expect(article.className).toMatch(/border-l-\[var\(--color-rust\)\]/)
+    // Modern card: rust-tinted border + ring accent
+    expect(article.className).toMatch(/border-\[var\(--color-rust\)\]\/40/)
+  })
+
+  it('featured tier renders the "Most picked" ribbon', () => {
+    render(<PricingTier {...baseProps} featured />)
+    expect(screen.getByText(/most picked/i)).toBeInTheDocument()
   })
 
   it('non-featured does not get the rust border', () => {

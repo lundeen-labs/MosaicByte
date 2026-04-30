@@ -12,11 +12,11 @@ export interface FooterProps {
 }
 
 /**
- * Footer — sitemap-style 4-column layout.
+ * Footer — modern sitemap with a large wordmark callout above.
  *
- * Top: 4 columns. Each column header in mono micro uppercase `--ink-3`.
- * Bottom strip: STATUS mirror + © + small wordmark.
- * Renders as <footer role="contentinfo">.
+ * Top: large studio name + tagline + primary CTA in a banner row.
+ * Middle: 4 simple columns of links.
+ * Bottom: subtle copyright row.
  */
 export function Footer({ columns, legal }: FooterProps) {
   return (
@@ -24,37 +24,50 @@ export function Footer({ columns, legal }: FooterProps) {
       role="contentinfo"
       className={cn(
         'mt-[var(--spacing-s8)] w-full',
-        'bg-[var(--color-paper-2)] text-[var(--color-ink)]',
+        'bg-[var(--color-paper)] text-[var(--color-ink)]',
         'border-t border-[var(--color-paper-3)]',
       )}
     >
-      <div
-        className={cn(
-          'mx-auto w-full max-w-[1280px]',
-          'px-[var(--spacing-s5)] pt-[var(--spacing-s7)] pb-[var(--spacing-s6)]',
-          'md:px-[var(--spacing-s6)]',
-        )}
-      >
+      <div className="mx-auto w-full max-w-[1280px] px-6 pt-20 pb-8 md:px-8">
+        {/* Banner */}
+        <div className="flex flex-col gap-6 border-b border-[var(--color-paper-3)] pb-12 md:flex-row md:items-end md:justify-between">
+          <div className="flex max-w-[40ch] flex-col gap-3">
+            <h2 className="font-display text-[2.25rem] font-semibold leading-[1.1] tracking-[-0.025em] text-[var(--color-ink)] md:text-[3rem]">
+              Building a SaaS landing page?
+            </h2>
+            <p className="text-[var(--color-ink-2)]">
+              Two-week productized engagement. Refund tied to a real conversion metric.
+            </p>
+          </div>
+          <a
+            href="/contact"
+            className={cn(
+              'inline-flex items-center gap-2 self-start',
+              'rounded-full bg-[var(--color-rust)] text-[#0A0A0A]',
+              'px-6 py-3 text-[15px] font-semibold',
+              'transition-[background,transform] duration-[180ms]',
+              'hover:bg-[var(--color-rust-2)] hover:translate-y-[-1px]',
+              'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-rust)]',
+            )}
+          >
+            Start a project <span aria-hidden="true">→</span>
+          </a>
+        </div>
+
         {/* Sitemap columns */}
-        <div className="grid grid-cols-2 gap-[var(--spacing-s6)] md:grid-cols-4">
+        <div className="mt-12 grid grid-cols-2 gap-8 md:grid-cols-4">
           {columns.map((col) => (
-            <div key={col.heading} className="flex flex-col gap-[var(--spacing-s3)]">
-              <h2
-                className={cn(
-                  'font-mono text-[11px] uppercase tracking-[0.08em] font-medium',
-                  'text-[var(--color-ink-3)]',
-                )}
-              >
+            <div key={col.heading} className="flex flex-col gap-3">
+              <h3 className="text-[12px] font-medium uppercase tracking-[0.06em] text-[var(--color-ink-3)]">
                 {col.heading}
-              </h2>
-              <ul className="flex flex-col gap-[var(--spacing-s2)]">
+              </h3>
+              <ul className="flex flex-col gap-2">
                 {col.items.map((item) => {
                   const isExternal = /^https?:\/\//.test(item.href) || item.href.startsWith('mailto:')
                   const isHash = item.href.includes('#')
                   const className = cn(
-                    'inline-block font-body text-[14px] leading-[1.55]',
-                    'text-[var(--color-ink-2)] transition-colors duration-[180ms]',
-                    'hover:text-[var(--color-rust)]',
+                    'inline-block text-[14px] text-[var(--color-ink-2)] transition-colors duration-[180ms]',
+                    'hover:text-[var(--color-ink)]',
                   )
                   if (isExternal || isHash) {
                     return (
@@ -82,41 +95,10 @@ export function Footer({ columns, legal }: FooterProps) {
           ))}
         </div>
 
-        {/* Bottom strip — status mirror + © + wordmark */}
-        <div
-          className={cn(
-            'mt-[var(--spacing-s7)] pt-[var(--spacing-s4)]',
-            'border-t border-[var(--color-paper-3)]',
-            'flex flex-col gap-[var(--spacing-s3)]',
-            'md:flex-row md:items-center md:justify-between md:gap-[var(--spacing-s5)]',
-            'font-mono text-[11px] uppercase tracking-[0.06em]',
-            'text-[var(--color-ink-3)]',
-          )}
-        >
-          <span aria-label="Studio status mirror" className="inline-flex items-center gap-[var(--spacing-s2)]">
-            <span
-              aria-hidden="true"
-              className="inline-block h-[6px] w-[6px] rounded-full bg-[var(--color-rust)]"
-            />
-            STATUS: AVAILABLE · WEEK OF MAY 5
-          </span>
-          <span>{legal}</span>
-          <span
-            className={cn(
-              'font-display text-[14px] not-italic font-medium normal-case tracking-[-0.01em]',
-              'text-[var(--color-ink-2)]',
-            )}
-            style={{ fontVariationSettings: "'opsz' 32" }}
-          >
-            Lundeen{' '}
-            <span
-              className="italic text-[var(--color-rust)]"
-              style={{ fontVariationSettings: "'opsz' 32, 'SOFT' 100, 'WONK' 1" }}
-            >
-              &amp;
-            </span>{' '}
-            Co.
-          </span>
+        {/* Bottom row */}
+        <div className="mt-12 flex flex-col gap-3 border-t border-[var(--color-paper-3)] pt-6 md:flex-row md:items-center md:justify-between">
+          <span className="text-[12px] text-[var(--color-ink-3)]">{legal}</span>
+          <span className="text-[12px] text-[var(--color-ink-3)]">Lundeen Studio · Made on the West Coast</span>
         </div>
       </div>
     </footer>

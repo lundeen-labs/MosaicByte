@@ -23,22 +23,28 @@ describe('Navbar', () => {
     expect(nav).toBeInTheDocument()
   })
 
-  it('renders all four numbered nav links', () => {
+  it('renders all four primary nav links', () => {
     renderNavbar()
     const nav = screen.getByRole('navigation', { name: /primary/i })
-    expect(within(nav).getByRole('link', { name: /01\s*work/i })).toBeInTheDocument()
-    expect(within(nav).getByRole('link', { name: /02\s*services/i })).toBeInTheDocument()
-    expect(within(nav).getByRole('link', { name: /03\s*process/i })).toBeInTheDocument()
-    expect(within(nav).getByRole('link', { name: /04\s*about/i })).toBeInTheDocument()
+    expect(within(nav).getByRole('link', { name: /^work$/i })).toBeInTheDocument()
+    expect(within(nav).getByRole('link', { name: /^services$/i })).toBeInTheDocument()
+    expect(within(nav).getByRole('link', { name: /^process$/i })).toBeInTheDocument()
+    expect(within(nav).getByRole('link', { name: /^about$/i })).toBeInTheDocument()
   })
 
-  it('renders the wordmark link to home with EST. 2025 micro', () => {
+  it('renders the wordmark link to home', () => {
     renderNavbar()
     const banner = screen.getByRole('banner')
-    const home = within(banner).getByRole('link', { name: /lundeen.*home/i })
+    const home = within(banner).getByRole('link', { name: /lundeen studio.*home/i })
     expect(home).toBeInTheDocument()
     expect(home.getAttribute('href')).toBe('/')
-    expect(within(home).getByText(/est\. 2025/i)).toBeInTheDocument()
+    expect(within(home).getByText(/lundeen studio/i)).toBeInTheDocument()
+  })
+
+  it('renders the availability indicator inside the wordmark link', () => {
+    renderNavbar()
+    const home = screen.getByRole('link', { name: /lundeen studio.*home/i })
+    expect(within(home).getByText(/slots? open|booked/i)).toBeInTheDocument()
   })
 
   it('renders the Free audit CTA pointing at /contact', () => {
@@ -50,7 +56,7 @@ describe('Navbar', () => {
 
   it('marks the current section with aria-current=page', () => {
     renderNavbar({ current: 'work' })
-    const work = screen.getByRole('link', { name: /01\s*work/i })
+    const work = screen.getByRole('link', { name: /^work$/i })
     expect(work).toHaveAttribute('aria-current', 'page')
   })
 
@@ -65,18 +71,17 @@ describe('Navbar', () => {
     const user = userEvent.setup()
     renderNavbar()
     const expected = [
-      /lundeen.*home/i, // wordmark
-      /01\s*work/i,
-      /02\s*services/i,
-      /03\s*process/i,
-      /04\s*about/i,
+      /lundeen studio.*home/i, // wordmark
+      /^work$/i,
+      /^services$/i,
+      /^process$/i,
+      /^about$/i,
       /free audit/i,
     ]
     for (const matcher of expected) {
       await user.tab()
       const focused = document.activeElement
       expect(focused).not.toBeNull()
-      // The focused element should match the next expected accessible name
       const link = screen.getByRole('link', { name: matcher })
       expect(focused === link).toBe(true)
     }

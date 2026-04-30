@@ -1,74 +1,115 @@
 @import "tailwindcss";
 
 @theme {
-  --font-display: "Fraunces", Georgia, serif;
-  --font-body: "Inter Tight", system-ui, sans-serif;
-  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+  /* Geist for everything — single typeface family with sans + mono */
+  --font-display: "Geist", system-ui, -apple-system, sans-serif;
+  --font-body: "Geist", system-ui, -apple-system, sans-serif;
+  --font-mono: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
 
-  --color-paper: #F4EFE6;
-  --color-paper-2: #EAE2D2;
-  --color-paper-3: #DDD3BE;
-  --color-ink: #171413;
-  --color-ink-2: #3A332E;
-  --color-ink-3: #6B5F55;
-  --color-rust: #9C2A1F;
-  --color-rust-2: #7C1F16;
-  --color-plum: #3C2E4E;
-  --color-moss: #3C5A3E;
-  --color-ochre: #B27C16;
-  --color-paper-line: #C4B898;
+  /* Modern dark agency palette
+     Token names are kept stable so components built around `--color-paper`,
+     `--color-ink`, `--color-rust` etc. simply re-render with the new look.
+     Mapping (logical -> visual):
+       paper   = bg
+       ink     = foreground text
+       rust    = primary accent (electric green)
+       plum    = secondary accent (electric blue)
+       moss    = positive (mint green)
+       ochre   = warning (amber)
+  */
+  --color-paper: #0A0A0A;
+  --color-paper-2: #141414;
+  --color-paper-3: #262626;
+  --color-paper-line: #1F1F1F;
+
+  --color-ink: #FAFAFA;
+  --color-ink-2: #A3A3A3;
+  --color-ink-3: #737373;
+
+  --color-rust: #00D97E;
+  --color-rust-2: #00F59C;
+
+  --color-plum: #60A5FA;
+  --color-moss: #34D399;
+  --color-ochre: #FBBF24;
 
   --spacing-s1: 0.25rem;  --spacing-s2: 0.5rem;  --spacing-s3: 0.75rem;
   --spacing-s4: 1rem;     --spacing-s5: 1.5rem;  --spacing-s6: 2.5rem;
   --spacing-s7: 4rem;     --spacing-s8: 7.5rem;
 
-  --radius-r0: 0;     --radius-r1: 2px;  --radius-r2: 4px;
-  --radius-r3: 8px;   --radius-r4: 14px;
+  --radius-r0: 0;     --radius-r1: 4px;  --radius-r2: 8px;
+  --radius-r3: 12px;  --radius-r4: 20px;
 
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
   --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
   --ease-press: cubic-bezier(0.4, 0.0, 0.6, 1.0);
-  --t-instant: 80ms;  --t-fast: 180ms;  --t-medium: 360ms;  --t-slow: 720ms;
+  --t-instant: 80ms;  --t-fast: 180ms;  --t-medium: 320ms;  --t-slow: 600ms;
 }
 
-:root[data-theme="dark"] {
-  --color-paper: #13110F;  --color-paper-2: #1B1815;  --color-paper-3: #2A2520;
-  --color-ink: #EFE7D7;    --color-ink-2: #C4B89F;    --color-ink-3: #8E8474;
-  --color-rust: #E0633D;   --color-rust-2: #FF7D55;
-  --color-plum: #A98DC4;   --color-moss: #7BA77E;     --color-ochre: #D9A03B;
-  --color-paper-line: #3D352B;
+/* Light theme (alternate) — kept available for future toggle but not the default. */
+:root[data-theme="light"] {
+  --color-paper: #FAFAFA;
+  --color-paper-2: #F5F5F5;
+  --color-paper-3: #E5E5E5;
+  --color-paper-line: #EFEFEF;
+  --color-ink: #0A0A0A;
+  --color-ink-2: #404040;
+  --color-ink-3: #737373;
+  --color-rust: #047857;
+  --color-rust-2: #10B981;
+  --color-plum: #2563EB;
+  --color-moss: #059669;
+  --color-ochre: #B45309;
 }
-
-* { margin: 0; padding: 0; box-sizing: border-box; }
-
-html { scroll-behavior: smooth; }
-
-body {
-  background: var(--color-paper);
-  color: var(--color-ink);
-  font-family: var(--font-body);
-  font-size: 1rem;
-  line-height: 1.6;
-  -webkit-font-smoothing: antialiased;
-  text-rendering: optimizeLegibility;
-}
-
-::selection { background: var(--color-rust); color: var(--color-paper); }
 
 @layer base {
-  h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 500; letter-spacing: -0.025em; }
-  h1 { font-size: 3rem; line-height: 1.04; }
-  h2 { font-size: 2.25rem; line-height: 1.1; }
-  h3 { font-size: 1.5rem; line-height: 1.25; }
-}
+  *, *::before, *::after { box-sizing: border-box; }
 
-.font-mono-label { font-family: var(--font-mono); text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.6875rem; }
+  html {
+    scroll-behavior: smooth;
+    background: var(--color-paper);
+    color-scheme: dark;
+  }
 
-a { color: inherit; text-decoration: none; }
+  body {
+    margin: 0;
+    background: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-body);
+    font-size: 1rem;
+    line-height: 1.55;
+    font-feature-settings: "ss01", "cv11";
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
 
-button:focus-visible, a:focus-visible, [role="button"]:focus-visible {
-  outline: 2px solid var(--color-rust);
-  outline-offset: 2px;
+  ::selection { background: var(--color-rust); color: var(--color-paper); }
+
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    letter-spacing: -0.022em;
+    color: var(--color-ink);
+  }
+  h1 { font-size: 3.5rem; line-height: 1.02; letter-spacing: -0.03em; }
+  h2 { font-size: 2.5rem; line-height: 1.08; letter-spacing: -0.025em; }
+  h3 { font-size: 1.5rem; line-height: 1.2; }
+  p  { color: var(--color-ink-2); }
+
+  a { color: inherit; text-decoration: none; }
+
+  button:focus-visible,
+  a:focus-visible,
+  [role="button"]:focus-visible,
+  input:focus-visible,
+  textarea:focus-visible,
+  select:focus-visible {
+    outline: 2px solid var(--color-rust);
+    outline-offset: 2px;
+  }
+
+  /* Remove default outlines on form fields when using focus-visible above */
+  input:focus, textarea:focus, select:focus { outline: none; }
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -46,7 +46,7 @@ export function MetricsBlock({ metrics, columns = 4, className }: MetricsBlockPr
       role="list"
       aria-label="Metrics"
       className={cn(
-        'grid w-full border-y border-[var(--color-ink)]',
+        'grid w-full overflow-hidden rounded-2xl border border-[var(--color-paper-3)] bg-[var(--color-paper-2)]',
         colClass,
         className,
       )}
@@ -57,21 +57,21 @@ export function MetricsBlock({ metrics, columns = 4, className }: MetricsBlockPr
           <div
             key={`${m.label}-${i}`}
             role="listitem"
-            className="flex flex-col gap-2 border-r border-[var(--color-paper-3)] last:border-r-0 px-[22px] py-6"
+            className="flex flex-col gap-2 border-r border-b border-[var(--color-paper-3)] last:border-r-0 px-7 py-6"
           >
-            <dt className="font-mono text-[11px] uppercase tracking-[0.08em] text-[var(--color-ink-3)]">
+            <dt className="text-[11px] font-medium uppercase tracking-[0.08em] text-[var(--color-ink-3)]">
               {m.label}
             </dt>
             <dd
               className={cn(
-                'font-display font-medium text-[3rem] leading-[1.04] tracking-[-0.025em]',
+                'font-display text-[2.5rem] font-semibold leading-[1.05] tracking-[-0.025em] md:text-[3rem]',
                 toneTextClasses[tone],
               )}
             >
               {m.value}
             </dd>
             {m.ci ? (
-              <p className="font-mono text-[11px] uppercase tracking-[0.06em] text-[var(--color-ink-3)]">
+              <p className="text-[11px] font-medium uppercase tracking-[0.06em] text-[var(--color-ink-3)]">
                 {m.ci}
               </p>
             ) : null}

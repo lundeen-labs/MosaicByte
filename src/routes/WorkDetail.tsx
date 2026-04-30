@@ -141,21 +141,19 @@ export default function WorkDetail() {
       />
       <article
         aria-labelledby="case-study-heading"
-        className="mx-auto w-full max-w-[1280px] px-[var(--spacing-s5)] py-[var(--spacing-s8)] md:px-[var(--spacing-s7)]"
+        className="mx-auto w-full max-w-[1280px] px-6 py-24 md:px-8 md:py-32"
       >
-        <header className="mb-[var(--spacing-s7)] flex flex-col gap-[var(--spacing-s4)]">
-          <p className="font-mono text-[11px] uppercase tracking-[0.08em] text-[var(--color-rust)]">
-            <span aria-hidden="true">§ 01 / WORK / </span>
-            <span className="sr-only">Work — </span>
-            {study.client.toUpperCase()}
-          </p>
+        <header className="mb-12 flex flex-col gap-4">
+          <span className="text-[12px] font-medium uppercase tracking-[0.08em] text-[var(--color-rust)]">
+            Case study
+          </span>
           <h1
             id="case-study-heading"
-            className="font-display text-[3rem] leading-[1.04] tracking-[-0.025em] text-[var(--color-ink)] md:text-[4.5rem]"
+            className="font-display text-[3rem] font-semibold leading-[1.04] tracking-[-0.03em] text-[var(--color-ink)] md:text-[4.5rem]"
           >
             {study.client}
           </h1>
-          <p className="max-w-[60ch] text-[1.25rem] leading-[1.55] text-[var(--color-ink-2)]">
+          <p className="max-w-[60ch] text-[1.125rem] leading-[1.55] text-[var(--color-ink-2)] md:text-[1.25rem]">
             {study.sector}
           </p>
 

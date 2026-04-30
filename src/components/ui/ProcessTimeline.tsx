@@ -7,75 +7,56 @@ export interface ProcessTimelineProps {
 }
 
 /**
- * 14-day process visualized as a 7-cell horizontal grid (mirrors the
- * case-study mockup). Each cell shows day label (mono micro), step name
- * (Fraunces 500), and detail (body-sm). Hairline borders between cells.
- * Optional `currentStep` highlights the active cell with rust-2 fill.
+ * Modern dark-agency process timeline.
+ *
+ * Numbered steps stacked vertically on mobile, horizontal connecting line
+ * on desktop. Each step is a card with the day-range tag, step name, and
+ * detail. The accent green is reserved for the active/current step.
  */
 export function ProcessTimeline({ steps, currentStep, className }: ProcessTimelineProps) {
   if (steps.length === 0) return null
 
   return (
-    <div
-      className={cn(
-        'relative w-full border-t border-[var(--color-ink)]',
-        className,
-      )}
+    <ol
+      aria-label="Process timeline"
+      className={cn('grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4', className)}
     >
-      {/* Top tick row — 14-day rule */}
-      <div
-        aria-hidden="true"
-        className="absolute -top-px left-0 right-0 h-2"
-        style={{
-          backgroundImage:
-            'repeating-linear-gradient(to right, var(--color-ink) 0, var(--color-ink) 1px, transparent 1px, transparent calc(100% / 14))',
-          backgroundSize: '100% 8px',
-          backgroundRepeat: 'no-repeat',
-        }}
-      />
-      <ol
-        className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-7 border-b border-[var(--color-paper-3)]"
-        aria-label="Process timeline"
-      >
-        {steps.map((step, idx) => {
-          const isActive = currentStep === idx
-          return (
-            <li
-              key={`${step.day}-${idx}`}
-              aria-current={isActive ? 'step' : undefined}
-              className={cn(
-                'flex flex-col gap-[6px] border-r border-[var(--color-paper-3)] last:border-r-0 px-4 pt-7 pb-5 min-h-[140px]',
-                isActive && 'bg-[var(--color-rust-2)] text-[var(--color-paper)]',
-              )}
-            >
+      {steps.map((step, idx) => {
+        const isActive = currentStep === idx
+        const stepNum = String(idx + 1).padStart(2, '0')
+        return (
+          <li
+            key={`${step.day}-${idx}`}
+            aria-current={isActive ? 'step' : undefined}
+            className={cn(
+              'relative flex flex-col gap-3 rounded-2xl border p-6',
+              isActive
+                ? 'border-[var(--color-rust)]/50 bg-[var(--color-rust)]/5'
+                : 'border-[var(--color-paper-3)] bg-[var(--color-paper-2)]',
+            )}
+          >
+            <div className="flex items-center justify-between">
               <span
                 className={cn(
-                  'font-mono text-[11px] uppercase tracking-[0.08em] leading-none',
-                  isActive ? 'text-[var(--color-paper)]' : 'text-[var(--color-rust)]',
+                  'text-[28px] font-semibold tracking-[-0.02em]',
+                  isActive ? 'text-[var(--color-rust)]' : 'text-[var(--color-ink-3)]',
                 )}
               >
+                {stepNum}
+              </span>
+              <span className="text-[11px] font-medium uppercase tracking-[0.06em] text-[var(--color-ink-3)]">
                 {step.day}
               </span>
-              <span
-                className={cn(
-                  'font-display text-[1.0625rem] leading-[1.2] tracking-[-0.01em] font-medium',
-                  isActive ? 'text-[var(--color-paper)]' : 'text-[var(--color-ink)]',
-                )}
-              >
-                {step.label}
-              </span>
-              <span
-                className={cn(
-                  'font-body text-[13px] leading-[1.45] mt-1',
-                  isActive ? 'text-[var(--color-paper)]/90' : 'text-[var(--color-ink-2)]',
-                )}
-              >
-                {step.detail}
-              </span>
-            </li>
-          )
-        })}
-      </ol>
-    </div>
+            </div>
+            <h3 className="font-display text-[1.125rem] font-semibold tracking-[-0.015em] text-[var(--color-ink)]">
+              {step.label}
+            </h3>
+            <p className="text-[14px] leading-[1.55] text-[var(--color-ink-2)]">{step.detail}</p>
+          </li>
+        )
+      })}
+    </ol>
   )
 }
+
+export default ProcessTimeline

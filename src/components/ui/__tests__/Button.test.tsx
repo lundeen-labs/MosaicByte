@@ -3,19 +3,19 @@ import { render, screen, fireEvent } from '@testing-library/react'
 import { Button } from '../Button'
 
 describe('Button', () => {
-  it('renders default primary variant with letterpress shadow', () => {
+  it('renders default primary variant on the rust accent', () => {
     render(<Button>Press me</Button>)
     const btn = screen.getByRole('button', { name: 'Press me' })
     expect(btn).toBeInTheDocument()
     expect(btn.className).toMatch(/var\(--color-rust\)/)
-    expect(btn.className).toMatch(/box-shadow/)
+    expect(btn.className).toMatch(/rounded-full/)
   })
 
-  it('renders ghost variant with transparent background and ink border', () => {
+  it('renders ghost variant with transparent background and a hairline border', () => {
     render(<Button variant="ghost">Ghost</Button>)
     const btn = screen.getByRole('button', { name: 'Ghost' })
     expect(btn.className).toMatch(/bg-transparent/)
-    expect(btn.className).toMatch(/border-\[var\(--color-ink\)\]/)
+    expect(btn.className).toMatch(/border-\[var\(--color-paper-3\)\]/)
   })
 
   it('renders icon variant as a square 36x36', () => {
@@ -27,9 +27,9 @@ describe('Button', () => {
 
   it('applies size classes', () => {
     const { rerender } = render(<Button size="sm">small</Button>)
-    expect(screen.getByRole('button').className).toMatch(/text-sm/)
+    expect(screen.getByRole('button').className).toMatch(/text-\[13px\]/)
     rerender(<Button size="lg">large</Button>)
-    expect(screen.getByRole('button').className).toMatch(/text-lg/)
+    expect(screen.getByRole('button').className).toMatch(/text-\[15px\]/)
   })
 
   it('passes onClick through', () => {

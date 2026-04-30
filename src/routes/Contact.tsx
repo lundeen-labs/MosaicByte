@@ -9,12 +9,12 @@ type Status = 'idle' | 'submitting' | 'success' | 'error'
 const TURNSTILE_SITE_KEY = import.meta.env.VITE_TURNSTILE_SITE_KEY as string | undefined
 
 const inputClass =
-  'w-full border-0 border-b border-[var(--color-paper-line)] bg-transparent px-0 py-[var(--spacing-s2)] font-body text-[1rem] text-[var(--color-ink)] placeholder:text-[var(--color-ink-3)] focus:border-[var(--color-rust)] focus:border-b-[1.5px] focus:outline-none aria-invalid:border-[var(--color-rust)] aria-invalid:border-b-[1.5px]'
+  'w-full rounded-xl border border-[var(--color-paper-3)] bg-[var(--color-paper-2)] px-4 py-3 text-[15px] text-[var(--color-ink)] placeholder:text-[var(--color-ink-3)] focus:border-[var(--color-rust)] focus:outline-none aria-invalid:border-[var(--color-rust)] transition-[border-color] duration-[180ms]'
 
 const labelClass =
-  'block font-mono text-[11px] uppercase tracking-[0.08em] text-[var(--color-ink-2)]'
+  'mb-1.5 block text-[12px] font-medium uppercase tracking-[0.06em] text-[var(--color-ink-2)]'
 
-const helperClass = 'mt-[var(--spacing-s1)] font-mono text-[10px] uppercase tracking-[0.06em] text-[var(--color-ink-3)]'
+const helperClass = 'mt-1.5 text-[12px] text-[var(--color-ink-3)]'
 
 export default function Contact() {
   const [status, setStatus] = useState<Status>('idle')
@@ -74,20 +74,21 @@ export default function Contact() {
         >
           <span
             role="status"
-            className="font-mono text-[11px] uppercase tracking-[0.08em] text-[var(--color-moss)]"
+            className="inline-flex items-center gap-2 rounded-full border border-[var(--color-moss)]/30 bg-[var(--color-moss)]/10 px-3 py-1 text-[12px] font-medium text-[var(--color-moss)]"
           >
-            STATUS: RECEIVED · 200 OK
+            <span aria-hidden="true" className="inline-block h-1.5 w-1.5 rounded-full bg-[var(--color-moss)]" />
+            Inquiry received
           </span>
           <h1
             id="success-heading"
-            className="mt-[var(--spacing-s4)] font-display text-[3rem] leading-[1.04] tracking-[-0.025em] text-[var(--color-ink)] md:text-[4rem]"
+            className="mt-6 font-display text-[3rem] font-semibold leading-[1.04] tracking-[-0.03em] text-[var(--color-ink)] md:text-[4rem]"
           >
             {COPY.contact.successHeading}
           </h1>
-          <p className="mt-[var(--spacing-s5)] max-w-[60ch] text-[1.25rem] leading-[1.55] text-[var(--color-ink-2)]">
+          <p className="mt-6 max-w-[60ch] text-[1.125rem] leading-[1.55] text-[var(--color-ink-2)] md:text-[1.25rem]">
             {COPY.contact.successBody}
           </p>
-          <div className="mt-[var(--spacing-s7)]">
+          <div className="mt-12">
             <Button asChild variant="ghost">
               <a href="/">← Back to home</a>
             </Button>
@@ -108,19 +109,19 @@ export default function Contact() {
       />
       <article
         aria-labelledby="contact-heading"
-        className="mx-auto w-full max-w-[1024px] px-[var(--spacing-s5)] py-[var(--spacing-s8)] md:px-[var(--spacing-s7)]"
+        className="mx-auto w-full max-w-[1024px] px-6 py-24 md:px-8 md:py-32"
       >
-        <header className="mb-[var(--spacing-s7)] flex flex-col gap-[var(--spacing-s4)]">
-          <span className="font-mono text-[11px] uppercase tracking-[0.08em] text-[var(--color-rust)]">
-            § {COPY.contact.sectionMark.number} / {COPY.contact.sectionMark.label}
+        <header className="mb-12 flex flex-col gap-4">
+          <span className="text-[12px] font-medium uppercase tracking-[0.08em] text-[var(--color-rust)]">
+            Contact
           </span>
           <h1
             id="contact-heading"
-            className="font-display text-[3rem] leading-[1.04] tracking-[-0.025em] text-[var(--color-ink)] md:text-[4rem]"
+            className="font-display text-[3rem] font-semibold leading-[1.04] tracking-[-0.03em] text-[var(--color-ink)] md:text-[4rem]"
           >
             {COPY.contact.heading}
           </h1>
-          <p className="max-w-[60ch] text-[1.25rem] leading-[1.55] text-[var(--color-ink-2)]">
+          <p className="max-w-[60ch] text-[1.125rem] leading-[1.55] text-[var(--color-ink-2)] md:text-[1.25rem]">
             {COPY.contact.lede}
           </p>
         </header>

@@ -17,7 +17,7 @@ export function FAQAccordion({ items, className }: FAQAccordionProps) {
     <Accordion.Root
       type="multiple"
       className={cn(
-        'w-full divide-y divide-[var(--color-paper-line)] border-y border-[var(--color-paper-line)]',
+        'w-full divide-y divide-[var(--color-paper-3)] border-y border-[var(--color-paper-3)]',
         className,
       )}
     >

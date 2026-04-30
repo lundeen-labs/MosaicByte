@@ -52,15 +52,15 @@ export default function Work() {
       />
       <section
         aria-labelledby="work-heading"
-        className="mx-auto w-full max-w-[1280px] px-[var(--spacing-s5)] py-[var(--spacing-s8)] md:px-[var(--spacing-s7)]"
+        className="mx-auto w-full max-w-[1280px] px-6 py-24 md:px-8 md:py-32"
       >
-        <header className="mb-[var(--spacing-s7)] flex flex-col gap-[var(--spacing-s3)]">
-          <p className="font-mono text-[11px] uppercase tracking-[0.08em] text-[var(--color-rust)]">
-            § 01 / WORK
-          </p>
+        <header className="mb-12 flex flex-col gap-4">
+          <span className="text-[12px] font-medium uppercase tracking-[0.08em] text-[var(--color-rust)]">
+            Work
+          </span>
           <h1
             id="work-heading"
-            className="font-display text-[3rem] leading-[1.04] tracking-[-0.025em] text-[var(--color-ink)] md:text-[4rem]"
+            className="font-display text-[3rem] font-semibold leading-[1.04] tracking-[-0.03em] text-[var(--color-ink)] md:text-[4.5rem]"
           >
             Selected work.
           </h1>
