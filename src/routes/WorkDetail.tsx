@@ -139,19 +139,30 @@ export default function WorkDetail() {
         description={`${study.engagement} for ${study.client} (${study.sector}). ${study.metrics[0]?.label}: ${study.metrics[0]?.value}.`}
         canonicalPath={`/work/${study.slug}`}
       />
-      <article className="mx-auto w-full max-w-[1280px] px-[var(--spacing-s5)] py-[var(--spacing-s8)] md:px-[var(--spacing-s7)]">
+      <article
+        aria-labelledby="case-study-heading"
+        className="mx-auto w-full max-w-[1280px] px-[var(--spacing-s5)] py-[var(--spacing-s8)] md:px-[var(--spacing-s7)]"
+      >
         <header className="mb-[var(--spacing-s7)] flex flex-col gap-[var(--spacing-s4)]">
-          <span className="font-mono text-[11px] uppercase tracking-[0.08em] text-[var(--color-ink-3)]">
-            § 01 / WORK / {study.client.toUpperCase()}
-          </span>
-          <h1 className="font-display text-[3rem] leading-[1.04] tracking-[-0.025em] text-[var(--color-ink)] md:text-[4.5rem]">
+          <p className="font-mono text-[11px] uppercase tracking-[0.08em] text-[var(--color-rust)]">
+            <span aria-hidden="true">§ 01 / WORK / </span>
+            <span className="sr-only">Work — </span>
+            {study.client.toUpperCase()}
+          </p>
+          <h1
+            id="case-study-heading"
+            className="font-display text-[3rem] leading-[1.04] tracking-[-0.025em] text-[var(--color-ink)] md:text-[4.5rem]"
+          >
             {study.client}
           </h1>
           <p className="max-w-[60ch] text-[1.25rem] leading-[1.55] text-[var(--color-ink-2)]">
             {study.sector}
           </p>
 
-          <dl className="mt-[var(--spacing-s5)] grid grid-cols-2 gap-[var(--spacing-s4)] border-t border-[var(--color-paper-3)] pt-[var(--spacing-s5)] md:grid-cols-4">
+          <dl
+            aria-label="Engagement summary"
+            className="mt-[var(--spacing-s5)] grid grid-cols-2 gap-[var(--spacing-s4)] border-t border-[var(--color-paper-3)] pt-[var(--spacing-s5)] md:grid-cols-4"
+          >
             <div>
               <dt className="font-mono text-[11px] uppercase tracking-[0.08em] text-[var(--color-ink-3)]">Engagement</dt>
               <dd className="mt-[var(--spacing-s2)] text-[var(--color-ink)]">{study.engagement}</dd>
@@ -176,29 +187,35 @@ export default function WorkDetail() {
           <MetricsBlock metrics={study.metrics} />
         </section>
 
-        <section className="grid grid-cols-1 gap-[var(--spacing-s7)] md:grid-cols-3">
+        <section
+          aria-label="Problem, approach, and outcome"
+          className="grid grid-cols-1 gap-[var(--spacing-s7)] md:grid-cols-3"
+        >
           <div>
-            <h3 className="font-mono text-[11px] uppercase tracking-[0.08em] text-[var(--color-ink-3)]">Problem</h3>
+            <h2 className="font-mono text-[11px] uppercase tracking-[0.08em] text-[var(--color-plum)]">Problem</h2>
             <p className="mt-[var(--spacing-s3)] text-[var(--color-ink)]">{study.problem}</p>
           </div>
           <div>
-            <h3 className="font-mono text-[11px] uppercase tracking-[0.08em] text-[var(--color-ink-3)]">Approach</h3>
+            <h2 className="font-mono text-[11px] uppercase tracking-[0.08em] text-[var(--color-plum)]">Approach</h2>
             <p className="mt-[var(--spacing-s3)] text-[var(--color-ink)]">{study.approach}</p>
           </div>
           <div>
-            <h3 className="font-mono text-[11px] uppercase tracking-[0.08em] text-[var(--color-ink-3)]">Outcome</h3>
+            <h2 className="font-mono text-[11px] uppercase tracking-[0.08em] text-[var(--color-moss)]">Outcome</h2>
             <p className="mt-[var(--spacing-s3)] text-[var(--color-ink)]">{study.outcome}</p>
           </div>
         </section>
 
-        <blockquote className="my-[var(--spacing-s8)] border-l-2 border-[var(--color-rust)] pl-[var(--spacing-s5)]">
-          <p className="font-display text-[1.875rem] leading-[1.25] tracking-[-0.02em] text-[var(--color-ink)] md:text-[2.25rem]">
-            “{study.pullQuote.text}”
-          </p>
-          <footer className="mt-[var(--spacing-s4)] font-mono text-[11px] uppercase tracking-[0.08em] text-[var(--color-ink-3)]">
-            — {study.pullQuote.author}, {study.pullQuote.role}
-          </footer>
-        </blockquote>
+        <figure className="my-[var(--spacing-s8)] border-l-2 border-[var(--color-rust)] pl-[var(--spacing-s5)]">
+          <blockquote cite={`/work/${study.slug}`}>
+            <p className="font-display text-[1.875rem] leading-[1.25] tracking-[-0.02em] text-[var(--color-ink)] md:text-[2.25rem]">
+              &ldquo;{study.pullQuote.text}&rdquo;
+            </p>
+          </blockquote>
+          <figcaption className="mt-[var(--spacing-s4)] font-mono text-[11px] uppercase tracking-[0.08em] text-[var(--color-ink-3)]">
+            <span aria-hidden="true">— </span>
+            {study.pullQuote.author}, {study.pullQuote.role}
+          </figcaption>
+        </figure>
 
         <nav
           aria-label="Next case study"
@@ -208,7 +225,9 @@ export default function WorkDetail() {
             Next case study
           </span>
           <Button asChild variant="ghost">
-            <Link href={`/work/${study.next.slug}`}>{study.next.client} →</Link>
+            <Link href={`/work/${study.next.slug}`} aria-label={`Read the ${study.next.client} case study`}>
+              {study.next.client} <span aria-hidden="true">→</span>
+            </Link>
           </Button>
         </nav>
       </article>

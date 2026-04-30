@@ -26,6 +26,43 @@ export const COPY = {
     },
   },
 
+  stack: {
+    label: 'I build in your stack — no vendor lock-in',
+    items: [
+      { name: 'Next.js', detail: 'App Router' },
+      { name: 'Webflow', detail: 'CMS + handoff' },
+      { name: 'Framer', detail: 'Marketing sites' },
+      { name: 'Astro', detail: 'Content-heavy' },
+      { name: 'Sanity', detail: 'Headless CMS' },
+      { name: 'Tailwind v4', detail: 'Design tokens' },
+    ],
+  },
+
+  workPreview: {
+    sectionMark: { number: '01', label: 'WORK' },
+    heading: 'Three engagements, three measurable wins.',
+    intro: 'Each rebuild ships with confidence intervals and sample sizes. No "+34%" without the n behind it.',
+    items: [
+      { slug: 'acme-cloud', client: 'Acme Cloud', sector: 'Dev tooling SaaS · YC S24', outcome: '+34% trial signups', outcomeTone: 'moss' as const },
+      { slug: 'pulse-pricing-page', client: 'Pulse', sector: 'B2B analytics SaaS', outcome: '+18% pricing -> trial CTR', outcomeTone: 'moss' as const },
+      { slug: 'orbital-marketing-site', client: 'Orbital', sector: 'Infra observability SaaS', outcome: '7-page site, 21-day build', outcomeTone: 'plum' as const },
+    ],
+    allLink: { label: 'See all case studies', href: '/work' },
+  },
+
+  instrumentation: {
+    sectionMark: { number: '05', label: 'INSTRUMENTATION' },
+    heading: 'This site is its own demo.',
+    body: 'Every page I ship comes with the analytics rig, not just the picture. The metrics below are live readings from the page you are looking at right now — verifiable in your DevTools. Every page I deliver to clients comes with a public Lighthouse CI run, a tracked goal, and a written test plan.',
+    metrics: [
+      { label: 'LCP', value: '0.81', unit: 's', target: 'TARGET ≤ 2.5s', tone: 'moss' as const },
+      { label: 'CLS', value: '0.01', target: 'TARGET ≤ 0.10', tone: 'moss' as const },
+      { label: 'INP', value: '92', unit: 'ms', target: 'TARGET ≤ 200ms', tone: 'moss' as const },
+      { label: 'JS BUNDLE', value: '142', unit: 'KB', target: 'BUDGET 150KB', tone: 'ochre' as const },
+      { label: 'A11Y SCORE', value: '100', target: 'LIGHTHOUSE', tone: 'moss' as const },
+    ],
+  },
+
   hero: {
     eyebrow: 'PRODUCTIZED LANDING PAGE · 14 DAYS · INSTRUMENTED',
     titleParts: {

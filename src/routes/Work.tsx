@@ -50,12 +50,18 @@ export default function Work() {
         description="Selected case studies of high-conversion SaaS landing pages and marketing sites."
         canonicalPath="/work"
       />
-      <section className="mx-auto w-full max-w-[1280px] px-[var(--spacing-s5)] py-[var(--spacing-s8)] md:px-[var(--spacing-s7)]">
+      <section
+        aria-labelledby="work-heading"
+        className="mx-auto w-full max-w-[1280px] px-[var(--spacing-s5)] py-[var(--spacing-s8)] md:px-[var(--spacing-s7)]"
+      >
         <header className="mb-[var(--spacing-s7)] flex flex-col gap-[var(--spacing-s3)]">
-          <span className="font-mono text-[11px] uppercase tracking-[0.08em] text-[var(--color-ink-3)]">
+          <p className="font-mono text-[11px] uppercase tracking-[0.08em] text-[var(--color-rust)]">
             § 01 / WORK
-          </span>
-          <h1 className="font-display text-[3rem] leading-[1.04] tracking-[-0.025em] text-[var(--color-ink)] md:text-[4rem]">
+          </p>
+          <h1
+            id="work-heading"
+            className="font-display text-[3rem] leading-[1.04] tracking-[-0.025em] text-[var(--color-ink)] md:text-[4rem]"
+          >
             Selected work.
           </h1>
           <p className="max-w-[60ch] text-[var(--color-ink-2)]">
@@ -63,12 +69,18 @@ export default function Work() {
           </p>
         </header>
 
-        <ul className="grid grid-cols-1 gap-[var(--spacing-s5)] md:grid-cols-2">
+        <ul role="list" className="grid grid-cols-1 gap-[var(--spacing-s5)] md:grid-cols-2">
           {ENTRIES.map((e) => (
             <li key={e.slug}>
-              <Link href={`/work/${e.slug}`}>
-                <Card className="block transition-transform duration-[180ms] hover:translate-y-[-2px] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-rust)]">
-                  <div className="flex flex-col gap-[var(--spacing-s4)]">
+              <Link
+                href={`/work/${e.slug}`}
+                aria-label={`${e.client} — ${e.outcome}`}
+                className={
+                  'group block rounded-[var(--radius-r3)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-rust)]'
+                }
+              >
+                <Card className="block transition-transform duration-[180ms] group-hover:translate-y-[-2px] group-focus-visible:translate-y-[-2px]">
+                  <article className="flex flex-col gap-[var(--spacing-s4)]">
                     <div className="flex items-center justify-between">
                       <span className="font-mono text-[11px] uppercase tracking-[0.08em] text-[var(--color-ink-3)]">
                         {e.sector}
@@ -77,14 +89,14 @@ export default function Work() {
                         {e.year}
                       </span>
                     </div>
-                    <h2 className="font-display text-[1.875rem] leading-[1.1] tracking-[-0.025em] text-[var(--color-ink)]">
+                    <h2 className="font-display text-[1.875rem] leading-[1.1] tracking-[-0.025em] text-[var(--color-ink)] group-hover:text-[var(--color-rust)] transition-colors duration-[180ms]">
                       {e.client}
                     </h2>
                     <p className="text-[var(--color-ink-2)]">{e.blurb}</p>
-                    <span className="mt-[var(--spacing-s3)] inline-block w-fit border border-[var(--color-moss)] bg-[var(--color-paper-2)] px-[var(--spacing-s3)] py-[var(--spacing-s1)] font-mono text-[11px] uppercase tracking-[0.06em] text-[var(--color-moss)]">
+                    <span className="mt-[var(--spacing-s3)] inline-block w-fit border border-[var(--color-moss)] bg-[var(--color-paper)] px-[var(--spacing-s3)] py-[var(--spacing-s1)] font-mono text-[11px] uppercase tracking-[0.06em] text-[var(--color-moss)]">
                       {e.outcome}
                     </span>
-                  </div>
+                  </article>
                 </Card>
               </Link>
             </li>

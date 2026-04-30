@@ -13,12 +13,18 @@ export default function About() {
         canonicalPath="/about"
         jsonLd={personJsonLd}
       />
-      <article className="mx-auto w-full max-w-[1280px] px-[var(--spacing-s5)] py-[var(--spacing-s8)] md:px-[var(--spacing-s7)]">
+      <article
+        aria-labelledby="about-heading"
+        className="mx-auto w-full max-w-[1280px] px-[var(--spacing-s5)] py-[var(--spacing-s8)] md:px-[var(--spacing-s7)]"
+      >
         <header className="mb-[var(--spacing-s7)] flex flex-col gap-[var(--spacing-s4)]">
-          <span className="font-mono text-[11px] uppercase tracking-[0.08em] text-[var(--color-ink-3)]">
+          <p className="font-mono text-[11px] uppercase tracking-[0.08em] text-[var(--color-rust)]">
             § {COPY.about.sectionMark.number} / {COPY.about.sectionMark.label}
-          </span>
-          <h1 className="max-w-[20ch] font-display text-[3rem] leading-[1.04] tracking-[-0.025em] text-[var(--color-ink)] md:text-[4.5rem]">
+          </p>
+          <h1
+            id="about-heading"
+            className="max-w-[20ch] font-display text-[3rem] leading-[1.04] tracking-[-0.025em] text-[var(--color-ink)] md:text-[4.5rem]"
+          >
             {COPY.about.heading}
           </h1>
           <p className="max-w-[60ch] text-[1.25rem] leading-[1.55] text-[var(--color-ink-2)]">

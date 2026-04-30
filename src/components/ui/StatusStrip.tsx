@@ -41,33 +41,34 @@ export function StatusStrip({
     ? 'lundeen-status-pulse 1.6s cubic-bezier(0.22,1,0.36,1) infinite'
     : 'none'
 
+  const summaryLabel = `Studio status: ${statusLabel.toLowerCase()}, ${slots} ${slots === 1 ? 'slot' : 'slots'}, ${week}. Live page metrics: ${metrics.lcp}, ${metrics.cls}, ${metrics.inp}, ${metrics.jsKb}.`
+
   return (
     <div
       role="status"
-      aria-label="Studio status"
+      aria-label={summaryLabel}
       className={cn(
         'relative z-10 flex items-center justify-between gap-6 overflow-hidden whitespace-nowrap bg-[var(--color-ink)] px-8 py-[7px] font-mono text-[11px] uppercase tracking-[0.06em] text-[var(--color-paper)] border-b border-[var(--color-paper-3)]',
         className,
       )}
     >
       <style>{blinkKeyframes}</style>
-      <div className="flex items-center gap-5">
+      <div aria-hidden="true" className="flex items-center gap-5">
         <span className="inline-flex items-center gap-[6px] opacity-90">
           <span
-            aria-hidden="true"
             className="inline-block h-[6px] w-[6px] rounded-full align-middle"
             style={{ background: dotColor, animation: dotAnimation }}
           />
           <span>STATUS: {statusLabel}</span>
-          <span aria-hidden="true" className="text-[var(--color-paper-line)]">·</span>
+          <span className="text-[var(--color-paper-line)]">·</span>
           <span>{slots} {slots === 1 ? 'SLOT' : 'SLOTS'}</span>
-          <span aria-hidden="true" className="text-[var(--color-paper-line)]">·</span>
+          <span className="text-[var(--color-paper-line)]">·</span>
           <span>{week}</span>
         </span>
         <span className="opacity-90">REV {rev}</span>
       </div>
 
-      <div className="flex items-center gap-5">
+      <div aria-hidden="true" className="flex items-center gap-5">
         <span className="text-[#B7E0BB]">{metrics.lcp}</span>
         <span className="text-[#B7E0BB]">{metrics.cls}</span>
         <span className="text-[#B7E0BB]">{metrics.inp}</span>

@@ -66,11 +66,16 @@ describe('StatusStrip', () => {
     expect(screen.getByText('03:42 EDT')).toBeInTheDocument()
   })
 
-  it('uses role="status" with aria-label', () => {
+  it('uses role="status" with a descriptive aria-label summarizing studio + metrics', () => {
     render(
       <StatusStrip available slots={2} week="W" rev="r" metrics={metrics} />,
     )
     const strip = screen.getByRole('status')
-    expect(strip).toHaveAttribute('aria-label', 'Studio status')
+    const label = strip.getAttribute('aria-label') ?? ''
+    expect(label).toMatch(/^Studio status/i)
+    expect(label).toMatch(/available/i)
+    expect(label).toMatch(/2 slots/i)
+    expect(label).toMatch(/LCP 0\.81s/i)
+    expect(label).toMatch(/JS 87KB/i)
   })
 })

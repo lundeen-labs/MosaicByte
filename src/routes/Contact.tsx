@@ -9,10 +9,12 @@ type Status = 'idle' | 'submitting' | 'success' | 'error'
 const TURNSTILE_SITE_KEY = import.meta.env.VITE_TURNSTILE_SITE_KEY as string | undefined
 
 const inputClass =
-  'w-full border-0 border-b border-[var(--color-paper-line)] bg-transparent px-0 py-[var(--spacing-s2)] font-body text-[1rem] text-[var(--color-ink)] placeholder:text-[var(--color-ink-3)] focus:border-[var(--color-rust)] focus:border-b-[1.5px] focus:outline-none'
+  'w-full border-0 border-b border-[var(--color-paper-line)] bg-transparent px-0 py-[var(--spacing-s2)] font-body text-[1rem] text-[var(--color-ink)] placeholder:text-[var(--color-ink-3)] focus:border-[var(--color-rust)] focus:border-b-[1.5px] focus:outline-none aria-invalid:border-[var(--color-rust)] aria-invalid:border-b-[1.5px]'
 
 const labelClass =
-  'block font-mono text-[11px] uppercase tracking-[0.08em] text-[var(--color-ink-3)]'
+  'block font-mono text-[11px] uppercase tracking-[0.08em] text-[var(--color-ink-2)]'
+
+const helperClass = 'mt-[var(--spacing-s1)] font-mono text-[10px] uppercase tracking-[0.06em] text-[var(--color-ink-3)]'
 
 export default function Contact() {
   const [status, setStatus] = useState<Status>('idle')
@@ -61,11 +63,25 @@ export default function Contact() {
   if (status === 'success') {
     return (
       <Layout>
-        <article className="mx-auto w-full max-w-[800px] px-[var(--spacing-s5)] py-[var(--spacing-s8)] md:px-[var(--spacing-s7)]">
-          <span className="font-mono text-[11px] uppercase tracking-[0.08em] text-[var(--color-moss)]">
+        <Seo
+          title="Inquiry received — Lundeen Studio"
+          description="Thanks. I will reply within two business days."
+          canonicalPath="/contact"
+        />
+        <article
+          aria-labelledby="success-heading"
+          className="mx-auto w-full max-w-[860px] px-[var(--spacing-s5)] py-[var(--spacing-s8)] md:px-[var(--spacing-s7)]"
+        >
+          <span
+            role="status"
+            className="font-mono text-[11px] uppercase tracking-[0.08em] text-[var(--color-moss)]"
+          >
             STATUS: RECEIVED · 200 OK
           </span>
-          <h1 className="mt-[var(--spacing-s4)] font-display text-[3rem] leading-[1.04] tracking-[-0.025em] text-[var(--color-ink)] md:text-[4rem]">
+          <h1
+            id="success-heading"
+            className="mt-[var(--spacing-s4)] font-display text-[3rem] leading-[1.04] tracking-[-0.025em] text-[var(--color-ink)] md:text-[4rem]"
+          >
             {COPY.contact.successHeading}
           </h1>
           <p className="mt-[var(--spacing-s5)] max-w-[60ch] text-[1.25rem] leading-[1.55] text-[var(--color-ink-2)]">
@@ -81,6 +97,8 @@ export default function Contact() {
     )
   }
 
+  const errorRegionId = 'contact-error-region'
+
   return (
     <Layout>
       <Seo
@@ -88,12 +106,18 @@ export default function Contact() {
         description="Tell me about your project. Two-week response on weekdays."
         canonicalPath="/contact"
       />
-      <article className="mx-auto w-full max-w-[800px] px-[var(--spacing-s5)] py-[var(--spacing-s8)] md:px-[var(--spacing-s7)]">
+      <article
+        aria-labelledby="contact-heading"
+        className="mx-auto w-full max-w-[1024px] px-[var(--spacing-s5)] py-[var(--spacing-s8)] md:px-[var(--spacing-s7)]"
+      >
         <header className="mb-[var(--spacing-s7)] flex flex-col gap-[var(--spacing-s4)]">
-          <span className="font-mono text-[11px] uppercase tracking-[0.08em] text-[var(--color-ink-3)]">
+          <span className="font-mono text-[11px] uppercase tracking-[0.08em] text-[var(--color-rust)]">
             § {COPY.contact.sectionMark.number} / {COPY.contact.sectionMark.label}
           </span>
-          <h1 className="font-display text-[3rem] leading-[1.04] tracking-[-0.025em] text-[var(--color-ink)] md:text-[4rem]">
+          <h1
+            id="contact-heading"
+            className="font-display text-[3rem] leading-[1.04] tracking-[-0.025em] text-[var(--color-ink)] md:text-[4rem]"
+          >
             {COPY.contact.heading}
           </h1>
           <p className="max-w-[60ch] text-[1.25rem] leading-[1.55] text-[var(--color-ink-2)]">
@@ -101,80 +125,193 @@ export default function Contact() {
           </p>
         </header>
 
-        <form onSubmit={onSubmit} noValidate className="flex flex-col gap-[var(--spacing-s6)]">
-          <div className="grid grid-cols-1 gap-[var(--spacing-s5)] md:grid-cols-2">
-            <div>
-              <label htmlFor="name" className={labelClass}>
-                {COPY.contact.fields.nameLabel}
-              </label>
-              <input id="name" name="name" type="text" required minLength={2} maxLength={80} className={inputClass} />
-            </div>
-            <div>
-              <label htmlFor="email" className={labelClass}>
-                {COPY.contact.fields.emailLabel}
-              </label>
-              <input id="email" name="email" type="email" required maxLength={160} className={inputClass} />
-            </div>
-            <div>
-              <label htmlFor="company" className={labelClass}>
-                {COPY.contact.fields.companyLabel}
-              </label>
-              <input id="company" name="company" type="text" maxLength={80} className={inputClass} />
-            </div>
-            <div>
-              <label htmlFor="budget" className={labelClass}>
-                {COPY.contact.fields.budgetLabel}
-              </label>
-              <select id="budget" name="budget" className={inputClass} defaultValue="">
-                <option value="" disabled>
-                  Select a range
-                </option>
-                {COPY.contact.budgetOptions.map((opt) => (
-                  <option key={opt.value} value={opt.value}>
-                    {opt.label}
+        <form
+          onSubmit={onSubmit}
+          noValidate
+          aria-describedby={status === 'error' ? errorRegionId : undefined}
+          className="grid grid-cols-1 gap-[var(--spacing-s7)] md:grid-cols-[2fr_1fr]"
+        >
+          <fieldset className="flex flex-col gap-[var(--spacing-s6)] border-0 p-0">
+            <legend className="sr-only">Project inquiry details</legend>
+
+            <div className="grid grid-cols-1 gap-[var(--spacing-s5)] md:grid-cols-2">
+              <div>
+                <label htmlFor="name" className={labelClass}>
+                  {COPY.contact.fields.nameLabel}
+                </label>
+                <input
+                  id="name"
+                  name="name"
+                  type="text"
+                  required
+                  minLength={2}
+                  maxLength={80}
+                  autoComplete="name"
+                  aria-required="true"
+                  aria-describedby="name-helper"
+                  className={inputClass}
+                />
+                <p id="name-helper" className={helperClass}>
+                  At least 2 characters.
+                </p>
+              </div>
+              <div>
+                <label htmlFor="email" className={labelClass}>
+                  {COPY.contact.fields.emailLabel}
+                </label>
+                <input
+                  id="email"
+                  name="email"
+                  type="email"
+                  required
+                  maxLength={160}
+                  autoComplete="email"
+                  aria-required="true"
+                  aria-describedby="email-helper"
+                  className={inputClass}
+                />
+                <p id="email-helper" className={helperClass}>
+                  Used for the reply only — never added to a list.
+                </p>
+              </div>
+              <div>
+                <label htmlFor="company" className={labelClass}>
+                  {COPY.contact.fields.companyLabel}
+                </label>
+                <input
+                  id="company"
+                  name="company"
+                  type="text"
+                  maxLength={80}
+                  autoComplete="organization"
+                  aria-describedby="company-helper"
+                  className={inputClass}
+                />
+                <p id="company-helper" className={helperClass}>
+                  Optional — helps me tailor the audit.
+                </p>
+              </div>
+              <div>
+                <label htmlFor="budget" className={labelClass}>
+                  {COPY.contact.fields.budgetLabel}
+                </label>
+                <select
+                  id="budget"
+                  name="budget"
+                  defaultValue=""
+                  aria-describedby="budget-helper"
+                  className={inputClass}
+                >
+                  <option value="" disabled>
+                    Select a range
                   </option>
-                ))}
-              </select>
+                  {COPY.contact.budgetOptions.map((opt) => (
+                    <option key={opt.value} value={opt.value}>
+                      {opt.label}
+                    </option>
+                  ))}
+                </select>
+                <p id="budget-helper" className={helperClass}>
+                  Ballpark only — informs scope, not a quote.
+                </p>
+              </div>
             </div>
-          </div>
 
-          <div>
-            <label htmlFor="project" className={labelClass}>
-              {COPY.contact.fields.projectLabel}
-            </label>
-            <textarea
-              id="project"
-              name="project"
-              required
-              minLength={20}
-              maxLength={2000}
-              rows={6}
-              className={inputClass + ' resize-y'}
-            />
-          </div>
-
-          {TURNSTILE_SITE_KEY ? (
-            <div className="cf-turnstile" data-sitekey={TURNSTILE_SITE_KEY} />
-          ) : (
-            <p className="font-mono text-[11px] uppercase tracking-[0.06em] text-[var(--color-ochre)]">
-              NOTE: Turnstile not configured for this environment. Form will submit but be rejected by the backend.
-            </p>
-          )}
-
-          {status === 'error' && (
-            <div className="border border-[var(--color-rust)] bg-[var(--color-paper-2)] p-[var(--spacing-s4)]">
-              <p className="font-mono text-[11px] uppercase tracking-[0.06em] text-[var(--color-rust)]">
-                {COPY.contact.errorHeading} · {errorMsg}
+            <div>
+              <label htmlFor="project" className={labelClass}>
+                {COPY.contact.fields.projectLabel}
+              </label>
+              <textarea
+                id="project"
+                name="project"
+                required
+                minLength={20}
+                maxLength={2000}
+                rows={6}
+                aria-required="true"
+                aria-describedby="project-helper"
+                className={inputClass + ' resize-y'}
+              />
+              <p id="project-helper" className={helperClass}>
+                20-2000 characters. Current page URL, what's broken, what success looks like.
               </p>
-              <p className="mt-[var(--spacing-s2)] text-[var(--color-ink)]">{COPY.contact.errorBody}</p>
             </div>
-          )}
 
-          <div>
-            <Button type="submit" variant="primary" size="lg" disabled={status === 'submitting'}>
-              {status === 'submitting' ? 'Sending…' : COPY.contact.fields.submitLabel}
-            </Button>
-          </div>
+            {TURNSTILE_SITE_KEY ? (
+              <div className="cf-turnstile" data-sitekey={TURNSTILE_SITE_KEY} aria-label="Anti-spam challenge" />
+            ) : (
+              <p
+                role="note"
+                className="font-mono text-[11px] uppercase tracking-[0.06em] text-[var(--color-ochre)]"
+              >
+                Note: Turnstile not configured for this environment. Form will submit but be rejected by the backend.
+              </p>
+            )}
+
+            <div
+              id={errorRegionId}
+              role="alert"
+              aria-live="assertive"
+              aria-atomic="true"
+              className="min-h-0"
+            >
+              {status === 'error' && (
+                <div className="border border-[var(--color-rust)] bg-[var(--color-paper-2)] p-[var(--spacing-s4)]">
+                  <p className="font-mono text-[11px] uppercase tracking-[0.06em] text-[var(--color-rust)]">
+                    {COPY.contact.errorHeading} · {errorMsg}
+                  </p>
+                  <p className="mt-[var(--spacing-s2)] text-[var(--color-ink)]">
+                    {COPY.contact.errorBody}
+                  </p>
+                </div>
+              )}
+            </div>
+
+            <div>
+              <Button
+                type="submit"
+                variant="primary"
+                size="lg"
+                disabled={status === 'submitting'}
+                aria-busy={status === 'submitting'}
+              >
+                {status === 'submitting' ? 'Sending…' : COPY.contact.fields.submitLabel}
+              </Button>
+            </div>
+          </fieldset>
+
+          <aside
+            aria-label="What happens next"
+            className="border-l border-[var(--color-paper-3)] pl-[var(--spacing-s5)]"
+          >
+            <h2 className="font-mono text-[11px] uppercase tracking-[0.08em] text-[var(--color-ink-3)]">
+              What happens next
+            </h2>
+            <ol className="mt-[var(--spacing-s4)] flex flex-col gap-[var(--spacing-s4)] text-[var(--color-ink)]">
+              <li className="flex gap-[var(--spacing-s3)]">
+                <span aria-hidden="true" className="font-mono text-[11px] tracking-[0.08em] text-[var(--color-plum)]">01</span>
+                <span>I read every inquiry myself within two business days.</span>
+              </li>
+              <li className="flex gap-[var(--spacing-s3)]">
+                <span aria-hidden="true" className="font-mono text-[11px] tracking-[0.08em] text-[var(--color-plum)]">02</span>
+                <span>If we&rsquo;re a fit, I send a 5-page audit of your current page.</span>
+              </li>
+              <li className="flex gap-[var(--spacing-s3)]">
+                <span aria-hidden="true" className="font-mono text-[11px] tracking-[0.08em] text-[var(--color-plum)]">03</span>
+                <span>You decide: keep the audit, or roll the cost into a project.</span>
+              </li>
+            </ol>
+
+            <p className="mt-[var(--spacing-s6)] font-mono text-[11px] uppercase tracking-[0.06em] text-[var(--color-ink-3)]">
+              Or email{' '}
+              <a
+                href="mailto:tyler.lundeen1995@gmail.com"
+                className="text-[var(--color-rust)] underline underline-offset-4 hover:text-[var(--color-rust-2)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-rust)]"
+              >
+                tyler.lundeen1995@gmail.com
+              </a>
+            </p>
+          </aside>
         </form>
       </article>
     </Layout>
