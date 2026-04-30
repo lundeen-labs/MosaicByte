@@ -110,5 +110,19 @@
   "env": {
     "NODE_ENV": "development",
     "VITE_SITE_URL": "https://lundeen-studio.vercel.app"
+  },
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python \"C:\\Users\\tyler\\.claude\\hooks\\doc_reminder.py\"",
+            "timeout": 3
+          }
+        ]
+      }
+    ]
   }
 }

@@ -10,6 +10,9 @@ Production marketing site for the Lundeen Studio brand. Single source of truth f
 - **Make reasonable assumptions, ship, course-correct.** If the right answer is one of two reasonable defaults, pick the one that matches the design system and the existing convention, ship it, and note the choice. Do not ask.
 - **Never ask questions you can verify.** If `npm run lint` answers it, run it.
 - **Verify after every change.** A change is not done until tsc + lint + vitest + the relevant smoke check all pass. "It compiles" is not done; "it renders correctly in the preview" is.
+- **Update docs after every code change.** This is not optional. After editing any source file (`src/`, `api/`, `scripts/`, root configs), update CLAUDE.md / README.md / DEPLOY.md / `docs/*.md` to reflect the change in the same turn. Two enforcement layers:
+  1. **`PostToolUse` hook** (`doc_reminder.py`, project-level) injects a reminder into the model context after every code edit.
+  2. **`Stop` hook** (`doc_drift_check.py`, global) runs `git status` at turn end and BLOCKS the turn from ending if code files are dirty but no doc file is dirty in the same repo. Bypass options: (a) update the relevant doc, (b) commit the current code changes (moves them out of `git status`), or (c) explicitly state in your response that the change does not warrant a doc update (test-only fix, formatting, dep bump).
 - **Commit logical chunks.** Each commit is a coherent feature/fix/refactor. Hand-write the message. Never amend pushed commits. Never `git push --force` to main.
 - **Destructive actions need explicit ask.** `git reset --hard`, `rm -rf`, dropping a table, force-pushing, deleting branches, `vercel --prod` — pause and confirm with Tyler.
 
