@@ -10,6 +10,14 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" />
     <title>Lundeen Studio — SaaS Landing Pages That Convert</title>
     <meta name="description" content="Conversion-focused landing pages for B2B SaaS. Two-week turnaround. Instrumented." />
+    <!--
+      Cloudflare Turnstile, explicit render mode. The contact form is a lazily
+      mounted route, so the widget element is inserted into the DOM after this
+      script loads. Implicit auto-scan only runs once on script load and would
+      never see it — explicit mode lets Contact.tsx call turnstile.render() when
+      the route mounts. See src/routes/Contact.tsx.
+    -->
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" async defer></script>
   </head>
   <body>
     <div id="root"></div>

@@ -1,4 +1,4 @@
-import { useState, type FormEvent } from 'react'
+import { useEffect, useRef, useState, type FormEvent } from 'react'
 import { Layout } from '@/components/layout/Layout'
 import { Button } from '@/components/ui/Button'
 import { Seo } from '@/lib/seo'
@@ -19,6 +19,45 @@ const helperClass = 'mt-1.5 text-[12px] text-[var(--color-ink-3)]'
 export default function Contact() {
   const [status, setStatus] = useState<Status>('idle')
   const [errorMsg, setErrorMsg] = useState<string>('')
+  const [turnstileToken, setTurnstileToken] = useState<string>('')
+  const turnstileRef = useRef<HTMLDivElement | null>(null)
+  const widgetIdRef = useRef<string | undefined>(undefined)
+
+  // Explicit Turnstile render. The api.js script (index.html) loads with
+  // ?render=explicit, so the widget must be rendered programmatically once this
+  // lazily mounted route is in the DOM and the script is ready. The token
+  // arrives via the callback — explicit mode does NOT auto-populate a
+  // cf-turnstile-response hidden input the way implicit mode does.
+  useEffect(() => {
+    if (!TURNSTILE_SITE_KEY) return
+    let pollId: ReturnType<typeof setTimeout> | undefined
+
+    function renderWidget() {
+      const el = turnstileRef.current
+      if (!el) return
+      if (window.turnstile?.render) {
+        widgetIdRef.current = window.turnstile.render(el, {
+          sitekey: TURNSTILE_SITE_KEY!,
+          theme: 'dark',
+          callback: (token) => setTurnstileToken(token),
+          'expired-callback': () => setTurnstileToken(''),
+          'error-callback': () => setTurnstileToken(''),
+        })
+      } else {
+        // Script not ready yet (async/defer). Poll until window.turnstile exists.
+        pollId = setTimeout(renderWidget, 150)
+      }
+    }
+    renderWidget()
+
+    return () => {
+      if (pollId) clearTimeout(pollId)
+      if (widgetIdRef.current !== undefined) {
+        window.turnstile?.remove(widgetIdRef.current)
+        widgetIdRef.current = undefined
+      }
+    }
+  }, [])
 
   async function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault()
@@ -27,9 +66,16 @@ export default function Contact() {
 
     const form = e.currentTarget
     const fd = new FormData(form)
-    const turnstileToken =
-      (fd.get('cf-turnstile-response') as string | null) ??
-      'dev-no-turnstile-token-configured'
+
+    // Token comes from the Turnstile callback (state) in configured envs. With
+    // no site key (local dev) fall back to the sentinel the backend rejects,
+    // preserving prior dev behavior.
+    const token = TURNSTILE_SITE_KEY ? turnstileToken : 'dev-no-turnstile-token-configured'
+    if (TURNSTILE_SITE_KEY && !token) {
+      setErrorMsg('verification-incomplete')
+      setStatus('error')
+      return
+    }
 
     const payload = {
       name: String(fd.get('name') ?? ''),
@@ -37,7 +83,7 @@ export default function Contact() {
       company: String(fd.get('company') ?? '') || undefined,
       budget: (fd.get('budget') as string) || undefined,
       project: String(fd.get('project') ?? ''),
-      turnstileToken,
+      turnstileToken: token,
     }
 
     try {
@@ -53,10 +99,19 @@ export default function Contact() {
         const data = (await res.json().catch(() => ({}))) as { error?: string }
         setErrorMsg(data.error ?? 'request-failed')
         setStatus('error')
+        // Turnstile tokens are single-use; reset so a retry gets a fresh one.
+        if (widgetIdRef.current !== undefined) {
+          window.turnstile?.reset(widgetIdRef.current)
+          setTurnstileToken('')
+        }
       }
     } catch (err) {
       setErrorMsg(err instanceof Error ? err.message : 'network-error')
       setStatus('error')
+      if (widgetIdRef.current !== undefined) {
+        window.turnstile?.reset(widgetIdRef.current)
+        setTurnstileToken('')
+      }
     }
   }
 
@@ -239,7 +294,9 @@ export default function Contact() {
             </div>
 
             {TURNSTILE_SITE_KEY ? (
-              <div className="cf-turnstile" data-sitekey={TURNSTILE_SITE_KEY} aria-label="Anti-spam challenge" />
+              <div role="group" aria-label="Anti-spam verification">
+                <div ref={turnstileRef} />
+              </div>
             ) : (
               <p
                 role="note"
