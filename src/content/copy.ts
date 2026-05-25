@@ -348,12 +348,60 @@ export const COPY = {
         heading: 'LEGAL',
         items: [
           { label: 'Privacy', href: '/privacy' },
-          { label: 'Terms', href: '/terms' },
           { label: 'Sitemap', href: '/sitemap.xml' },
         ],
       },
     ],
     legal: '© 2026 Lundeen Studio. Built by hand on the West Coast.',
+  },
+
+  legal: {
+    privacy: {
+      eyebrow: 'LEGAL',
+      heading: 'Privacy Policy',
+      updated: 'Last updated: May 25, 2026',
+      intro:
+        'Lundeen Studio is a one-person design studio. This policy explains exactly what data the site collects, why, who processes it, and how to have it deleted. No dark patterns, no surprises.',
+      sections: [
+        {
+          heading: 'What the contact form collects',
+          body: [
+            'When you submit the contact form, I receive the name, email address, optional company name, selected budget range, and project description you entered. That is the entire dataset — there are no hidden fields and no tracking pixels in the form.',
+          ],
+        },
+        {
+          heading: 'How that data is used',
+          body: [
+            'It is used for one purpose only: to read and reply to your inquiry. Your email address is never added to a mailing list, never sold, and never shared with third parties for marketing.',
+          ],
+        },
+        {
+          heading: 'Who processes it',
+          body: [
+            'Form submissions are delivered to my inbox through Resend, an email-delivery provider, and stored in that email thread. Spam protection is handled by Cloudflare Turnstile, which evaluates browser signals (including your IP address) to confirm you are human; it does not set advertising cookies.',
+            'Site performance and traffic are measured with Vercel Speed Insights and Vercel Analytics. Both are cookieless and report only aggregate, anonymized data (page views, Core Web Vitals such as LCP, INP, and CLS). They do not identify individual visitors.',
+          ],
+        },
+        {
+          heading: 'Retention',
+          body: [
+            'Inquiry emails are kept as long as needed to respond and to maintain a record of the conversation, then deleted on request. Aggregate analytics are retained by Vercel under their standard retention window.',
+          ],
+        },
+        {
+          heading: 'Your rights',
+          body: [
+            'You can ask what data I hold about you, request a copy, or request deletion at any time — under GDPR, CCPA, or simply because you asked. I honor deletion requests within 30 days.',
+          ],
+        },
+        {
+          heading: 'Contact',
+          body: [
+            'For any privacy question or deletion request, email tyler.lundeen1995@gmail.com.',
+          ],
+        },
+      ],
+    },
   },
 
   notFound: {

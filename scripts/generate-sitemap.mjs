@@ -18,6 +18,7 @@ const ROUTES = [
   { path: '/work/orbital-marketing-site', priority: '0.8', changefreq: 'yearly' },
   { path: '/about', priority: '0.7', changefreq: 'monthly' },
   { path: '/contact', priority: '0.7', changefreq: 'monthly' },
+  { path: '/privacy', priority: '0.3', changefreq: 'yearly' },
 ]
 
 const today = new Date().toISOString().slice(0, 10)

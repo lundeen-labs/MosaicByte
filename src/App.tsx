@@ -6,6 +6,7 @@ const Work = lazy(() => import('./routes/Work'))
 const WorkDetail = lazy(() => import('./routes/WorkDetail'))
 const About = lazy(() => import('./routes/About'))
 const Contact = lazy(() => import('./routes/Contact'))
+const Privacy = lazy(() => import('./routes/Privacy'))
 const NotFound = lazy(() => import('./routes/NotFound'))
 
 function RouteFallback() {
@@ -29,6 +30,7 @@ export default function App() {
         <Route path="/work/:slug" component={WorkDetail} />
         <Route path="/about" component={About} />
         <Route path="/contact" component={Contact} />
+        <Route path="/privacy" component={Privacy} />
         <Route component={NotFound} />
       </Switch>
     </Suspense>
