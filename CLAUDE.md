@@ -60,7 +60,7 @@ Concrete checks when reviewing or writing component code:
 
 ## Project root
 
-`E:\source\repos\lundeen-studio` — always use absolute Windows paths.
+`E:\source\repos\Applications\lundeen-studio` — always use absolute Windows paths.
 
 ## Wave status
 
@@ -70,10 +70,13 @@ Concrete checks when reviewing or writing component code:
 - D6 (MDX case studies): DEFERRED — substituted with inline-data WorkDetail.tsx. Migrate when richer authoring is needed.
 - D8 (SEO): COMPLETE — per-route Seo helmet wrapper, JSON-LD (Person/ProfessionalService/FAQPage), sitemap generator, robots.txt, SVG favicon.
 - D9 (polish): PARTIAL — ErrorBoundary at root, usePrefersReducedMotion hook. Theme toggle UI deferred.
-- E1+E2 (audit): COMPLETE — see `C:\tmp\lundeen-studio-research\phase-e-audit-report.md`. All gates pass except raw-bundle (gzip clears at 142KB; raw 447KB documented deviation due to Radix Dialog + Framer Motion).
-- F1 (Vercel deploy): BLOCKED on Tyler. See `DEPLOY.md` for the manual deploy steps.
+- E1+E2 (audit): COMPLETE — see `C:\tmp\lundeen-studio-research\phase-e-audit-report.md`.
+- DEEP-RESEARCH AUDIT (2026-05-25): COMPLETE — six-agent audit (perf, SEO, a11y, architecture, testing, prod-readiness). Full findings + P0/P1/P2 backlog in `docs/improvement-roadmap.md`.
+- F1 (Vercel deploy): BLOCKED on Tyler (needs Resend + Turnstile + Vercel accounts + `vercel login`). See `DEPLOY.md`.
 
-87 vitest tests pass. tsc and eslint clean. Build emits dist/ + sitemap.xml + robots.txt + favicon.svg.
+P0 launch-blockers fixed (2026-05-25): Turnstile explicit render — the form was 403ing on every submit because `api.js` was never loaded and a lazy route can't use implicit auto-scan; `vercel.json` security headers + CSP; `--color-ink-3` darkened to WCAG AA (was 3.89:1); `/privacy` route + policy added (dead `/terms` link removed); `@vercel/speed-insights` mounted for real-user CWV.
+
+89 vitest tests pass. tsc and eslint clean. Build emits dist/ + sitemap.xml (8 routes) + robots.txt + favicon.svg.
 
 ## Bundle (post-Wave-4)
 
@@ -89,7 +92,7 @@ Concrete checks when reviewing or writing component code:
 | About.js | 2 KB | 1 KB |
 | NotFound.js | 1 KB | 1 KB |
 
-Initial-load Home: 447 KB raw / 142 KB gzip. Gate: <200 KB raw (FAIL, deferred) / <150 KB gzip (PASS).
+Initial-load Home: the table above is the pre-redesign snapshot and is stale. Measured 2026-05-25 (vite 8.0.10): index 416/128 + Home 155/48 + seo 97/32 = **~667 KB raw / ~206 KB gzip — BOTH gates now FAIL** (<200 raw, <150 gzip). Cause is framer-motion + Radix Dialog + tailwind-merge in the eager chunk, NOT Three.js (which is unused and already tree-shaken out). Fix path: `docs/improvement-roadmap.md` P1 #6/#7 (CSS-fade the hero to drop framer-motion off the eager graph; lazy-mount MobileDrawer; add manualChunks).
 
 ## Architecture
 

@@ -5,8 +5,10 @@ Status: **ready for first deploy** as of commit `6f0e918` (post-Wave-4).
 All quality gates pass:
 - `npx tsc -b --force` → 0 errors
 - `npm run lint` → 0 errors
-- `npx vitest run` → 87/87 tests pass
+- `npx vitest run` → 89/89 tests pass
 - `npm run build` → `dist/` produced, sitemap + robots + favicon emitted
+
+P0 launch-blockers (from the 2026-05-25 deep-research audit) are fixed: Turnstile now renders (explicit mode), `vercel.json` ships security headers + CSP, contrast meets WCAG AA, `/privacy` exists, and real-user CWV is collected via Vercel Speed Insights. See `docs/improvement-roadmap.md` for the full P0/P1/P2 backlog.
 
 ---
 
@@ -38,7 +40,7 @@ Three external services need accounts. All free tiers cover this site at expecte
 
 ## First deploy
 
-From `E:\source\repos\lundeen-studio`:
+From `E:\source\repos\Applications\lundeen-studio`:
 
 ```bash
 # 1. Link the local repo to a new Vercel project
@@ -70,7 +72,7 @@ vercel deploy --prod
 
 ## After deploy: replace placeholder metrics
 
-Status strip and Hero A gauge currently show invented numbers. Once production is live, run a real Lighthouse pass against the production URL and update `src/content/copy.ts`:
+Status strip and Hero A gauge currently show invented numbers. Real-user CWV is now collected automatically via Vercel Speed Insights (`<SpeedInsights/>` in `src/main.tsx`) — read the field LCP/INP/CLS from the Vercel dashboard once traffic accrues. Until then, run a Lighthouse pass against the production URL and update `src/content/copy.ts`:
 
 ```ts
 // src/content/copy.ts → COPY.status.metrics (and COPY.hero.gauge)
@@ -120,7 +122,7 @@ npm run dev           # vite at http://localhost:5173
 npm run build         # tsc + vite build + sitemap
 npm run preview       # serve dist/ at http://localhost:4173
 npm run lint          # eslint
-npm run test          # vitest run (87 tests)
+npm run test          # vitest run (89 tests)
 npm run test:ui       # vitest UI dashboard
 ```
 
@@ -128,13 +130,14 @@ npm run test:ui       # vitest UI dashboard
 
 ## Architecture quick reference
 
-- `src/index.css` — Tailwind v4 `@theme` token block (cream/oxblood palette + Fraunces/Inter Tight/JetBrains Mono)
-- `src/content/copy.ts` — single source of truth for every visible string
+- `src/index.css` — Tailwind v4 `@theme` token block (modern dark palette + Geist / Geist Mono)
+- `src/content/copy.ts` — single source of truth for every visible string (incl. `legal.privacy`)
 - `src/lib/seo.tsx` + `src/lib/seo-data.ts` — Helmet wrapper + JSON-LD blobs (Person, ProfessionalService, FAQPage)
 - `src/components/{hero,ui,layout,case-study}/` — domain-grouped components
-- `src/routes/` — 6 lazy-loaded route components
+- `src/routes/` — 7 lazy-loaded route components (Home, Work, WorkDetail, About, Contact, Privacy, NotFound)
 - `api/contact.ts` — Vercel serverless POST handler (Zod + Turnstile + Resend + soft rate-limit)
-- `scripts/generate-sitemap.mjs` — runs at build time, emits `dist/sitemap.xml`
-- `vercel.json` — runtime config, route rewrites
+- `scripts/generate-sitemap.mjs` — runs at build time, emits `dist/sitemap.xml` (8 routes)
+- `vercel.json` — runtime config, route rewrites, security headers + CSP
+- `src/main.tsx` — root render; mounts `<SpeedInsights/>` for real-user CWV
 - `docs/plans/launch-multiple-agents-to-glittery-wolf.md` — original multi-agent pipeline plan
 - `C:\tmp\lundeen-studio-research\` — research artifacts (competitor analysis, design system, mockups, task graph, audit report)
