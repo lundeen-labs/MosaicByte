@@ -1,9 +1,14 @@
-import { useState } from 'react'
+import { lazy, Suspense, useState } from 'react'
 import { Link } from 'wouter'
 import { Menu } from 'lucide-react'
 import { cn } from '@/lib/utils'
-import { MobileDrawer } from './MobileDrawer'
 import { COPY } from '@/content/copy'
+
+// Lazy-mount the drawer so its dependency tree (Radix Dialog + react-remove-
+// scroll + dismissable-layer + focus-scope + aria-hidden, ~70 KB src) stays
+// out of the eager `/` chunk. Desktop never opens the drawer — the chunk is
+// only fetched on the first hamburger tap.
+const MobileDrawer = lazy(() => import('./MobileDrawer'))
 
 export interface NavbarProps {
   current?: 'work' | 'services' | 'process' | 'journal' | 'about'
@@ -135,7 +140,11 @@ export function Navbar({ current }: NavbarProps) {
         </button>
       </div>
 
-      <MobileDrawer open={open} onOpenChange={setOpen} nav={navForDrawer} />
+      {open && (
+        <Suspense fallback={null}>
+          <MobileDrawer open={open} onOpenChange={setOpen} nav={navForDrawer} />
+        </Suspense>
+      )}
     </header>
   )
 }

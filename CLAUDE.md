@@ -94,7 +94,7 @@ L2 follow-up (2026-05-25, discovered live in dev browser): `react-helmet-async@2
 | About.js | 2 KB | 1 KB |
 | NotFound.js | 1 KB | 1 KB |
 
-Initial-load Home: the table above is the pre-redesign snapshot and is stale. Measured 2026-05-25 post-L2 (vite 8.0.10): index 402/123 + Home 155/48 + seo 97/31 = **~654 KB raw / ~202 KB gzip — BOTH gates still FAIL** (<200 raw, <150 gzip). Cause is framer-motion + Radix Dialog + tailwind-merge in the eager chunk, NOT Three.js (which is unused and already tree-shaken out). Fix path: `docs/improvement-roadmap.md` P1 #6/#7 (CSS-fade the hero to drop framer-motion off the eager graph; lazy-mount MobileDrawer; add manualChunks).
+Initial-load Home: the table above is the pre-redesign snapshot. Measured 2026-05-25 post-P1 (vite 8.0.10): react-vendor 392/117 + Home 32/8 + seo 27/9 + utils 28/9 + index 15/6 + shared+css ≈ **~500 KB raw / ~152 KB gzip** (vs ~654/~202 post-L2). Raw gate <200 is structurally infeasible with React 19 (react-vendor alone is 392 KB raw / 117 KB gz). Gz gate <150 is missed by ~2 KB — one more swap (drop tailwind-merge in favor of bare clsx, roadmap P2 #16) clears it. What changed in P1: framer-motion completely tree-shaken out (HeroA now uses CSS keyframes — `.fade-up*` in index.css); MobileDrawer is `lazy()`-mounted so the Radix Dialog ecosystem (31 KB raw / 11 KB gz) is no longer eager — only loads on hamburger tap; `manualChunks(react-vendor)` separates React from app code for cache stability; `sourcemap:false` in prod (stops shipping ~1.6 MB of .map). LCP `<h1>` no longer animates (it was waiting on a 0.6s fade before reporting).
 
 ## Architecture
 

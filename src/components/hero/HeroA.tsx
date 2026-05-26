@@ -1,4 +1,3 @@
-import { motion, useReducedMotion } from 'framer-motion'
 import { cn } from '@/lib/utils'
 
 interface HeroAProps {
@@ -12,9 +11,6 @@ interface HeroAProps {
   gauge: { lcp: string; cls: string; inp: string; jsKb: string; a11y: string }
 }
 
-const STEP = 0.04
-const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1]
-
 /**
  * HeroA — modern dark-agency hero.
  *
@@ -23,7 +19,14 @@ const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1]
  * editorial decoration, no PAGE METRICS panel, no marginalia.
  *
  * Background uses a subtle radial accent glow behind the headline to add
- * depth without dragging in glassmorphism. Respects prefers-reduced-motion.
+ * depth without dragging in glassmorphism.
+ *
+ * Entrance is a pure-CSS fade-up keyed off `.fade-up` (see index.css). This
+ * deliberately keeps framer-motion out of the eager `/` route chunk
+ * (~−40 KB gz on Home). The headline does NOT animate — animating the LCP
+ * element delays the metric by the full fade duration. The global
+ * `prefers-reduced-motion: reduce` block in index.css neutralizes the
+ * animation to ~0ms for users who request it.
  */
 export default function HeroA({
   eyebrow,
@@ -33,15 +36,6 @@ export default function HeroA({
   secondaryCta,
   reassureLines,
 }: HeroAProps) {
-  const reduce = useReducedMotion()
-  const animateProps = (delay: number) => ({
-    initial: reduce ? false : { opacity: 0, y: 16 },
-    animate: { opacity: 1, y: 0 },
-    transition: { duration: 0.6, ease: EASE, delay: reduce ? 0 : delay },
-  })
-
-  // Compose the title from parts. The "italic" segment becomes a bright accent
-  // colored span (no italic styling — we are off Fraunces and on Geist).
   const fullTitle = `${titleParts.plain} ${titleParts.italic} ${titleParts.rest}`.trim()
 
   return (
@@ -60,9 +54,8 @@ export default function HeroA({
       />
 
       <div className="mx-auto max-w-[1280px] px-6 pt-24 pb-20 md:px-8 md:pt-32 md:pb-28">
-        <motion.p
-          {...animateProps(STEP * 1)}
-          className="inline-flex items-center gap-2 rounded-full border border-[var(--color-paper-3)] bg-[var(--color-paper-2)] px-3 py-1 text-[12px] font-medium text-[var(--color-ink-2)]"
+        <p
+          className="fade-up fade-up-1 inline-flex items-center gap-2 rounded-full border border-[var(--color-paper-3)] bg-[var(--color-paper-2)] px-3 py-1 text-[12px] font-medium text-[var(--color-ink-2)]"
         >
           <span
             aria-hidden="true"
@@ -70,10 +63,10 @@ export default function HeroA({
             style={{ boxShadow: '0 0 8px var(--color-rust)' }}
           />
           {eyebrow}
-        </motion.p>
+        </p>
 
-        <motion.h1
-          {...animateProps(STEP * 2)}
+        {/* LCP element — intentionally NOT animated. */}
+        <h1
           id="hero-heading"
           className={cn(
             'mt-8 max-w-[20ch]',
@@ -88,19 +81,15 @@ export default function HeroA({
             <span className="text-[var(--color-rust)]">{titleParts.italic}</span>{' '}
             {titleParts.rest}
           </span>
-        </motion.h1>
+        </h1>
 
-        <motion.p
-          {...animateProps(STEP * 3)}
-          className="mt-8 max-w-[60ch] text-[1.125rem] leading-[1.55] text-[var(--color-ink-2)] md:text-[1.25rem]"
+        <p
+          className="fade-up fade-up-2 mt-8 max-w-[60ch] text-[1.125rem] leading-[1.55] text-[var(--color-ink-2)] md:text-[1.25rem]"
         >
           {sub}
-        </motion.p>
+        </p>
 
-        <motion.div
-          {...animateProps(STEP * 4)}
-          className="mt-10 flex flex-wrap items-center gap-3"
-        >
+        <div className="fade-up fade-up-3 mt-10 flex flex-wrap items-center gap-3">
           <a
             href={primaryCta.href}
             className={cn(
@@ -128,12 +117,9 @@ export default function HeroA({
           >
             {secondaryCta.label}
           </a>
-        </motion.div>
+        </div>
 
-        <motion.ul
-          {...animateProps(STEP * 5)}
-          className="mt-12 grid grid-cols-1 gap-3 text-[14px] text-[var(--color-ink-2)] md:grid-cols-3 md:gap-6"
-        >
+        <ul className="fade-up fade-up-4 mt-12 grid grid-cols-1 gap-3 text-[14px] text-[var(--color-ink-2)] md:grid-cols-3 md:gap-6">
           {reassureLines.map((line) => (
             <li key={line} className="flex items-start gap-2">
               <svg
@@ -149,7 +135,7 @@ export default function HeroA({
               <span>{line}</span>
             </li>
           ))}
-        </motion.ul>
+        </ul>
       </div>
     </section>
   )
