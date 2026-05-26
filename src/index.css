@@ -62,6 +62,38 @@
   --t-instant: 80ms;  --t-fast: 180ms;  --t-medium: 320ms;  --t-slow: 600ms;
 }
 
+/* Dark mode tokens. Two activation paths:
+   - explicit user choice via <html data-theme="dark"> (set by ThemeToggle
+     and re-applied on next load by the pre-paint script in index.html);
+   - system preference via the @media block below, when no override is set.
+   The :not([data-theme="light"]) selector lets the user's explicit choice
+   override the system setting — system dark + user-picked light wins light.
+   Accent palette (rust/teal/moss/plum/ochre + tile-*) is kept across themes
+   to preserve brand identity; only paper/ink axes flip. */
+:root[data-theme="dark"] {
+  --color-paper: #0f0e0d;
+  --color-paper-2: #1a1816;
+  --color-paper-3: #2a2724;
+  --color-paper-line: #221e1a;
+  --color-ink: #f5f2ec;
+  --color-ink-2: #c8c2b8;
+  --color-ink-3: #8a8478;  /* ~6.04:1 on paper (#0f0e0d), AA */
+  color-scheme: dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --color-paper: #0f0e0d;
+    --color-paper-2: #1a1816;
+    --color-paper-3: #2a2724;
+    --color-paper-line: #221e1a;
+    --color-ink: #f5f2ec;
+    --color-ink-2: #c8c2b8;
+    --color-ink-3: #8a8478;
+    color-scheme: dark;
+  }
+}
+
 @layer base {
   *, *::before, *::after { box-sizing: border-box; }
 

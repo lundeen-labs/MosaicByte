@@ -5,6 +5,22 @@
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#f5f2ec" />
+    <!--
+      Theme pre-paint. Runs synchronously before React mounts so a user who
+      chose dark in localStorage doesn't see a flash of light theme during
+      hydration. Three states: 'light' / 'dark' / null (= follow system).
+      When null, the CSS @media (prefers-color-scheme: dark) block applies.
+    -->
+    <script>
+      (function () {
+        try {
+          var t = localStorage.getItem('mosaic-theme');
+          if (t === 'light' || t === 'dark') {
+            document.documentElement.dataset.theme = t;
+          }
+        } catch (e) { /* localStorage blocked — fall back to system */ }
+      })();
+    </script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&display=swap" />

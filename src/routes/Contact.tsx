@@ -38,7 +38,11 @@ export default function Contact() {
       if (window.turnstile?.render) {
         widgetIdRef.current = window.turnstile.render(el, {
           sitekey: TURNSTILE_SITE_KEY!,
-          theme: 'dark',
+          // 'auto' lets the widget follow the visitor's prefers-color-scheme.
+          // It won't react to mid-session toggles via our ThemeToggle, but
+          // re-rendering the challenge on every theme change isn't worth the
+          // UX cost — the initial render is what matters.
+          theme: 'auto',
           callback: (token) => setTurnstileToken(token),
           'expired-callback': () => setTurnstileToken(''),
           'error-callback': () => setTurnstileToken(''),

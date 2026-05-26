@@ -3,6 +3,7 @@ import { Link } from 'wouter'
 import { X } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { COPY } from '@/content/copy'
+import { ThemeToggle } from '@/components/ui/ThemeToggle'
 
 export interface MobileDrawerProps {
   open: boolean
@@ -46,18 +47,21 @@ export function MobileDrawer({ open, onOpenChange, nav }: MobileDrawerProps) {
             <span className="font-mono text-[11px] uppercase tracking-[0.08em] text-[var(--color-ink-3)]" aria-hidden="true">
               Menu
             </span>
-            <Dialog.Close
-              aria-label="Close menu"
-              className={cn(
-                'inline-flex h-9 w-9 items-center justify-center',
-                'rounded-[var(--radius-r2)] border border-[var(--color-ink)]',
-                'text-[var(--color-ink)] transition-colors duration-[180ms]',
-                'hover:text-[var(--color-rust)] hover:border-[var(--color-rust)]',
-                'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-rust)]',
-              )}
-            >
-              <X size={18} strokeWidth={1.5} aria-hidden="true" />
-            </Dialog.Close>
+            <div className="flex items-center gap-2">
+              <ThemeToggle />
+              <Dialog.Close
+                aria-label="Close menu"
+                className={cn(
+                  'inline-flex h-9 w-9 items-center justify-center',
+                  'rounded-[var(--radius-r2)] border border-[var(--color-ink)]',
+                  'text-[var(--color-ink)] transition-colors duration-[180ms]',
+                  'hover:text-[var(--color-rust)] hover:border-[var(--color-rust)]',
+                  'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-rust)]',
+                )}
+              >
+                <X size={18} strokeWidth={1.5} aria-hidden="true" />
+              </Dialog.Close>
+            </div>
           </div>
 
           <nav

@@ -70,20 +70,23 @@ describe('Navbar', () => {
   it('all primary nav items are reachable in keyboard tab order', async () => {
     const user = userEvent.setup()
     renderNavbar()
+    // Tab order: wordmark link → 4 nav links → ThemeToggle button → CTA link.
+    // jest-dom's toHaveAccessibleName handles both link textContent and the
+    // button's aria-label uniformly. The toggle's aria-label depends on the
+    // current theme state (which defaults to 'system' in jsdom) — match any
+    // of the three valid action labels.
     const expected = [
-      /mosaic byte.*home/i, // wordmark
+      /mosaic byte.*home/i,
       /^services$/i,
       /^process$/i,
       /^work$/i,
       /^about$/i,
+      /switch to (light|dark) theme|use system theme/i,
       /start a project/i,
     ]
     for (const matcher of expected) {
       await user.tab()
-      const focused = document.activeElement
-      expect(focused).not.toBeNull()
-      const link = screen.getByRole('link', { name: matcher })
-      expect(focused === link).toBe(true)
+      expect(document.activeElement).toHaveAccessibleName(matcher)
     }
   })
 })
