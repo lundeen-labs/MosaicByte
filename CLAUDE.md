@@ -76,6 +76,8 @@ Concrete checks when reviewing or writing component code:
 
 P0 launch-blockers fixed (2026-05-25): Turnstile explicit render — the form was 403ing on every submit because `api.js` was never loaded and a lazy route can't use implicit auto-scan; `vercel.json` security headers + CSP; `--color-ink-3` darkened to WCAG AA (was 3.89:1); `/privacy` route + policy added (dead `/terms` link removed); `@vercel/speed-insights` mounted for real-user CWV.
 
+L2 follow-up (2026-05-25, discovered live in dev browser): `react-helmet-async@2.0.5` was a project-wide SEO bug on React 19 — it emitted only `<title>` and dropped every `<meta>`/`<link>`/JSON-LD script. Every route shipped one global description, no canonical, no OG, zero structured data. Replaced with React 19 native head-hoisting (`<title>`/`<meta>`/`<link>` rendered as JSX, automatically dedup'd into `<head>`). Removed the static `<title>` + `<meta description>` from `index.html` so per-route tags aren't duplicated. Also drops the `--legacy-peer-deps` requirement and shaves ~14 KB raw / ~5 KB gz from the eager bundle.
+
 89 vitest tests pass. tsc and eslint clean. Build emits dist/ + sitemap.xml (8 routes) + robots.txt + favicon.svg.
 
 ## Bundle (post-Wave-4)
@@ -92,7 +94,7 @@ P0 launch-blockers fixed (2026-05-25): Turnstile explicit render — the form wa
 | About.js | 2 KB | 1 KB |
 | NotFound.js | 1 KB | 1 KB |
 
-Initial-load Home: the table above is the pre-redesign snapshot and is stale. Measured 2026-05-25 (vite 8.0.10): index 416/128 + Home 155/48 + seo 97/32 = **~667 KB raw / ~206 KB gzip — BOTH gates now FAIL** (<200 raw, <150 gzip). Cause is framer-motion + Radix Dialog + tailwind-merge in the eager chunk, NOT Three.js (which is unused and already tree-shaken out). Fix path: `docs/improvement-roadmap.md` P1 #6/#7 (CSS-fade the hero to drop framer-motion off the eager graph; lazy-mount MobileDrawer; add manualChunks).
+Initial-load Home: the table above is the pre-redesign snapshot and is stale. Measured 2026-05-25 post-L2 (vite 8.0.10): index 402/123 + Home 155/48 + seo 97/31 = **~654 KB raw / ~202 KB gzip — BOTH gates still FAIL** (<200 raw, <150 gzip). Cause is framer-motion + Radix Dialog + tailwind-merge in the eager chunk, NOT Three.js (which is unused and already tree-shaken out). Fix path: `docs/improvement-roadmap.md` P1 #6/#7 (CSS-fade the hero to drop framer-motion off the eager graph; lazy-mount MobileDrawer; add manualChunks).
 
 ## Architecture
 
@@ -128,7 +130,7 @@ These are documented in `phase-a2-mathlens-conventions.md` §"Justified deviatio
 - **Build script temporary state.** D0's `package.json` build is `tsc -b && vite build`. The task graph's full build line includes `node scripts/generate-sitemap.mjs` after `vite build`. That script is owned by D8 and does not exist yet, so the current build skips it. D8 will add the script and restore the full build line.
 - **`tsconfig.app.json` adds `"noEmit": true`** (D0 patch vs. the task graph's verbatim block). The task graph block sets `allowImportingTsExtensions: true` but omits `noEmit`, which makes `tsc -b` fail with TS5096. Adding `noEmit` is the standard React+Vite TypeScript pairing — Vite handles emit, TypeScript only type-checks.
 - **`src/vite-env.d.ts` reference file added** (D0 patch). The task graph omits a Vite ambient-types file, but `import './index.css'` in `main.tsx` and `import.meta.env` in future code both need `/// <reference types="vite/client" />`. This is a one-line file — standard for any Vite scaffold.
-- **`npm install --legacy-peer-deps` was required.** `react-helmet-async@2.0.5` declares a peer range of React 16/17/18 and rejects React 19. The package itself works at runtime under React 19 (it has been confirmed compatible by the maintainer; the peer range simply hasn't been bumped). If/when `react-helmet-async@3.x` ships with React 19 in its peer range, this flag can be dropped. Alternative: switch to `@unhead/react` — Tyler can choose later if peer-dep noise becomes a problem.
+- ~~`npm install --legacy-peer-deps` was required~~ — REMOVED 2026-05-25. `react-helmet-async@2.0.5` declared a peer range of React 16/17/18 AND was actually broken on React 19: it emitted only `<title>` and silently dropped every `<meta>`/`<link>`/JSON-LD `<script>` (verified live in dev). Removed and replaced with React 19's native head-hoisting in `src/lib/seo.tsx`. Plain installs work again. See `docs/improvement-roadmap.md` L2.
 - **`vite.config.ts` allows `host.docker.internal`** in both `server.allowedHosts` and `preview.allowedHosts`. Required so review tooling running inside a Docker container (Playwright via the MCP browser, etc.) can hit `vite preview` on the Windows host. Vite ≥ 6.0 blocks unknown hosts by default; this is the explicit allowlist. Has no production impact — Vercel never sees these flags.
 
 ## Conventions (enforced)

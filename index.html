@@ -8,8 +8,16 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" />
-    <title>Lundeen Studio — SaaS Landing Pages That Convert</title>
-    <meta name="description" content="Conversion-focused landing pages for B2B SaaS. Two-week turnaround. Instrumented." />
+    <!--
+      Per-route <title>, <meta name="description">, <link rel="canonical">,
+      OG/Twitter tags, and JSON-LD are rendered by src/lib/seo.tsx and hoisted
+      to <head> by React 19. We deliberately do NOT emit static fallbacks
+      here: React 19 hoists alongside static tags (it does not replace them),
+      so a static <title> would produce two <title> elements and a static
+      description would trip Google's "duplicate meta description" warning.
+      No-JS crawlers currently see no <title>/description — fixed when
+      build-time prerender lands (docs/improvement-roadmap.md P1 #9).
+    -->
     <!--
       Cloudflare Turnstile, explicit render mode. The contact form is a lazily
       mounted route, so the widget element is inserted into the DOM after this

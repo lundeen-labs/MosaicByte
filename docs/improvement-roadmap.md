@@ -18,6 +18,24 @@ Status legend: ✅ done · ⏳ in progress · ⬜ not started
 
 Verification after P0: `tsc` 0 · `eslint` 0 · `vitest` 89/89 · `vite build` ok (Privacy chunk 2.48 kB gz 0.88 kB; sitemap 8 routes).
 
+---
+
+## L2 — runtime SEO bug discovered during browser verification (✅ fixed 2026-05-25)
+
+Browser verification of the P0 work surfaced a pre-existing project-wide bug the audit missed (the audit read code; this only shows up in a live DOM):
+
+| Symptom | Reality |
+|---|---|
+| **`react-helmet-async@2.0.5` on React 19 emits only `<title>`** | Every `<meta>`, `<link rel="canonical">`, OG tag, Twitter card, and `<script type="application/ld+json">` was silently dropped. |
+| Per-route metadata invisible to **every** crawler (not just non-JS ones) | Even Google sees one global description, no canonical, no OG cards, no Person/ProfessionalService/FAQPage JSON-LD. |
+| The CLAUDE.md "deviation" recommending `--legacy-peer-deps` | Was masking the bug, not just a cosmetic peer-range issue. |
+
+**Fix:** removed `react-helmet-async` entirely; `src/lib/seo.tsx` now renders `<title>`/`<meta>`/`<link>`/`<script>` as plain JSX and React 19's native head-hoisting deduplicates them into `<head>`. `HelmetProvider` wrapper deleted from `main.tsx`. Static `<title>` and `<meta description>` removed from `index.html` (React 19 hoists alongside static tags, so a static fallback would duplicate). Browser-verified: Home now ships 3 JSON-LD scripts (Person, ProfessionalService, FAQPage), Privacy/Contact/About each ship correct per-route title + description + canonical + OG.
+
+**Bonus wins:** removes the `--legacy-peer-deps` requirement project-wide; shrinks the eager index chunk by ~14 KB raw / ~5 KB gz.
+
+**Remaining caveat:** no-JS crawlers (social unfurlers, LLM bots) still see an empty `<head>` until prerender lands (P1 #9). That's the same situation as before — fixed by the prerender path, not by this swap.
+
 **Still needs a human before `vercel --prod`:** Resend account + `RESEND_API_KEY`; Cloudflare Turnstile account + `VITE_TURNSTILE_SITE_KEY` / `TURNSTILE_SECRET`; `vercel login`; then `vercel link` / `vercel env add` / `vercel deploy`. See `DEPLOY.md`.
 
 ---

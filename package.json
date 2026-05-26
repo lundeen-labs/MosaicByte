@@ -29,7 +29,6 @@
     "lucide-react": "^0.500.0",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
-    "react-helmet-async": "^2.0.5",
     "resend": "^4.5.0",
     "tailwind-merge": "^3.0.2",
     "three": "^0.183.2",
