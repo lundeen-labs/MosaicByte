@@ -1,22 +1,30 @@
 import { COPY } from '@/content/copy'
 
 const SITE_URL =
-  (import.meta.env.VITE_SITE_URL as string | undefined) ?? 'https://lundeen-studio.vercel.app'
+  (import.meta.env.VITE_SITE_URL as string | undefined) ?? 'https://mosaicbyte.vercel.app'
 
 export { SITE_URL }
 
+/**
+ * Person blob for the studio lead (Jesenia). Surfaces on the About route.
+ * `sameAs` is intentionally empty until real public profiles are linked.
+ */
 export const personJsonLd: Record<string, unknown> = {
   '@context': 'https://schema.org',
   '@type': 'Person',
-  '@id': `${SITE_URL}/#tyler`,
-  name: 'Tyler Lundeen',
-  url: SITE_URL,
-  jobTitle: 'SaaS Landing Page Designer',
+  '@id': `${SITE_URL}/#jesenia`,
+  name: 'Jesenia Lundeen',
+  url: `${SITE_URL}/about`,
+  jobTitle: 'Designer · Mosaic Byte',
   description:
-    'Freelance designer specializing in high-converting landing pages for B2B SaaS companies.',
+    'Designer behind Mosaic Byte. Brand systems and conversion-focused landing pages for small teams.',
   worksFor: { '@id': `${SITE_URL}/#org` },
 }
 
+/**
+ * Mosaic Byte studio as a ProfessionalService. Tiers come from COPY.services
+ * so any price change in copy.ts flows here automatically.
+ */
 export const orgJsonLd: Record<string, unknown> = {
   '@context': 'https://schema.org',
   '@type': 'ProfessionalService',
@@ -25,10 +33,16 @@ export const orgJsonLd: Record<string, unknown> = {
   url: SITE_URL,
   image: `${SITE_URL}/og/index.png`,
   description: COPY.brand.description,
-  founder: { '@id': `${SITE_URL}/#tyler` },
+  founder: { '@id': `${SITE_URL}/#jesenia` },
   areaServed: { '@type': 'Country', name: 'United States' },
-  priceRange: '$1500-$15000',
-  serviceType: 'Landing Page Design',
+  priceRange: '$2500-$15000',
+  serviceType: 'Brand & Landing Page Design',
+  address: {
+    '@type': 'PostalAddress',
+    addressLocality: 'Mount Vernon',
+    addressRegion: 'WA',
+    addressCountry: 'US',
+  },
   hasOfferCatalog: {
     '@type': 'OfferCatalog',
     name: 'Services',

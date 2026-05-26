@@ -36,6 +36,34 @@ Browser verification of the P0 work surfaced a pre-existing project-wide bug the
 
 **Remaining caveat:** no-JS crawlers (social unfurlers, LLM bots) still see an empty `<head>` until prerender lands (P1 #9). That's the same situation as before — fixed by the prerender path, not by this swap.
 
+---
+
+## MB — Rebrand to Mosaic Byte (in progress, 2026-05-26)
+
+Strategic pivot: the deployed brand becomes **Mosaic Byte** (Jesenia Lundeen's studio brand from `github.com/lundeej/mosaicbyte`), replacing "Lundeen Studio." Voice shifts from solo-engineer ("I am Tyler Lundeen") to Jesenia-led design studio with Tyler quietly credited in the footer colophon. All fictional case studies and placeholder metrics are removed — nothing claims work that hasn't shipped.
+
+Branch: `feature/mosaicbyte-rebrand` (off `feature/p0-launch-blockers`).
+
+| # | Workstream | Status | Notes |
+|---|---|---|---|
+| MB-1 | Branch off P0 | ✅ | Carries forward the 8 P0/L1/L2 commits. |
+| MB-2 | Rewrite `copy.ts` (Mosaic Byte content, no fakes) | ✅ | Brand, hero, services, process, FAQ, contact, footer, about all rewritten. `workPreview`, `instrumentation`, `heroB`, `status.metrics` removed. New `legal.privacy`, `work`, `footer.colophon` added. |
+| MB-3 | About.tsx in Jesenia voice + colophon | ✅ | Component unchanged (it consumes COPY); Seo title updated. |
+| MB-4 | Replace /work with in-flight notice; delete WorkDetail | ✅ | `Work.tsx` is now a single-page "currently taking our first clients" notice. `WorkDetail.tsx` deleted from filesystem, App.tsx, and sitemap. |
+| MB-5 | Trim Home — remove WorkPreview + status-strip refs | ✅ | `Home.tsx` no longer imports/renders `WorkPreview`. Seo title now `${brand.full} — ${brand.tagline}`. |
+| MB-6 | Footer colophon + Privacy + Contact recipient | ✅ | `Footer` accepts `colophon` prop; Layout passes it. `api/contact.ts` recipient now from `CONTACT_RECIPIENT` env var. Privacy/Contact/NotFound Seo titles + email reference rebranded. |
+| MB-7 | Visual identity swap — `@theme` tokens, fonts, CSP | ⬜ | Dark `#0A0A0A` → paper `#f5f2ec`; Geist → DM Serif Display + DM Mono; CSP allowlist for DM fonts. |
+| MB-8 | Rebuild HeroA in Mosaic Byte aesthetic | ⬜ | Port the animated mosaic tile-grid hero from `mosaic_byte_landing.html`. LCP `<h1>` stays unanimated. |
+| MB-9 | Adapt Navbar, services, Layout for light editorial theme | ⬜ | Existing components already consume tokens — most should adapt automatically when MB-7 lands. Sticky paper-toned nav + ink border. |
+| MB-10 | Tests for rebranded structure | ✅ (partial) | Navbar + MobileDrawer tests updated for "Start a project" CTA + new nav order. HeroA test unchanged (still passes). 58/58. |
+| MB-11 | Verify — tsc / lint / vitest / build | ✅ for content chunk | Will re-verify after visual swap. |
+| MB-12 | Live browser verify in dev server | ⬜ | After MB-7/8/9. |
+| MB-13 | Create new `mosaicbyte` GitHub repo + push + collaborator + archive prototype | ⬜ | Resolve Tyler's GitHub username via `gh api user`, create repo, push branch, add `lundeej` as collaborator, archive `github.com/lundeej/mosaicbyte` (static HTML prototype) with a README pointing here. |
+
+**Dead-component purge bundled into MB:** the 16 dead components flagged in P2 #14 are now deleted (they referenced removed COPY fields, so cleanup was forced + free): HeroB, OscilloscopeChart, DefinitionBlock, HeroSub, HeroEyebrow, HeroTitle, Marginalia, InstrumentGauge, StatusStrip, InstrumentationBlock, TestimonialCarousel, Marquee, RuleTick, KbdHint, MarginaliaLabel, WorkPreview, MetricsBlock. Their 3 colocated test files also deleted.
+
+**Repo strategy:** fresh `mosaicbyte` repo with both as collaborators (Jesenia + Tyler). Local directory keeps its current `lundeen-studio\` name to avoid path churn; will be renamed later if desired. The static-HTML prototype at `github.com/lundeej/mosaicbyte` archived after migration with a README pointer to the new repo.
+
 **Still needs a human before `vercel --prod`:** Resend account + `RESEND_API_KEY`; Cloudflare Turnstile account + `VITE_TURNSTILE_SITE_KEY` / `TURNSTILE_SECRET`; `vercel login`; then `vercel link` / `vercel env add` / `vercel deploy`. See `DEPLOY.md`.
 
 ---

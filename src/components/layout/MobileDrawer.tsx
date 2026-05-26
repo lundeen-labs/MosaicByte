@@ -2,6 +2,7 @@ import * as Dialog from '@radix-ui/react-dialog'
 import { Link } from 'wouter'
 import { X } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { COPY } from '@/content/copy'
 
 export interface MobileDrawerProps {
   open: boolean
@@ -108,7 +109,7 @@ export function MobileDrawer({ open, onOpenChange, nav }: MobileDrawerProps) {
 
           <div className="border-t border-[var(--color-paper-3)] px-[var(--spacing-s5)] py-[var(--spacing-s5)]">
             <a
-              href="/contact"
+              href={COPY.nav.primaryCta.href}
               onClick={() => onOpenChange(false)}
               className={cn(
                 'inline-flex w-full items-center justify-center gap-2',
@@ -123,7 +124,7 @@ export function MobileDrawer({ open, onOpenChange, nav }: MobileDrawerProps) {
                 'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-rust)]',
               )}
             >
-              Free audit
+              {COPY.nav.primaryCta.label}
               <span
                 aria-hidden="true"
                 className="inline-block rounded-[var(--radius-r1)] border border-[var(--color-paper)]/40 px-[5px] py-[1px] font-mono text-[10px] tracking-[0.04em]"

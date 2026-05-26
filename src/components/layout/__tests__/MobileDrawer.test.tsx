@@ -38,10 +38,10 @@ describe('MobileDrawer', () => {
     }
   })
 
-  it('renders the Free audit CTA inside the drawer', () => {
+  it('renders the Start a project CTA inside the drawer', () => {
     const onOpenChange = vi.fn()
     renderDrawer(true, onOpenChange)
-    expect(screen.getByRole('link', { name: /free audit/i })).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: /start a project/i })).toBeInTheDocument()
   })
 
   it('calls onOpenChange(false) when ESC is pressed', async () => {

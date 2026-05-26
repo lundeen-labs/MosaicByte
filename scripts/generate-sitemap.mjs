@@ -12,10 +12,7 @@ const SITE_URL = process.env.VITE_SITE_URL || 'https://lundeen-studio.vercel.app
 
 const ROUTES = [
   { path: '/', priority: '1.0', changefreq: 'weekly' },
-  { path: '/work', priority: '0.9', changefreq: 'monthly' },
-  { path: '/work/acme-cloud', priority: '0.8', changefreq: 'yearly' },
-  { path: '/work/pulse-pricing-page', priority: '0.8', changefreq: 'yearly' },
-  { path: '/work/orbital-marketing-site', priority: '0.8', changefreq: 'yearly' },
+  { path: '/work', priority: '0.6', changefreq: 'monthly' },
   { path: '/about', priority: '0.7', changefreq: 'monthly' },
   { path: '/contact', priority: '0.7', changefreq: 'monthly' },
   { path: '/privacy', priority: '0.3', changefreq: 'yearly' },

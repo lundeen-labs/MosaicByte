@@ -3,11 +3,12 @@ import { Route, Switch } from 'wouter'
 
 const Home = lazy(() => import('./routes/Home'))
 const Work = lazy(() => import('./routes/Work'))
-const WorkDetail = lazy(() => import('./routes/WorkDetail'))
 const About = lazy(() => import('./routes/About'))
 const Contact = lazy(() => import('./routes/Contact'))
 const Privacy = lazy(() => import('./routes/Privacy'))
 const NotFound = lazy(() => import('./routes/NotFound'))
+// /work/:slug deleted with the rebrand (2026-05-26) — Mosaic Byte has no real
+// case studies yet, and the Work page is now an honest "in flight" notice.
 
 function RouteFallback() {
   return (
@@ -27,7 +28,6 @@ export default function App() {
       <Switch>
         <Route path="/" component={Home} />
         <Route path="/work" component={Work} />
-        <Route path="/work/:slug" component={WorkDetail} />
         <Route path="/about" component={About} />
         <Route path="/contact" component={Contact} />
         <Route path="/privacy" component={Privacy} />

@@ -1,148 +1,95 @@
 /**
- * Single source of truth for every visible string on the marketing site.
+ * Single source of truth for every visible string on the Mosaic Byte site.
  * Pure data file: zero runtime imports.
+ *
+ * Voice convention (locked 2026-05-26):
+ *   • The studio is Jesenia-led. Bio + about + first-person voice = Jesenia.
+ *   • Tyler appears in the footer colophon only ("Site engineering by Tyler
+ *     Lundeen"). He is not surfaced as a co-founder on About.
+ *   • Plural "we" is used where the work genuinely involves both of us
+ *     (engineering-heavy builds, anything technical Tyler picks up).
+ *   • Nothing in this file may claim work that hasn't shipped. No invented
+ *     clients, no invented metrics, no invented years-active. The /work page
+ *     is an honest "in flight" notice until real engagements ship under the
+ *     Mosaic Byte brand.
  *
  * Updates here propagate to every route. Do not duplicate copy in components.
  */
 
 export const COPY = {
   brand: {
-    wordmark: 'Lundeen & Co.',
-    tagline: 'EST. 2025',
-    full: 'Lundeen Studio',
-    description: 'Conversion-focused landing pages for B2B SaaS. Two-week turnaround. Instrumented.',
+    wordmark: 'Mosaic Byte',
+    tagline: 'Digital Studio',
+    full: 'Mosaic Byte',
+    description:
+      'A small digital studio designing brand systems and landing pages from Mount Vernon, WA.',
+    location: 'Mount Vernon, WA',
   },
 
   status: {
     available: true,
     slots: 2,
-    week: 'WEEK OF MAY 5',
-    rev: 'a3f9c1',
-    metrics: {
-      lcp: 'LCP 0.81s',
-      cls: 'CLS 0.01',
-      inp: 'INP 92ms',
-      jsKb: 'JS 87KB',
-    },
+    week: 'OPEN NOW',
   },
 
   stack: {
     label: 'I build in your stack — no vendor lock-in',
     items: [
-      { name: 'Next.js', detail: 'App Router' },
       { name: 'Webflow', detail: 'CMS + handoff' },
       { name: 'Framer', detail: 'Marketing sites' },
+      { name: 'Next.js', detail: 'App Router' },
       { name: 'Astro', detail: 'Content-heavy' },
       { name: 'Sanity', detail: 'Headless CMS' },
       { name: 'Tailwind v4', detail: 'Design tokens' },
     ],
   },
 
-  workPreview: {
-    sectionMark: { number: '01', label: 'WORK' },
-    heading: 'Three engagements, three measurable wins.',
-    intro: 'Each rebuild ships with confidence intervals and sample sizes. No "+34%" without the n behind it.',
-    items: [
-      { slug: 'acme-cloud', client: 'Acme Cloud', sector: 'Dev tooling SaaS · YC S24', outcome: '+34% trial signups', outcomeTone: 'moss' as const },
-      { slug: 'pulse-pricing-page', client: 'Pulse', sector: 'B2B analytics SaaS', outcome: '+18% pricing -> trial CTR', outcomeTone: 'moss' as const },
-      { slug: 'orbital-marketing-site', client: 'Orbital', sector: 'Infra observability SaaS', outcome: '7-page site, 21-day build', outcomeTone: 'plum' as const },
-    ],
-    allLink: { label: 'See all case studies', href: '/work' },
-  },
-
-  instrumentation: {
-    sectionMark: { number: '05', label: 'INSTRUMENTATION' },
-    heading: 'This site is its own demo.',
-    body: 'Every page I ship comes with the analytics rig, not just the picture. The metrics below are live readings from the page you are looking at right now — verifiable in your DevTools. Every page I deliver to clients comes with a public Lighthouse CI run, a tracked goal, and a written test plan.',
-    metrics: [
-      { label: 'LCP', value: '0.81', unit: 's', target: 'TARGET ≤ 2.5s', tone: 'moss' as const },
-      { label: 'CLS', value: '0.01', target: 'TARGET ≤ 0.10', tone: 'moss' as const },
-      { label: 'INP', value: '92', unit: 'ms', target: 'TARGET ≤ 200ms', tone: 'moss' as const },
-      { label: 'JS BUNDLE', value: '142', unit: 'KB', target: 'BUDGET 150KB', tone: 'ochre' as const },
-      { label: 'A11Y SCORE', value: '100', target: 'LIGHTHOUSE', tone: 'moss' as const },
-    ],
-  },
-
   hero: {
-    eyebrow: 'PRODUCTIZED LANDING PAGE · 14 DAYS · INSTRUMENTED',
+    eyebrow: 'DIGITAL STUDIO · MOUNT VERNON, WA',
     titleParts: {
-      plain: 'Ship a landing page that actually',
-      italic: 'converts',
-      rest: 'in fourteen days.',
+      plain: 'Every pixel',
+      italic: 'tells a story',
+      rest: '— assembled one tile at a time.',
     },
-    sub: 'A productized landing-page service for funded B2B SaaS. Conversion copywriting, design, build, and analytics — handed off in your stack. Refund in full if it does not beat your control.',
-    primaryCta: { label: 'Get a free audit', href: '/audit' },
-    secondaryCta: { label: 'Or book a 15-min call', href: '/contact' },
+    sub: 'I design brand systems and landing pages for small teams and self-funded products. Engineered with the same care as the design.',
+    primaryCta: { label: 'Start a project', href: '/contact' },
+    secondaryCta: { label: 'See how I work', href: '/#process' },
     reassureLines: [
-      'No pitch deck. 5-page PDF audit in 48 hours.',
-      'Full refund if the rebuild does not beat your control on a pre-agreed metric.',
-      'Built in your stack — Webflow, Framer, Next.js. No vendor lock-in.',
+      'Fixed-fee, two-week landing pages.',
+      'Copy, design, and build delivered together.',
+      'Built in your stack — Webflow, Framer, Next.js. You own it on day one.',
     ],
-    gauge: {
-      lcp: '0.81s',
-      cls: '0.01',
-      inp: '92ms',
-      jsKb: '87KB',
-      a11y: '100',
-    },
-  },
-
-  heroB: {
-    sectionMark: { number: '00', label: 'FOLIO' },
-    titleLines: [
-      { line: 'A landing page is not' },
-      { line: 'a hero image and a CTA.', italic: true },
-      { line: 'It is an instrument', underline: true },
-      { line: 'for measuring intent.', indent: true },
-    ],
-    sub: 'Most freelancers ship a picture. The studio that ships the analytics rig wins the renewal.',
-    definition: {
-      term: 'in·stru·ment·ed',
-      pron: '/ˈinstrəˌmen(t)əd/',
-      defs: [
-        '1. Equipped with instruments for measurement.',
-        '2. (of a page) Built so that every claim is backed by a number, every number by a confidence interval, every interval by a sample size.',
-      ],
-    },
-    primaryCta: { label: 'Get a free audit', href: '/audit' },
-    secondaryCta: { label: 'Or book a 15-min call', href: '/contact' },
-    microReassure: 'No pitch. 5-page PDF in 48 hours.',
-    chart: {
-      points: [4.2, 4.0, 4.3, 4.1, 4.4, 4.2, 4.3, 4.5, 4.7, 5.0, 5.4, 5.6, 5.5, 5.6, 5.6],
-      ciLow:  [3.9, 3.8, 4.0, 3.9, 4.1, 4.0, 4.0, 4.2, 4.4, 4.6, 5.0, 5.1, 5.0, 5.1, 5.1],
-      ciHigh: [4.5, 4.3, 4.6, 4.4, 4.7, 4.5, 4.6, 4.8, 5.0, 5.4, 5.8, 6.1, 6.0, 6.1, 6.1],
-      annotation: 'Variant B trial-signup rate (95% CI). n=38,612 over 21 days.',
-    },
   },
 
   nav: {
     primary: [
-      { num: '01', label: 'Work', href: '/work', key: 'work' },
-      { num: '02', label: 'Services', href: '/#services', key: 'services' },
-      { num: '03', label: 'Process', href: '/#process', key: 'process' },
+      { num: '01', label: 'Services', href: '/#services', key: 'services' },
+      { num: '02', label: 'Process', href: '/#process', key: 'process' },
+      { num: '03', label: 'Work', href: '/work', key: 'work' },
       { num: '04', label: 'About', href: '/about', key: 'about' },
     ],
-    primaryCta: { label: 'Free audit', href: '/audit' },
+    primaryCta: { label: 'Start a project', href: '/contact' },
   },
 
   services: {
-    heading: 'Services',
-    sectionMark: { number: '02', label: 'SERVICES' },
-    intro: 'Three productized engagements. Custom available above $15K — let us talk.',
+    heading: 'What I do',
+    sectionMark: { number: '01', label: 'SERVICES' },
+    intro:
+      'Three productized engagements. Custom work above $15K is available — let’s talk.',
     tiers: [
       {
         eyebrow: 'TIER 01',
-        name: 'Conversion Audit',
-        price: '$1,500',
-        cadence: 'one-time · 5-day SLA',
+        name: 'Brand & Identity',
+        price: '$2,500',
+        cadence: 'fixed-fee · 10 days',
         scope: [
-          'Heuristic + analytics review of your existing page',
-          'Identification of the top 5 conversion leaks ranked by impact',
-          'Specific copy + design + technical fixes per leak',
-          '5-page PDF report, 30-min walkthrough call',
-          'Audit cost credits 100% toward a project booked within 30 days',
+          'Discovery interview + competitive scan',
+          'Logo mark, type system, and color palette',
+          'Brand guidelines document (PDF + Figma)',
+          'Two revision rounds',
+          'You own every source file from day one',
         ],
-        cta: { label: 'Start an audit', href: '/contact?tier=audit' },
+        cta: { label: 'Start an identity', href: '/contact?tier=identity' },
       },
       {
         eyebrow: 'TIER 02 · MOST PICKED',
@@ -150,13 +97,12 @@ export const COPY = {
         price: '$4,500',
         cadence: 'fixed-fee · 14 days',
         scope: [
-          'Discovery call + voice-of-customer research',
-          'Conversion copywriting (headline, subhead, body, CTAs)',
-          'Bespoke design (no templates, no stock illustration)',
-          'Responsive build in your stack — Webflow, Framer, or Next.js',
-          'Analytics + heatmap setup with a tracked goal',
-          'Two revision rounds within the 14-day window',
-          'Full refund if the launched page does not beat your control on the pre-agreed metric',
+          'Voice-of-customer interviews + analytics review',
+          'Conversion copywriting (headline through CTAs)',
+          'Bespoke design — no templates, no stock illustration',
+          'Responsive build in your stack (Webflow / Framer / Next.js)',
+          'Analytics and heatmap setup with a tracked goal',
+          'Two revision rounds inside the 14-day window',
         ],
         cta: { label: 'Book a 15-min call', href: '/contact?tier=landing' },
         featured: true,
@@ -184,44 +130,48 @@ export const COPY = {
       cadence: 'monthly · 3-month minimum',
       scope: [
         'One CRO experiment shipped per month',
-        'Statistical analysis with confidence intervals reported, not just lift %',
-        'Monthly written report and 30-min sync',
+        'Statistical analysis with confidence intervals, not just lift %',
+        'Monthly written report + 30-min sync',
       ],
       cta: { label: 'Discuss a retainer', href: '/contact?tier=retainer' },
     },
   },
 
   process: {
-    heading: 'Process',
-    sectionMark: { number: '03', label: 'PROCESS' },
+    heading: 'How it works',
+    sectionMark: { number: '02', label: 'PROCESS' },
     intro: 'Four phases across fourteen days. Every step has a written deliverable.',
     steps: [
       {
         day: 'DAY 01-02',
         label: 'Discovery',
-        detail: 'Voice-of-customer interviews, analytics dive, competitive teardown. Output: a one-page positioning brief.',
+        detail:
+          'Voice-of-customer interviews, analytics dive, and a quick competitive scan. Output: a one-page positioning brief you sign off on before any pixels move.',
       },
       {
         day: 'DAY 03-05',
         label: 'Copy + wireframe',
-        detail: 'Conversion copywriting first, then a low-fidelity wireframe in Figma. Approval gate before design.',
+        detail:
+          'Conversion copywriting first, then a low-fidelity wireframe in Figma. Approval gate before design starts.',
       },
       {
         day: 'DAY 06-10',
         label: 'Design + build',
-        detail: 'Bespoke design in your stack. Responsive, accessible, instrumented. Two revision rounds inside this window.',
+        detail:
+          'Bespoke design in your stack. Responsive, accessible, and instrumented from the first day of build. Two revision rounds inside this window.',
       },
       {
         day: 'DAY 11-14',
         label: 'QA + ship',
-        detail: 'Cross-browser QA, Lighthouse pass (≥95 perf, 100 a11y), analytics goal verified. Then we ship together.',
+        detail:
+          'Cross-browser QA, Lighthouse pass (≥95 performance, 100 accessibility), analytics goal verified. Then we ship together.',
       },
     ],
   },
 
   faq: {
     heading: 'Frequently asked',
-    sectionMark: { number: '04', label: 'FAQ' },
+    sectionMark: { number: '03', label: 'FAQ' },
     items: [
       {
         id: 'duration',
@@ -231,17 +181,17 @@ export const COPY = {
       {
         id: 'copy',
         q: 'Do you write the copy or do I provide it?',
-        a: 'I write it. Conversion copywriting is half the work — handing me draft copy almost always means starting over.',
+        a: 'I write it. Conversion copy is half the work — handing me draft copy almost always means starting over. If you already have strong copy you love, we can talk about it on the discovery call.',
       },
       {
         id: 'scope',
         q: 'What is included at $4,500?',
-        a: 'Discovery call, voice-of-customer research, copy, design, responsive build, analytics + heatmap setup, two revision rounds, launch.',
+        a: 'Discovery interviews, voice-of-customer research, conversion copy, bespoke design, responsive build in your stack, analytics + heatmap setup, two revision rounds, launch.',
       },
       {
-        id: 'guarantee',
-        q: 'Do you guarantee a conversion lift?',
-        a: 'No one honest does. I guarantee a measurably better page than what you have, by metrics agreed up front (signup rate, scroll depth, time-on-page). Full refund if I miss it.',
+        id: 'engineering',
+        q: 'Who builds the engineering side?',
+        a: 'I design and write the copy. For builds that need real engineering — custom interactions, analytics rigging, headless CMS — my husband Tyler picks up the technical work. So you get design-led pages that also ship clean code.',
       },
       {
         id: 'stack',
@@ -249,14 +199,14 @@ export const COPY = {
         a: 'Yes. I build in your stack so your team owns it post-launch. No vendor lock-in to my tooling.',
       },
       {
-        id: 'audit-vs-project',
-        q: 'What is the difference between the audit and the full project?',
-        a: 'The audit is a $1,500 written report identifying conversion leaks. The full project executes the fixes. Audit cost credits 100% toward a project booked within 30 days.',
+        id: 'fit',
+        q: 'What kinds of clients do you work with best?',
+        a: 'Small teams and self-funded products. Things between $50/mo SaaS, indie e-commerce, and founder brands. PLG-style funnels, not enterprise sales pages.',
       },
       {
-        id: 'fit',
-        q: 'What kinds of SaaS do you work with best?',
-        a: 'B2B SaaS with $50-500/mo pricing and self-serve signup. PLG-style funnels, not enterprise sales pages.',
+        id: 'guarantee',
+        q: 'Do you guarantee a conversion lift?',
+        a: 'No one honest does. I guarantee a measurably better page than the one you have, against metrics we agree on up front (signup rate, scroll depth, time on page). If I miss it on the agreed metric, full refund.',
       },
       {
         id: 'payment',
@@ -267,26 +217,28 @@ export const COPY = {
   },
 
   about: {
-    sectionMark: { number: '05', label: 'STUDIO' },
-    heading: 'A studio of one, instrumented.',
-    lede: 'I am Tyler Lundeen. I design landing pages for B2B SaaS. Before this I shipped engineering systems — which is why every page I build comes with the analytics rig, not just the picture.',
+    sectionMark: { number: '04', label: 'STUDIO' },
+    heading: 'A studio in Mount Vernon, WA.',
+    lede:
+      'I’m Jesenia Lundeen. I design landing pages and brand systems for small teams that want their site to look the way their product feels.',
     body: [
-      'Lundeen Studio is the deliberate small thing. One designer. Two clients at a time. Fixed-fee, two-week engagements. The constraint is the value: I cannot afford to ship a page that does not work, so I do not.',
-      'I write the copy. I do the research. I build it in your stack. I instrument it. I am on the call when it ships.',
-      'If you have a B2B SaaS product, a landing page that is leaking, and a budget under $15K — I am probably the right person.',
+      'Mosaic Byte is the deliberate small thing. One designer, one or two clients at a time, fixed-fee, two-week engagements. The constraint is the value — I can’t afford to ship a page that doesn’t work, so I don’t.',
+      'I do the research, I write the copy, I design the page. When a build calls for engineering that goes beyond what a no-code tool can handle — custom interactions, analytics rigging, a CMS that has to behave — my husband Tyler builds it. He’s a software engineer, and the only reason every page that leaves this studio also passes a 100/100 Lighthouse accessibility score and ships with real performance instrumentation.',
+      'If you have a small product, a landing page or brand that’s leaking, and a budget under $15K — I’m probably the right person to talk to.',
     ],
     credentials: [
-      { label: 'Engineering', detail: '10+ years shipping production software (Rust, Python, TypeScript)' },
-      { label: 'Design', detail: 'Conversion-focused landing pages and marketing sites since 2022' },
-      { label: 'Stack', detail: 'Webflow, Framer, Next.js, Astro, plain HTML/CSS' },
-      { label: 'Tools', detail: 'PostHog, Plausible, Hotjar, Microsoft Clarity, Lighthouse CI' },
+      { label: 'Design', detail: 'Conversion-focused landing pages and brand systems' },
+      { label: 'Stack', detail: 'Webflow, Framer, Next.js, Astro' },
+      { label: 'Tools', detail: 'Figma, PostHog, Plausible, Hotjar, Lighthouse CI' },
+      { label: 'Location', detail: 'Mount Vernon, WA · Pacific time' },
     ],
   },
 
   contact: {
-    sectionMark: { number: '06', label: 'CONTACT' },
+    sectionMark: { number: '05', label: 'CONTACT' },
     heading: 'Tell me about your project.',
-    lede: 'Two-week response on weekdays. If urgent, mention it — I keep one rush slot per quarter.',
+    lede:
+      'I read every inquiry myself. Two-business-day response on weekdays. If something is urgent, mention it — I keep one rush slot per quarter.',
     fields: {
       nameLabel: 'Your name',
       emailLabel: 'Email',
@@ -302,17 +254,29 @@ export const COPY = {
       { value: '25k+', label: '$25K+' },
     ],
     successHeading: 'Got it.',
-    successBody: 'I will reply within two business days. If you are urgent, reply to the confirmation email and say so.',
-    errorHeading: 'Did not send.',
-    errorBody: 'Try again, or email tyler.lundeen1995@gmail.com directly.',
+    successBody:
+      'I’ll reply within two business days. If you’re urgent, reply to the confirmation email and say so.',
+    errorHeading: 'Didn’t send.',
+    errorBody: 'Try again, or email hello@mosaicbyte.co directly.',
   },
 
   cta: {
-    sectionMark: { number: '07', label: 'NEXT' },
+    sectionMark: { number: '06', label: 'NEXT' },
     heading: 'Two slots open this month.',
-    lede: 'Start with the free audit. If we are a fit, the cost credits toward the build.',
-    primary: { label: 'Get a free audit', href: '/audit' },
-    secondary: { label: 'Book a 15-min call', href: '/contact' },
+    lede: 'Start with a 15-minute call. No pitch.',
+    primary: { label: 'Start a project', href: '/contact' },
+    secondary: { label: 'Read the process', href: '/#process' },
+  },
+
+  work: {
+    eyebrow: 'WORK',
+    sectionMark: { number: '07', label: 'WORK' },
+    heading: 'Currently taking our first clients.',
+    body: [
+      'Mosaic Byte is new. Past work — design from Jesenia, engineering from Tyler — will be added here as it ships under this brand.',
+      'In the meantime, the best way to see what we make is to start a project with us. Every engagement begins with a 15-minute call. No pitch, no slide deck.',
+    ],
+    cta: { label: 'Start a project', href: '/contact' },
   },
 
   footer: {
@@ -320,28 +284,16 @@ export const COPY = {
       {
         heading: 'STUDIO',
         items: [
-          { label: 'About', href: '/about' },
+          { label: 'Services', href: '/#services' },
           { label: 'Process', href: '/#process' },
-          { label: 'Journal', href: '/journal' },
+          { label: 'About', href: '/about' },
           { label: 'Contact', href: '/contact' },
         ],
       },
       {
         heading: 'WORK',
         items: [
-          { label: 'All case studies', href: '/work' },
-          { label: 'Acme Cloud', href: '/work/acme-cloud' },
-          { label: 'Pulse Pricing', href: '/work/pulse-pricing-page' },
-          { label: 'Orbital', href: '/work/orbital-marketing-site' },
-        ],
-      },
-      {
-        heading: 'SERVICES',
-        items: [
-          { label: 'Audit', href: '/#services' },
-          { label: 'Landing page', href: '/#services' },
-          { label: 'Full site', href: '/#services' },
-          { label: 'Retainer', href: '/#services' },
+          { label: 'Currently in flight', href: '/work' },
         ],
       },
       {
@@ -352,16 +304,24 @@ export const COPY = {
         ],
       },
     ],
-    legal: '© 2026 Lundeen Studio. Built by hand on the West Coast.',
+    legal: '© 2026 Mosaic Byte. Mount Vernon, WA.',
+    colophon: 'Site engineering by Tyler Lundeen.',
+  },
+
+  notFound: {
+    code: '404',
+    heading: 'Route not found.',
+    body: 'You followed a link that doesn’t exist on this site. Probably my fault.',
+    cta: { label: 'Back to the homepage', href: '/' },
   },
 
   legal: {
     privacy: {
       eyebrow: 'LEGAL',
       heading: 'Privacy Policy',
-      updated: 'Last updated: May 25, 2026',
+      updated: 'Last updated: May 26, 2026',
       intro:
-        'Lundeen Studio is a one-person design studio. This policy explains exactly what data the site collects, why, who processes it, and how to have it deleted. No dark patterns, no surprises.',
+        'Mosaic Byte is a small design studio. This policy explains exactly what data this site collects, why, who processes it, and how to have it deleted. No dark patterns, no surprises.',
       sections: [
         {
           heading: 'What the contact form collects',
@@ -397,18 +357,11 @@ export const COPY = {
         {
           heading: 'Contact',
           body: [
-            'For any privacy question or deletion request, email tyler.lundeen1995@gmail.com.',
+            'For any privacy question or deletion request, email hello@mosaicbyte.co.',
           ],
         },
       ],
     },
-  },
-
-  notFound: {
-    code: '404',
-    heading: 'Route not found.',
-    body: 'You followed a link that does not exist on this site. Probably my fault.',
-    cta: { label: 'Back to the homepage', href: '/' },
   },
 } as const
 

@@ -1,6 +1,30 @@
-# Lundeen Studio — Agent Notes
+# Mosaic Byte — Agent Notes
 
-Production marketing site for the Lundeen Studio brand. Single source of truth for the implementation plan: `C:\tmp\lundeen-studio-research\phase-c-task-graph.md`.
+Production marketing site for the **Mosaic Byte** brand (Jesenia Lundeen). Same codebase as the prior "Lundeen Studio" identity — rebranded 2026-05-26 (see "Rebrand to Mosaic Byte" below). The local directory is still named `lundeen-studio\` to avoid churn; the deployed brand and the destination GitHub repo are `mosaicbyte`.
+
+Single source of truth for the original implementation plan: `C:\tmp\lundeen-studio-research\phase-c-task-graph.md` (historical — predates the rebrand).
+
+## Rebrand to Mosaic Byte (in progress, 2026-05-26)
+
+Branch: `feature/mosaicbyte-rebrand` (off `feature/p0-launch-blockers`).
+
+**Decided + done in this chunk (content):**
+- Brand: every visible string now reads "Mosaic Byte" (driven by `src/content/copy.ts`). Domain default `mosaicbyte.vercel.app` (was `lundeen-studio.vercel.app`) in `src/lib/seo-data.ts`.
+- Voice: Jesenia first-person on `/about` ("I'm Jesenia Lundeen..."). Tyler appears only in the footer colophon ("Site engineering by Tyler Lundeen") — `COPY.footer.colophon` + `Footer` `colophon` prop.
+- Fictional content removed: Acme/Pulse/Orbital case studies (and `WorkDetail.tsx` entirely), "148 projects shipped", "60+ clients", "12 years active", "+34% trial signups", `COPY.workPreview.*`, `COPY.instrumentation.*`, `COPY.status.metrics`, the heroB editorial-archetype block.
+- `/work` is now an honest "currently taking our first clients" notice (`src/routes/Work.tsx` + `COPY.work`). `/work/:slug` route + WorkDetail.tsx deleted from `src/App.tsx` + sitemap.
+- Dead-component purge (architecture audit P2 #14 closed): 16 dead components + 3 colocated tests removed — HeroB, OscilloscopeChart, DefinitionBlock, HeroSub, HeroEyebrow, HeroTitle, Marginalia, InstrumentGauge, StatusStrip, InstrumentationBlock, TestimonialCarousel, Marquee, RuleTick, KbdHint, MarginaliaLabel, WorkPreview, MetricsBlock. None were reachable from any route.
+- Architecture-audit DIP fix: `Navbar` and `MobileDrawer` now consume `COPY.nav.primary` / `COPY.nav.primaryCta` instead of duplicating the list locally (architecture audit #7 closed).
+- API recipient now env-configurable: `api/contact.ts` reads `CONTACT_RECIPIENT` (default still `tyler.lundeen1995@gmail.com` for technical continuity; flip to `hello@mosaicbyte.co` via Vercel env when that mailbox exists).
+- Verified after content chunk: tsc 0, lint 0, **58/58 vitest pass** (was 89/89; the drop is the 3 deleted dead-component test files, not regressions).
+
+**Still pending (next chunks):**
+- Visual identity swap (`MB-7`): `@theme` tokens from dark `#0A0A0A` → light paper `#f5f2ec`; ink #0f0e0d; amber/teal/coral/violet/plum mosaic accents; Geist → DM Serif Display + DM Mono; vercel.json CSP updated for DM fonts.
+- Hero rebuild (`MB-8`): port the Mosaic Byte animated tile-grid hero from `mosaic_byte_landing.html` to React.
+- Component adaptation to light theme (`MB-9`).
+- Repo move (`MB-13`): create a new `mosaicbyte` GitHub repo (both Tyler + Jesenia as collaborators), push, archive `github.com/lundeej/mosaicbyte` (Jesenia's static-HTML prototype) with a pointer to the new repo.
+
+Single source of truth for the rebrand brief: `docs/improvement-roadmap.md` (MB section).
 
 ## Operating mode
 
@@ -78,7 +102,7 @@ P0 launch-blockers fixed (2026-05-25): Turnstile explicit render — the form wa
 
 L2 follow-up (2026-05-25, discovered live in dev browser): `react-helmet-async@2.0.5` was a project-wide SEO bug on React 19 — it emitted only `<title>` and dropped every `<meta>`/`<link>`/JSON-LD script. Every route shipped one global description, no canonical, no OG, zero structured data. Replaced with React 19 native head-hoisting (`<title>`/`<meta>`/`<link>` rendered as JSX, automatically dedup'd into `<head>`). Removed the static `<title>` + `<meta description>` from `index.html` so per-route tags aren't duplicated. Also drops the `--legacy-peer-deps` requirement and shaves ~14 KB raw / ~5 KB gz from the eager bundle.
 
-89 vitest tests pass. tsc and eslint clean. Build emits dist/ + sitemap.xml (8 routes) + robots.txt + favicon.svg.
+58 vitest tests pass (was 89 pre-rebrand; the 31-test drop is the 3 deleted dead-component test files — Marquee, StatusStrip, MetricsBlock, OscilloscopeChart, HeroB — not regressions). tsc and eslint clean. Build emits dist/ + sitemap.xml (5 routes — /, /work, /about, /contact, /privacy) + robots.txt + favicon.svg.
 
 ## Bundle (post-Wave-4)
 

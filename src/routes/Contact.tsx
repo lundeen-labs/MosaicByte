@@ -119,7 +119,7 @@ export default function Contact() {
     return (
       <Layout>
         <Seo
-          title="Inquiry received — Lundeen Studio"
+          title={`Inquiry received — ${COPY.brand.full}`}
           description="Thanks. I will reply within two business days."
           canonicalPath="/contact"
         />
@@ -158,8 +158,8 @@ export default function Contact() {
   return (
     <Layout>
       <Seo
-        title="Contact — Lundeen Studio"
-        description="Tell me about your project. Two-week response on weekdays."
+        title={`Contact — ${COPY.brand.full}`}
+        description="Tell me about your project. Two-business-day response on weekdays."
         canonicalPath="/contact"
       />
       <article

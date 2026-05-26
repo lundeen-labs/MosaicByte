@@ -7,8 +7,11 @@ interface HeroAProps {
   primaryCta: { label: string; href: string }
   secondaryCta: { label: string; href: string }
   reassureLines: string[]
-  /** kept for back-compat; no longer rendered in the modern hero */
-  gauge: { lcp: string; cls: string; inp: string; jsKb: string; a11y: string }
+  /**
+   * Optional, unused — kept only so existing tests/callers passing `gauge`
+   * compile. Will be removed in a future cleanup once tests are updated.
+   */
+  gauge?: { lcp: string; cls: string; inp: string; jsKb: string; a11y: string }
 }
 
 /**

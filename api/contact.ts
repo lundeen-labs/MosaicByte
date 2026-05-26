@@ -5,8 +5,10 @@ import { checkRate } from './_lib/ratelimit'
 
 export const config = { runtime: 'nodejs' }
 
-const RECIPIENT = 'tyler.lundeen1995@gmail.com'
-const DEFAULT_FROM = 'Lundeen Studio <onboarding@resend.dev>'
+// Recipient lives in env so the studio can change it without a redeploy
+// (e.g. flip to hello@mosaicbyte.co once that mailbox is provisioned).
+const RECIPIENT = process.env.CONTACT_RECIPIENT ?? 'tyler.lundeen1995@gmail.com'
+const DEFAULT_FROM = 'Mosaic Byte <onboarding@resend.dev>'
 
 export default async function handler(req: Request): Promise<Response> {
   if (req.method !== 'POST') {
@@ -72,7 +74,7 @@ function renderInquiry(p: ContactPayload): string {
   return [
     '<!doctype html>',
     '<html><body style="font-family: ui-sans-serif, system-ui, -apple-system, sans-serif; color:#171413; line-height:1.5;">',
-    '<h1 style="font-family: Georgia, serif; font-size:20px; margin:0 0 16px;">New inquiry — Lundeen Studio</h1>',
+    '<h1 style="font-family: Georgia, serif; font-size:20px; margin:0 0 16px;">New inquiry — Mosaic Byte</h1>',
     '<table style="border-collapse:collapse; font-size:14px;">',
     `<tr><td style="padding:4px 12px 4px 0; color:#6B5F55;">Name</td><td style="padding:4px 0;">${escape(p.name)}</td></tr>`,
     `<tr><td style="padding:4px 12px 4px 0; color:#6B5F55;">Email</td><td style="padding:4px 0;">${escape(p.email)}</td></tr>`,

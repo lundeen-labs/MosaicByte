@@ -6,7 +6,7 @@ import { COPY } from '@/content/copy'
 export default function NotFound() {
   return (
     <Layout>
-      <Seo title="404 — Lundeen Studio" description="Route not found." canonicalPath="/404" />
+      <Seo title={`404 — ${COPY.brand.full}`} description="Route not found." canonicalPath="/404" />
       <section
         aria-labelledby="notfound-heading"
         className="mx-auto flex w-full max-w-[800px] flex-col gap-[var(--spacing-s5)] px-[var(--spacing-s5)] py-[var(--spacing-s8)] md:px-[var(--spacing-s7)]"

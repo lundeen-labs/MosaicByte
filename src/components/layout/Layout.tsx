@@ -48,6 +48,7 @@ export function Layout({ children, theme, currentNav }: LayoutProps) {
           items: c.items.map((i) => ({ label: i.label, href: i.href })),
         }))}
         legal={COPY.footer.legal}
+        colophon={COPY.footer.colophon}
       />
     </div>
   )

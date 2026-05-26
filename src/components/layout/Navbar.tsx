@@ -11,34 +11,25 @@ import { COPY } from '@/content/copy'
 const MobileDrawer = lazy(() => import('./MobileDrawer'))
 
 export interface NavbarProps {
-  current?: 'work' | 'services' | 'process' | 'journal' | 'about'
+  current?: 'services' | 'process' | 'work' | 'about'
 }
-
-interface NavItem {
-  label: string
-  href: string
-  key: NonNullable<NavbarProps['current']>
-}
-
-const NAV: NavItem[] = [
-  { label: 'Work', href: '/work', key: 'work' },
-  { label: 'Services', href: '/#services', key: 'services' },
-  { label: 'Process', href: '/#process', key: 'process' },
-  { label: 'About', href: '/about', key: 'about' },
-]
 
 /**
- * Navbar — sticky, semi-transparent dark glass with a thin border.
+ * Navbar — sticky paper-toned glass header with a thin ink border.
  *
- * Left: clean wordmark "Lundeen Studio" with an availability dot.
- * Center: simple text nav.
- * Right: primary CTA "Get a free audit".
+ * Left: Mosaic Byte wordmark + availability dot.
+ * Center: text nav consumed from COPY.nav.primary (single source of truth —
+ *   we deliberately do NOT duplicate the list locally; that was the
+ *   architecture-audit DIP violation).
+ * Right: primary CTA from COPY.nav.primaryCta.
  *
  * Below 768px: nav + CTA collapse into a hamburger that opens MobileDrawer.
  */
 export function Navbar({ current }: NavbarProps) {
   const [open, setOpen] = useState(false)
-  const navForDrawer = NAV.map(({ label, href }) => ({ label, href }))
+  const nav = COPY.nav.primary
+  const navForDrawer = nav.map(({ label, href }) => ({ label, href }))
+  const primaryCta = COPY.nav.primaryCta
 
   return (
     <header
@@ -52,11 +43,11 @@ export function Navbar({ current }: NavbarProps) {
         {/* Wordmark */}
         <Link
           href="/"
-          aria-label="Lundeen Studio — home"
+          aria-label={`${COPY.brand.full} — home`}
           className="group inline-flex items-center gap-3 text-[var(--color-ink)]"
         >
           <span className="font-display text-[1.0625rem] font-semibold tracking-[-0.02em]">
-            Lundeen Studio
+            {COPY.brand.wordmark}
           </span>
           <span
             className="inline-flex items-center gap-2 rounded-full border border-[var(--color-paper-3)] bg-[var(--color-paper-2)] px-2.5 py-1 text-[11px] font-medium text-[var(--color-ink-2)]"
@@ -79,7 +70,7 @@ export function Navbar({ current }: NavbarProps) {
         {/* Center nav (>=768px) */}
         <nav aria-label="Primary" className="hidden md:block">
           <ul className="flex items-center gap-8">
-            {NAV.map((item) => {
+            {nav.map((item) => {
               const isActive = current === item.key
               const isHash = item.href.includes('#')
               const linkClass = cn(
@@ -107,17 +98,17 @@ export function Navbar({ current }: NavbarProps) {
 
         {/* Right CTA (>=768px) */}
         <a
-          href="/contact"
+          href={primaryCta.href}
           className={cn(
             'hidden md:inline-flex items-center gap-2',
-            'rounded-full bg-[var(--color-rust)] text-[#0A0A0A]',
+            'rounded-full bg-[var(--color-rust)] text-[var(--color-paper)]',
             'px-5 py-2.5 text-[14px] font-semibold',
             'transition-[background,transform] duration-[180ms]',
             'hover:bg-[var(--color-rust-2)] hover:translate-y-[-1px]',
             'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-rust)]',
           )}
         >
-          Get a free audit
+          {primaryCta.label}
           <span aria-hidden="true">→</span>
         </a>
 

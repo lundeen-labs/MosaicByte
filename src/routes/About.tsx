@@ -8,7 +8,7 @@ export default function About() {
   return (
     <Layout currentNav="about">
       <Seo
-        title="About Tyler Lundeen — Lundeen Studio"
+        title={`About — ${COPY.brand.full}`}
         description={COPY.about.lede}
         canonicalPath="/about"
         jsonLd={personJsonLd}

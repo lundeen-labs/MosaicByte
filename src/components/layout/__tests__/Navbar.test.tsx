@@ -35,22 +35,22 @@ describe('Navbar', () => {
   it('renders the wordmark link to home', () => {
     renderNavbar()
     const banner = screen.getByRole('banner')
-    const home = within(banner).getByRole('link', { name: /lundeen studio.*home/i })
+    const home = within(banner).getByRole('link', { name: /mosaic byte.*home/i })
     expect(home).toBeInTheDocument()
     expect(home.getAttribute('href')).toBe('/')
-    expect(within(home).getByText(/lundeen studio/i)).toBeInTheDocument()
+    expect(within(home).getByText(/mosaic byte/i)).toBeInTheDocument()
   })
 
   it('renders the availability indicator inside the wordmark link', () => {
     renderNavbar()
-    const home = screen.getByRole('link', { name: /lundeen studio.*home/i })
+    const home = screen.getByRole('link', { name: /mosaic byte.*home/i })
     expect(within(home).getByText(/slots? open|booked/i)).toBeInTheDocument()
   })
 
-  it('renders the Free audit CTA pointing at /contact', () => {
+  it('renders the Start a project CTA pointing at /contact', () => {
     renderNavbar()
     const banner = screen.getByRole('banner')
-    const cta = within(banner).getByRole('link', { name: /free audit/i })
+    const cta = within(banner).getByRole('link', { name: /start a project/i })
     expect(cta.getAttribute('href')).toBe('/contact')
   })
 
@@ -71,12 +71,12 @@ describe('Navbar', () => {
     const user = userEvent.setup()
     renderNavbar()
     const expected = [
-      /lundeen studio.*home/i, // wordmark
-      /^work$/i,
+      /mosaic byte.*home/i, // wordmark
       /^services$/i,
       /^process$/i,
+      /^work$/i,
       /^about$/i,
-      /free audit/i,
+      /start a project/i,
     ]
     for (const matcher of expected) {
       await user.tab()

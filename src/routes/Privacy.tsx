@@ -8,8 +8,8 @@ export default function Privacy() {
   return (
     <Layout>
       <Seo
-        title="Privacy Policy — Lundeen Studio"
-        description="What the Lundeen Studio site collects, why, who processes it, and how to have it deleted."
+        title={`Privacy Policy — ${COPY.brand.full}`}
+        description="What the Mosaic Byte site collects, why, who processes it, and how to have it deleted."
         canonicalPath="/privacy"
       />
       <article

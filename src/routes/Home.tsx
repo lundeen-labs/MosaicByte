@@ -5,7 +5,6 @@ import { ProcessTimeline } from '@/components/ui/ProcessTimeline'
 import { FAQAccordion } from '@/components/ui/FAQAccordion'
 import { Button } from '@/components/ui/Button'
 import { StackBadges } from '@/components/ui/StackBadges'
-import { WorkPreview } from '@/components/ui/WorkPreview'
 import { Seo } from '@/lib/seo'
 import { personJsonLd, orgJsonLd, faqJsonLd } from '@/lib/seo-data'
 import { COPY } from '@/content/copy'
@@ -41,7 +40,7 @@ export default function Home() {
   return (
     <Layout>
       <Seo
-        title={`${COPY.brand.full} — SaaS Landing Pages That Convert`}
+        title={`${COPY.brand.full} — ${COPY.brand.tagline}`}
         description={COPY.brand.description}
         canonicalPath="/"
         jsonLd={[personJsonLd, orgJsonLd, faqJsonLd]}
@@ -54,26 +53,11 @@ export default function Home() {
         primaryCta={{ ...COPY.hero.primaryCta }}
         secondaryCta={{ ...COPY.hero.secondaryCta }}
         reassureLines={[...COPY.hero.reassureLines]}
-        gauge={{ ...COPY.hero.gauge }}
       />
 
       <StackBadges
         label={COPY.stack.label}
         items={COPY.stack.items.map((i) => ({ name: i.name, detail: i.detail }))}
-      />
-
-      <WorkPreview
-        sectionMark={{ ...COPY.workPreview.sectionMark }}
-        heading={COPY.workPreview.heading}
-        intro={COPY.workPreview.intro}
-        items={COPY.workPreview.items.map((i) => ({
-          slug: i.slug,
-          client: i.client,
-          sector: i.sector,
-          outcome: i.outcome,
-          outcomeTone: i.outcomeTone,
-        }))}
-        allLink={{ ...COPY.workPreview.allLink }}
       />
 
       <section
