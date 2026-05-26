@@ -18,11 +18,18 @@ Branch: `feature/mosaicbyte-rebrand` (off `feature/p0-launch-blockers`).
 - API recipient now env-configurable: `api/contact.ts` reads `CONTACT_RECIPIENT` (default still `tyler.lundeen1995@gmail.com` for technical continuity; flip to `hello@mosaicbyte.co` via Vercel env when that mailbox exists).
 - Verified after content chunk: tsc 0, lint 0, **58/58 vitest pass** (was 89/89; the drop is the 3 deleted dead-component test files, not regressions).
 
-**Still pending (next chunks):**
-- Visual identity swap (`MB-7`): `@theme` tokens from dark `#0A0A0A` → light paper `#f5f2ec`; ink #0f0e0d; amber/teal/coral/violet/plum mosaic accents; Geist → DM Serif Display + DM Mono; vercel.json CSP updated for DM fonts.
-- Hero rebuild (`MB-8`): port the Mosaic Byte animated tile-grid hero from `mosaic_byte_landing.html` to React.
-- Component adaptation to light theme (`MB-9`).
-- Repo move (`MB-13`): create a new `mosaicbyte` GitHub repo (both Tyler + Jesenia as collaborators), push, archive `github.com/lundeej/mosaicbyte` (Jesenia's static-HTML prototype) with a pointer to the new repo.
+**Done in the second chunk (visual identity):**
+- `@theme` tokens flipped dark → editorial paper. `--color-paper: #f5f2ec`, `--color-ink: #0f0e0d`, `--color-ink-3: #6b6660` (re-tuned to keep WCAG AA ≥4.89:1 on the new paper bg). Accent palette is Mosaic Byte: coral rust `#d9472b`, teal moss `#1a6e60`, violet plum `#3d3086`, amber ochre `#c96a1b`. Added `--color-tile-*` aliases for the hero mosaic. `color-scheme: light`. The light-theme alternate block deleted; light is now the only theme. CSS chunk shrunk 39.99 → 33.94 KB (-15%).
+- Fonts: Geist + Geist Mono → DM Serif Display + DM Mono. `index.html` preconnect + stylesheet rewritten. Existing CSP allowlist already covered fonts.googleapis/gstatic — no `vercel.json` change needed.
+- `HeroA.tsx` rebuilt for the Mosaic Byte aesthetic: split editorial grid (left copy column + right ink panel), DM Serif headline with teal italic accent on the studio's tagline phrase, coral primary CTA, ghost secondary, reassure bullets, location footnote. Right panel renders an 8×6 animated `MosaicTileGrid` (subcomponent) ported from Jesenia's `main.js` — `setInterval` re-rolls lit/mid sets every 2.2s, gated by `usePrefersReducedMotion` so reduced-motion users get the initial roll only. LCP `<h1>` still unanimated. Bottom-right availability badge wired to `COPY.status` so the "X slots open" reading stays live.
+- `usePrefersReducedMotion` hardened: now guards `typeof window.matchMedia !== 'function'` so jsdom (no matchMedia) doesn't throw — fixes 4 HeroA test failures the rebuild surfaced.
+- Hardcoded `text-[#0A0A0A]` in `Button.tsx`, `PricingTier.tsx`, and `HeroA.tsx` tokenized to `text-[var(--color-paper)]` — the dark-theme paper hex was wrong intent on the new coral CTA (closes architecture audit #10).
+- Remaining components (`Navbar`, `Footer`, `MobileDrawer`, `Layout`, `FAQAccordion`, `ProcessTimeline`, etc.) all consume `--color-*` tokens and adapted automatically — no per-component edits needed.
+
+**Verified live in browser:** title `Mosaic Byte — Digital Studio`, body bg `#f5f2ec`, body font DM Mono, h1 font DM Serif Display, wordmark `Mosaic Byte`, CTA `Start a project`, tile grid rendering with random lit/mid sets. 58/58 tests pass; tsc/lint/build green.
+
+**Still pending:**
+- Repo move (`MB-13`): create a new `mosaicbyte` GitHub repo (both Tyler + Jesenia as collaborators), push the rebrand branch, archive `github.com/lundeej/mosaicbyte` (Jesenia's static-HTML prototype) with a pointer to the new repo. Local directory keeps its current `lundeen-studio\` name to avoid path churn.
 
 Single source of truth for the rebrand brief: `docs/improvement-roadmap.md` (MB section).
 

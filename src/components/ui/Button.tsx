@@ -14,7 +14,7 @@ const baseClasses =
 
 const variantClasses: Record<NonNullable<ButtonProps['variant']>, string> = {
   primary:
-    'bg-[var(--color-rust)] text-[#0A0A0A] font-semibold hover:bg-[var(--color-rust-2)] hover:translate-y-[-1px]',
+    'bg-[var(--color-rust)] text-[var(--color-paper)] font-semibold hover:bg-[var(--color-rust-2)] hover:translate-y-[-1px]',
   ghost:
     'bg-transparent text-[var(--color-ink)] border border-[var(--color-paper-3)] hover:border-[var(--color-ink-2)] hover:bg-[var(--color-paper-2)]',
   icon:
