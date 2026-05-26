@@ -32,18 +32,6 @@ export const COPY = {
     week: 'OPEN NOW',
   },
 
-  stack: {
-    label: 'I build in your stack — no vendor lock-in',
-    items: [
-      { name: 'Webflow', detail: 'CMS + handoff' },
-      { name: 'Framer', detail: 'Marketing sites' },
-      { name: 'Next.js', detail: 'App Router' },
-      { name: 'Astro', detail: 'Content-heavy' },
-      { name: 'Sanity', detail: 'Headless CMS' },
-      { name: 'Tailwind v4', detail: 'Design tokens' },
-    ],
-  },
-
   hero: {
     eyebrow: 'DIGITAL STUDIO · MOUNT VERNON, WA',
     titleParts: {
@@ -57,7 +45,7 @@ export const COPY = {
     reassureLines: [
       'Fixed-fee, two-week landing pages.',
       'Copy, design, and build delivered together.',
-      'Built in your stack — Webflow, Framer, Next.js. You own it on day one.',
+      'Built in whatever stack your team uses. You own the source on day one.',
     ],
   },
 
@@ -85,7 +73,7 @@ export const COPY = {
         scope: [
           'Discovery interview + competitive scan',
           'Logo mark, type system, and color palette',
-          'Brand guidelines document (PDF + Figma)',
+          'Brand guidelines document (PDF + source files)',
           'Two revision rounds',
           'You own every source file from day one',
         ],
@@ -100,7 +88,7 @@ export const COPY = {
           'Voice-of-customer interviews + analytics review',
           'Conversion copywriting (headline through CTAs)',
           'Bespoke design — no templates, no stock illustration',
-          'Responsive build in your stack (Webflow / Framer / Next.js)',
+          'Responsive build in your team’s stack',
           'Analytics and heatmap setup with a tracked goal',
           'Two revision rounds inside the 14-day window',
         ],
@@ -117,7 +105,7 @@ export const COPY = {
           'Information architecture + sitemap',
           'Conversion copywriting for every page',
           'Component system handed off to your team',
-          'CMS wired (Sanity, Contentful, or in-stack)',
+          'CMS wired against your existing content infrastructure',
           'Sitemap + JSON-LD + analytics across the surface',
         ],
         cta: { label: 'Get a quote', href: '/contact?tier=site' },
@@ -152,7 +140,7 @@ export const COPY = {
         day: 'DAY 03-05',
         label: 'Copy + wireframe',
         detail:
-          'Conversion copywriting first, then a low-fidelity wireframe in Figma. Approval gate before design starts.',
+          'Conversion copywriting first, then a low-fidelity wireframe. Approval gate before design starts.',
       },
       {
         day: 'DAY 06-10',
@@ -164,7 +152,7 @@ export const COPY = {
         day: 'DAY 11-14',
         label: 'QA + ship',
         detail:
-          'Cross-browser QA, Lighthouse pass (≥95 performance, 100 accessibility), analytics goal verified. Then we ship together.',
+          'Cross-browser QA, performance audit (≥95 desktop), accessibility audit (WCAG 2.1 AA), analytics goal verified. Then we ship together.',
       },
     ],
   },
@@ -195,8 +183,8 @@ export const COPY = {
       },
       {
         id: 'stack',
-        q: 'Can you work with our existing stack (Webflow, Framer, Next.js)?',
-        a: 'Yes. I build in your stack so your team owns it post-launch. No vendor lock-in to my tooling.',
+        q: 'Can you work with our existing stack?',
+        a: 'Yes. I build in whatever your team already uses so you own the result post-launch — no vendor lock-in to my tooling. If you have a strong preference, mention it on the discovery call.',
       },
       {
         id: 'fit',
@@ -223,13 +211,12 @@ export const COPY = {
       'I’m Jesenia Lundeen. I design landing pages and brand systems for small teams that want their site to look the way their product feels.',
     body: [
       'Mosaic Byte is the deliberate small thing. One designer, one or two clients at a time, fixed-fee, two-week engagements. The constraint is the value — I can’t afford to ship a page that doesn’t work, so I don’t.',
-      'I do the research, I write the copy, I design the page. When a build calls for engineering that goes beyond what a no-code tool can handle — custom interactions, analytics rigging, a CMS that has to behave — my husband Tyler builds it. He’s a software engineer, and the only reason every page that leaves this studio also passes a 100/100 Lighthouse accessibility score and ships with real performance instrumentation.',
+      'I do the research, I write the copy, I design the page. When a build calls for engineering that goes beyond what a no-code tool can handle — custom interactions, analytics rigging, a CMS that has to behave — my husband Tyler builds it. He’s a software engineer, and the reason every page that leaves this studio meets WCAG 2.1 AA accessibility standards and ships with real performance instrumentation.',
       'If you have a small product, a landing page or brand that’s leaking, and a budget under $15K — I’m probably the right person to talk to.',
     ],
     credentials: [
-      { label: 'Design', detail: 'Conversion-focused landing pages and brand systems' },
-      { label: 'Stack', detail: 'Webflow, Framer, Next.js, Astro' },
-      { label: 'Tools', detail: 'Figma, PostHog, Plausible, Hotjar, Lighthouse CI' },
+      { label: 'Design', detail: 'Brand systems and conversion-focused landing pages' },
+      { label: 'Build', detail: 'In whatever stack your team uses — you ship with the source on day one' },
       { label: 'Location', detail: 'Mount Vernon, WA · Pacific time' },
     ],
   },

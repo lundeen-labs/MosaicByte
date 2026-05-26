@@ -4,7 +4,6 @@ import { PricingTier } from '@/components/ui/PricingTier'
 import { ProcessTimeline } from '@/components/ui/ProcessTimeline'
 import { FAQAccordion } from '@/components/ui/FAQAccordion'
 import { Button } from '@/components/ui/Button'
-import { StackBadges } from '@/components/ui/StackBadges'
 import { Seo } from '@/lib/seo'
 import { personJsonLd, orgJsonLd, faqJsonLd } from '@/lib/seo-data'
 import { COPY } from '@/content/copy'
@@ -53,11 +52,6 @@ export default function Home() {
         primaryCta={{ ...COPY.hero.primaryCta }}
         secondaryCta={{ ...COPY.hero.secondaryCta }}
         reassureLines={[...COPY.hero.reassureLines]}
-      />
-
-      <StackBadges
-        label={COPY.stack.label}
-        items={COPY.stack.items.map((i) => ({ name: i.name, detail: i.detail }))}
       />
 
       <section

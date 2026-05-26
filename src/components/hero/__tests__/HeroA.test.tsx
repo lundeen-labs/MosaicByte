@@ -15,7 +15,7 @@ const baseProps = {
   reassureLines: [
     'No pitch deck. 5-page audit PDF in your inbox in 48 hours.',
     'Refund in full if the rebuilt page does not beat your control.',
-    'Built in your stack — Webflow, Framer, Next.js. You own the code.',
+    'Built in whatever stack your team uses. You own the source on day one.',
   ],
   gauge: { lcp: '0.81s', cls: '0.01', inp: '92ms', jsKb: '87KB', a11y: '100/100' },
 }

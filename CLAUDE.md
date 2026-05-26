@@ -28,8 +28,16 @@ Branch: `feature/mosaicbyte-rebrand` (off `feature/p0-launch-blockers`).
 
 **Verified live in browser:** title `Mosaic Byte — Digital Studio`, body bg `#f5f2ec`, body font DM Mono, h1 font DM Serif Display, wordmark `Mosaic Byte`, CTA `Start a project`, tile grid rendering with random lit/mid sets. 58/58 tests pass; tsc/lint/build green.
 
-**Still pending:**
-- Repo move (`MB-13`): create a new `mosaicbyte` GitHub repo (both Tyler + Jesenia as collaborators), push the rebrand branch, archive `github.com/lundeej/mosaicbyte` (Jesenia's static-HTML prototype) with a pointer to the new repo. Local directory keeps its current `lundeen-studio\` name to avoid path churn.
+**Repo move done (`MB-13`):** new repo at `https://github.com/Outtsett/mosaicbyte` (private), 12+ commits pushed to `main` via `gh repo create --source . --push`. Jesenia (`lundeej`) invited as collaborator with **write** permission (`maintain` is org-only — personal-account repos only accept `pull`/`push`/`admin`). Pending: Jesenia accepts the invitation (link: `https://github.com/Outtsett/mosaicbyte/invitations`), Tyler runs `git push` for the local README rewrite commit (the harness blocks the agent from pushing to main without per-command authorization), and Jesenia archives the original `github.com/lundeej/mosaicbyte` static prototype.
+
+**Honesty pass on credentials (`MB-14`, 2026-05-26):** Tyler's directive — "tools or specific builds should be mentioned unless we can give examples with the web design itself." Stripped every Webflow / Framer / Next.js / Astro / Sanity / Contentful / Figma / PostHog / Plausible / Hotjar / Lighthouse name-drop from `src/content/copy.ts`. The site now sells the *practice* (stack-agnostic, you own the source) rather than the SKU list:
+- `COPY.stack` block deleted entirely; `StackBadges` section removed from `Home.tsx`; `StackBadges.tsx` deleted (dead). `Card.tsx` also deleted (already unused after the WorkDetail purge).
+- Hero reassure line: "Built in whatever stack your team uses. You own the source on day one." (was "Webflow, Framer, Next.js. You own it on day one.")
+- Services tier scopes neutralized: "Responsive build in your team's stack" / "CMS wired against your existing content infrastructure" / "Brand guidelines document (PDF + source files)" — no proprietary tool names.
+- Process step 4: "performance audit (≥95 desktop), accessibility audit (WCAG 2.1 AA)" (was "Lighthouse pass (≥95 perf, 100 a11y)").
+- About body para 2: "meets WCAG 2.1 AA accessibility standards" (was "passes 100/100 Lighthouse a11y" — softened from a claim about every-page-shipped to a standard the build process meets).
+- FAQ "stack" question dropped the "(Webflow, Framer, Next.js)" parenthetical and added "If you have a strong preference, mention it on the discovery call."
+- `COPY.about.credentials` collapsed from 4 rows (Design / Stack / Tools / Location) to 3 (Design / Build / Location) with stack-agnostic Build phrasing. tsc 0, lint 0, 58/58.
 
 Single source of truth for the rebrand brief: `docs/improvement-roadmap.md` (MB section).
 
