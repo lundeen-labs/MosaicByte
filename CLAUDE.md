@@ -2,7 +2,7 @@
 
 Production marketing site for the **Mosaic Byte** brand (Jesenia Lundeen). Same codebase as the prior "Lundeen Studio" identity — rebranded 2026-05-26 (see "Rebrand to Mosaic Byte" below). The local directory is still named `lundeen-studio\` to avoid churn; the deployed brand and the destination GitHub repo are `mosaicbyte`.
 
-Single source of truth for the original implementation plan: `C:\tmp\lundeen-studio-research\phase-c-task-graph.md` (historical — predates the rebrand).
+Single source of truth for the original implementation plan: `C:\tmp\mosaicbyte-research\phase-c-task-graph.md` (historical — predates the rebrand).
 
 ## Rebrand to Mosaic Byte (in progress, 2026-05-26)
 
@@ -101,7 +101,9 @@ Concrete checks when reviewing or writing component code:
 
 ## Project root
 
-`E:\source\repos\Applications\lundeen-studio` — always use absolute Windows paths.
+`E:\source\repos\Applications\MosaicByte` — always use absolute Windows paths.
+
+Dev verification screenshots (gitignored, ephemeral) live under `screenshots/rebrand/` (visual-identity captures, `mb-*.png`) and `screenshots/verification/` (P0/P1 launch-blocker captures, `p0-*.png`, `p1-*.png`). `.gitignore` covers the whole `screenshots/` tree — save new captures there, not at project root.
 
 ## Wave status
 
@@ -111,7 +113,7 @@ Concrete checks when reviewing or writing component code:
 - D6 (MDX case studies): DEFERRED — substituted with inline-data WorkDetail.tsx. Migrate when richer authoring is needed.
 - D8 (SEO): COMPLETE — per-route Seo helmet wrapper, JSON-LD (Person/ProfessionalService/FAQPage), sitemap generator, robots.txt, SVG favicon.
 - D9 (polish): PARTIAL — ErrorBoundary at root, usePrefersReducedMotion hook. Theme toggle UI deferred.
-- E1+E2 (audit): COMPLETE — see `C:\tmp\lundeen-studio-research\phase-e-audit-report.md`.
+- E1+E2 (audit): COMPLETE — see `C:\tmp\mosaicbyte-research\phase-e-audit-report.md`.
 - DEEP-RESEARCH AUDIT (2026-05-25): COMPLETE — six-agent audit (perf, SEO, a11y, architecture, testing, prod-readiness). Full findings + P0/P1/P2 backlog in `docs/improvement-roadmap.md`.
 - F1 (Vercel deploy): BLOCKED on Tyler (needs Resend + Turnstile + Vercel accounts + `vercel login`). See `DEPLOY.md`.
 
@@ -219,7 +221,7 @@ Rate-limit is in-memory per Vercel instance (soft). For >1k visits/day or DDoS e
 
 1. Hero archetype for `/`: defaults to **Hero A** (productized-promise) per A3 cold-traffic data.
 2. Real client logos / testimonials — none yet; copy ships with placeholders (Acme Cloud, Pulse, Orbital).
-3. Custom domain — defaults to `lundeen-studio.vercel.app`; JSON-LD URLs templated against `import.meta.env.VITE_SITE_URL`.
-4. Brand wordmark — defaults to "Lundeen & Co. EST. 2025" from `src/content/copy.ts`.
+3. Custom domain — defaults to `mosaicbyte.vercel.app`; JSON-LD URLs templated against `import.meta.env.VITE_SITE_URL`.
+4. Brand wordmark — `'Mosaic Byte'` in `src/content/copy.ts`.
 5. Calendar embed (Cal.com modal) — Wave 5 follow-up; not blocking v1.
 6. Status-strip honesty — post-deploy, replace `COPY.status.metrics` with real Lighthouse output.

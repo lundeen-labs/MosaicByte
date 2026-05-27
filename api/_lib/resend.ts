@@ -5,7 +5,7 @@ import { Resend } from 'resend'
  *
  * The recipient is hardcoded by the caller (currently
  * `tyler.lundeen1995@gmail.com`). The `from` address must use a domain that
- * is verified in the Resend dashboard; until `lundeen-studio.com` is
+ * is verified in the Resend dashboard; until `mosaicbyte.co` is
  * verified, callers can fall back to Resend's shared
  * `onboarding@resend.dev` sender (suitable for testing only).
  *

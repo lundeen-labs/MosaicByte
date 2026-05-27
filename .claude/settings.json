@@ -70,13 +70,13 @@
       "Bash(tail:*)",
       "Bash(sleep:*)",
       "Bash(until curl:*)",
-      "Read(//e/source/repos/lundeen-studio/**)",
-      "Read(//c/tmp/lundeen-studio-research/**)",
+      "Read(//e/source/repos/Applications/MosaicByte/**)",
+      "Read(//c/tmp/mosaicbyte-research/**)",
       "Read(//e/source/repos/MathLens/**)",
-      "Edit(//e/source/repos/lundeen-studio/**)",
-      "Write(//e/source/repos/lundeen-studio/**)",
-      "Glob(//e/source/repos/lundeen-studio/**)",
-      "Grep(//e/source/repos/lundeen-studio/**)",
+      "Edit(//e/source/repos/Applications/MosaicByte/**)",
+      "Write(//e/source/repos/Applications/MosaicByte/**)",
+      "Glob(//e/source/repos/Applications/MosaicByte/**)",
+      "Grep(//e/source/repos/Applications/MosaicByte/**)",
       "WebSearch",
       "WebFetch(domain:resend.com)",
       "WebFetch(domain:cloudflare.com)",
@@ -102,14 +102,14 @@
       "Bash(npm publish:*)",
       "Bash(npx vercel deploy --prod)",
       "Bash(npx vercel --prod)",
-      "Read(//e/source/repos/lundeen-studio/.env)",
-      "Read(//e/source/repos/lundeen-studio/.env.local)",
-      "Read(//e/source/repos/lundeen-studio/.env.production)"
+      "Read(//e/source/repos/Applications/MosaicByte/.env)",
+      "Read(//e/source/repos/Applications/MosaicByte/.env.local)",
+      "Read(//e/source/repos/Applications/MosaicByte/.env.production)"
     ]
   },
   "env": {
     "NODE_ENV": "development",
-    "VITE_SITE_URL": "https://lundeen-studio.vercel.app"
+    "VITE_SITE_URL": "https://mosaicbyte.vercel.app"
   },
   "hooks": {
     "PostToolUse": [

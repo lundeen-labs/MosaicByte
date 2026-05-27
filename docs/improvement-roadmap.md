@@ -1,4 +1,4 @@
-# Lundeen Studio — Improvement Roadmap
+# Mosaic Byte — Improvement Roadmap
 
 Source: six-agent deep-research audit (performance, SEO/rendering, accessibility, architecture, testing, production-readiness) run 2026-05-25 against the live codebase. Each finding is evidence-backed (file:line) and cross-checked against a fresh `vite build`.
 

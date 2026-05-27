@@ -1,6 +1,6 @@
 # Competitive Edge Audit (Apr 2026)
 
-Refresh of Phase A1 with deeper layout + pricing audits of 4 firms occupying adjacent positions to Lundeen Studio. Goal: find the gap none of them is occupying and lean into it.
+Refresh of Phase A1 with deeper layout + pricing audits of 4 firms occupying adjacent positions to Mosaic Byte. Goal: find the gap none of them is occupying and lean into it.
 
 ## Audit matrix
 
@@ -10,14 +10,14 @@ Refresh of Phase A1 with deeper layout + pricing audits of 4 firms occupying adj
 | **SaaSHero** | Performance marketing | "Book a Discovery Call" | Visible, two tiers | $1,000/mo (CM only) · $2,000/mo (full team) | Raw % only, no n, no CI ("40–50% lift") | "We don't win unless you do" — no mechanism | None |
 | **Webstacks** | Enterprise composable | "Talk to an expert" | **Gated** | Custom (Series A → IPO) | Visual-led, no quantified outcome | None visible | None |
 | **Clay** | Enterprise consultancy | Mission statement, no CTA | **Gated** | T&M / fixed / retainer (post-discovery) | Process-focused, **zero metrics** | None visible | None |
-| **Lundeen Studio** | Productized boutique | "Get a free audit" + "Book 15-min call" | Visible | $1,500 audit · $4,500 page · from $12K site · $3,500/mo retainer | **CI + sample size + power** ("+34% 95% CI [23%, 45%], n=38,612, p=0.003, power=0.92") | **Full refund tied to pre-agreed metric** | **Live status strip on every page** |
+| **Mosaic Byte** | Productized boutique | "Get a free audit" + "Book 15-min call" | Visible | $1,500 audit · $4,500 page · from $12K site · $3,500/mo retainer | **CI + sample size + power** ("+34% 95% CI [23%, 45%], n=38,612, p=0.003, power=0.92") | **Full refund tied to pre-agreed metric** | **Live status strip on every page** |
 
 ## Where everyone leaves the door open
 
 **1. Statistical honesty is empty space.**
 - Clay shows zero metrics. Webstacks shows zero metrics on the homepage. SaaSHero shows blunt percentages with no sample size. Designjoy doesn't position on outcomes at all.
 - Nobody publishes confidence intervals or sample sizes in marketing copy. Doing so reads as engineering rigor rather than agency theater.
-- **Edge move (already shipped):** every metric on Lundeen Studio's case studies includes the CI and power number. The audit page should expand on this — "every claim a number, every number a CI, every CI a sample size."
+- **Edge move (already shipped):** every metric on Mosaic Byte's case studies includes the CI and power number. The audit page should expand on this — "every claim a number, every number a CI, every CI a sample size."
 
 **2. The site is its own demo, but only for us.**
 - All four firms talk about performance abstractly. Designjoy/SaaSHero/Webstacks/Clay homepages do not display their own LCP, CLS, INP, JS bundle.
@@ -27,30 +27,30 @@ Refresh of Phase A1 with deeper layout + pricing audits of 4 firms occupying adj
 - Designjoy offers a 75% week-1 refund — soft, no metric.
 - SaaSHero says "we don't win unless you do" with no enforcement.
 - Clay/Webstacks offer nothing.
-- **Edge move (already shipped):** Lundeen offers full refund if the rebuild does not beat the client's control on a pre-agreed metric. This is a real constraint that none of the four can match without changing their model. Productized → measurable → enforceable refund. This belongs in the hero, the services tier copy, and the FAQ.
+- **Edge move (already shipped):** Mosaic Byte offers full refund if the rebuild does not beat the client's control on a pre-agreed metric. This is a real constraint that none of the four can match without changing their model. Productized → measurable → enforceable refund. This belongs in the hero, the services tier copy, and the FAQ.
 
 **4. The price-tier zone is genuinely empty.**
 - Designjoy: $5K/mo, generic design.
 - SaaSHero: $1–2K/mo, paid-media-ops not design.
 - Webstacks/Clay: gated, $50K+.
-- The $1.5K–$15K productized landing-page-specialist slot has Embarque (per Phase A1) and a few others, but not at the engineering-rigor positioning. **Lundeen's pricing tiers already sit in this slot.** Hold the line.
+- The $1.5K–$15K productized landing-page-specialist slot has Embarque (per Phase A1) and a few others, but not at the engineering-rigor positioning. **Mosaic Byte's pricing tiers already sit in this slot.** Hold the line.
 
 **5. Layout pattern: nobody pairs editorial typography with engineering credibility.**
 - Designjoy: friendly sans, illustration-style. Reads SaaS-template.
 - SaaSHero: stock SaaS template, blue accent. Indistinguishable from their own clients.
 - Webstacks: clean enterprise, dark-theme rotation. Reads like every other agency.
 - Clay: large mission-driven sans, full-bleed photography. Reads like a creative agency from 2018.
-- **Lundeen is doing something none of them do** — Fraunces editorial serif at display sizes against JetBrains Mono labels, oxblood ink on cream paper, letterpress block-shadow CTAs. That visual register is the signal *before* a visitor reads a single word. Hold this hard.
+- **Mosaic Byte is doing something none of them do** — Fraunces editorial serif at display sizes against JetBrains Mono labels, oxblood ink on cream paper, letterpress block-shadow CTAs. That visual register is the signal *before* a visitor reads a single word. Hold this hard.
 
 ## Layout patterns worth borrowing
 
 | Pattern | Source | Applicability |
 |---|---|---|
 | Strikethrough anchor pricing ($5,995 → $4,995) | Designjoy | Use selectively on the LANDING PAGE tier ("$4,995 founding-cohort price, $5,995 after [date]") to create deadline-tied urgency without seeming sleazy. Optional. |
-| Process-as-three-steps icon strip | Designjoy | Lundeen's existing 4-day process timeline is denser. Don't simplify — the density IS the differentiator. Skip. |
+| Process-as-three-steps icon strip | Designjoy | Mosaic Byte's existing 4-day process timeline is denser. Don't simplify — the density IS the differentiator. Skip. |
 | Logo carousel of recognizable Series A–IPO clients | Webstacks | Need real client wins first. Park until 3+ recognizable B2B SaaS launches ship. |
-| Trust-badge strip (Google Premier, G2, etc.) | SaaSHero | Lundeen has no such badges yet. Replace with engineering-credibility signals: "Built in your stack" badges (Webflow / Framer / Next.js / Astro logos) + Lighthouse score badge generated at deploy time. |
-| Industries call-out in nav ("Fintech / Crypto") | Clay | Hold off — Lundeen is a single-niche studio. Diluting positioning into "Fintech" subpages reads as scope-creep until volume justifies it. |
+| Trust-badge strip (Google Premier, G2, etc.) | SaaSHero | Mosaic Byte has no such badges yet. Replace with engineering-credibility signals: "Built in your stack" badges (Webflow / Framer / Next.js / Astro logos) + Lighthouse score badge generated at deploy time. |
+| Industries call-out in nav ("Fintech / Crypto") | Clay | Hold off — Mosaic Byte is a single-niche studio. Diluting positioning into "Fintech" subpages reads as scope-creep until volume justifies it. |
 | Award/endorsement banners ("Product of the Year") | Designjoy | Park. Submit to Awwwards / SiteInspire post-launch; banner the wins on the home page. |
 
 ## Pricing patterns worth borrowing
@@ -58,7 +58,7 @@ Refresh of Phase A1 with deeper layout + pricing audits of 4 firms occupying adj
 | Pattern | Source | Move |
 |---|---|---|
 | Strikethrough founding price | Designjoy | Optional. Only if launching with paid ads where urgency lifts CTR. Pull if it reads as gimmicky. |
-| Two-tier price ($1K vs $2K) | SaaSHero | Already mirrored in Lundeen tiers. Hold. |
+| Two-tier price ($1K vs $2K) | SaaSHero | Already mirrored in Mosaic Byte tiers. Hold. |
 | Hidden pricing + "Book a call" | Webstacks / Clay | Anti-pattern at the $4.5K–$15K productized tier. Public price is the conversion lever. Reject. |
 | 75% week-1 refund | Designjoy | Stronger move available: full refund tied to metric. Already shipped. Hold. |
 
@@ -72,7 +72,7 @@ These are below-the-fold wins that compound the edge without changing the design
 
 3. **Build a Lighthouse-CI-as-a-service mini SKU at $500.** Not a full audit — just "I run Lighthouse CI against your current page, give you the JSON, and walk you through the top 3 perf wins on a 30-min call." Cheap enough to be impulse, technical enough to qualify leads, fast enough (90 min) to scale. Sits below the $1,500 audit. None of the 4 competitors offer this. Optional Wave 5.
 
-4. **Public Awwwards/SiteInspire badge slot in the footer.** Submit Lundeen Studio after launch; banner the wins. Engineer-aesthetic sites win there more than agency-template sites.
+4. **Public Awwwards/SiteInspire badge slot in the footer.** Submit Mosaic Byte after launch; banner the wins. Engineer-aesthetic sites win there more than agency-template sites.
 
 5. **Add a "stack badges" row above the case studies on /work.** Each case study stack tag (Next.js 15, Webflow, Framer) renders as a kbd-style mono pill. Reads as "I work in your tools," which is the SaaSHero "in your CRM" lesson translated.
 
@@ -82,7 +82,7 @@ These are below-the-fold wins that compound the edge without changing the design
 - SaaSHero's blue-on-white paid-media template aesthetic.
 - Webstacks' "composable / future-proof" jargon stack.
 - Clay's mission-statement hero (no CTA).
-- Any logo carousel where Lundeen does not have real client permission to display.
+- Any logo carousel where Mosaic Byte does not have real client permission to display.
 - Any conversion claim without a CI and sample size attached.
 
 ## Sources

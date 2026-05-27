@@ -1,4 +1,4 @@
-# Deploy — Lundeen Studio
+# Deploy — Mosaic Byte
 
 Status: **ready for first deploy** as of commit `6f0e918` (post-Wave-4).
 
@@ -26,7 +26,7 @@ Three external services need accounts. All free tiers cover this site at expecte
 
 - Sign up at https://dash.cloudflare.com (free)
 - Navigate to Turnstile → Add site
-- Domain: `lundeen-studio.vercel.app` (and your custom domain when added)
+- Domain: `mosaicbyte.vercel.app` (and your custom domain when added)
 - Widget mode: Managed
 - Copy both the **site key** (public, prefixed `0x4AAA…`) and the **secret key** (server-side, prefixed `0x4AAA…`)
 
@@ -40,7 +40,7 @@ Three external services need accounts. All free tiers cover this site at expecte
 
 ## First deploy
 
-From `E:\source\repos\Applications\lundeen-studio`:
+From `E:\source\repos\Applications\MosaicByte`:
 
 ```bash
 # 1. Link the local repo to a new Vercel project
@@ -140,4 +140,4 @@ npm run test:ui       # vitest UI dashboard
 - `vercel.json` — runtime config, route rewrites, security headers + CSP
 - `src/main.tsx` — root render; mounts `<SpeedInsights/>` for real-user CWV
 - `docs/plans/launch-multiple-agents-to-glittery-wolf.md` — original multi-agent pipeline plan
-- `C:\tmp\lundeen-studio-research\` — research artifacts (competitor analysis, design system, mockups, task graph, audit report)
+- `C:\tmp\mosaicbyte-research\` — research artifacts (competitor analysis, design system, mockups, task graph, audit report)

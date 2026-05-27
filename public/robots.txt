@@ -3,4 +3,4 @@ Allow: /
 Disallow: /admin
 Disallow: /api
 
-Sitemap: https://lundeen-studio.vercel.app/sitemap.xml
+Sitemap: https://mosaicbyte.vercel.app/sitemap.xml

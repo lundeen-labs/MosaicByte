@@ -18,7 +18,5 @@ playwright-report/
 .playwright-mcp/
 
 # Dev-server screenshots (ephemeral, never committed)
-mb-*.png
-p0-*.png
-p1-*.png
+screenshots/
 
