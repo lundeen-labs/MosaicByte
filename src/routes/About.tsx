@@ -1,3 +1,4 @@
+import { Link } from 'wouter'
 import { Layout } from '@/components/layout/Layout'
 import { Button } from '@/components/ui/Button'
 import { Seo } from '@/lib/seo'
@@ -60,7 +61,7 @@ export default function About() {
 
         <div className="border-t-2 border-[var(--color-ink)] pt-[var(--spacing-s7)]">
           <Button asChild variant="primary" size="lg">
-            <a href="/contact">Start a conversation →</a>
+            <Link href="/contact">Start a conversation →</Link>
           </Button>
         </div>
       </article>

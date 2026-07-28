@@ -1,7 +1,7 @@
 import * as Dialog from '@radix-ui/react-dialog'
 import { Link } from 'wouter'
 import { X } from 'lucide-react'
-import { cn } from '@/lib/utils'
+import { cn, withBasePath } from '@/lib/utils'
 import { COPY } from '@/content/copy'
 import { ThemeToggle } from '@/components/ui/ThemeToggle'
 
@@ -17,7 +17,9 @@ export interface MobileDrawerProps {
  * dismiss come for free.
  *
  * Renders the same nav links as Navbar plus the primary "Free audit" CTA.
- * Hash links (containing `#`) use plain <a>; SPA links use Wouter `<Link>`.
+ * Hash links (containing `#`) use plain <a> prefixed with `withBasePath()` (so
+ * they resolve under the GitHub Pages subpath deploy too); SPA links use
+ * wouter's `<Link>`, which prefixes automatically via the Router's `base`.
  */
 export function MobileDrawer({ open, onOpenChange, nav }: MobileDrawerProps) {
   return (
@@ -90,7 +92,7 @@ export function MobileDrawer({ open, onOpenChange, nav }: MobileDrawerProps) {
                 return (
                   <a
                     key={item.href}
-                    href={item.href}
+                    href={withBasePath(item.href)}
                     className={className}
                     onClick={() => onOpenChange(false)}
                   >
@@ -112,30 +114,57 @@ export function MobileDrawer({ open, onOpenChange, nav }: MobileDrawerProps) {
           </nav>
 
           <div className="border-t border-[var(--color-paper-3)] px-[var(--spacing-s5)] py-[var(--spacing-s5)]">
-            <a
-              href={COPY.nav.primaryCta.href}
-              onClick={() => onOpenChange(false)}
-              className={cn(
-                'inline-flex w-full items-center justify-center gap-2',
-                'bg-[var(--color-rust)] text-[var(--color-paper)]',
-                'border-[1.5px] border-[var(--color-ink)]',
-                'rounded-[var(--radius-r2)]',
-                '[box-shadow:0_2px_0_var(--color-ink),0_0_0_1.5px_var(--color-ink)]',
-                'px-[22px] py-[14px] font-body font-semibold text-base',
-                'transition-[transform,background] duration-[180ms]',
-                'hover:bg-[var(--color-rust-2)] hover:translate-y-px',
-                'active:translate-y-[2px]',
-                'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-rust)]',
-              )}
-            >
-              {COPY.nav.primaryCta.label}
-              <span
-                aria-hidden="true"
-                className="inline-block rounded-[var(--radius-r1)] border border-[var(--color-paper)]/40 px-[5px] py-[1px] font-mono text-[10px] tracking-[0.04em]"
+            {COPY.nav.primaryCta.href.includes('#') ? (
+              <a
+                href={withBasePath(COPY.nav.primaryCta.href)}
+                onClick={() => onOpenChange(false)}
+                className={cn(
+                  'inline-flex w-full items-center justify-center gap-2',
+                  'bg-[var(--color-rust)] text-[var(--color-paper)]',
+                  'border-[1.5px] border-[var(--color-ink)]',
+                  'rounded-[var(--radius-r2)]',
+                  '[box-shadow:0_2px_0_var(--color-ink),0_0_0_1.5px_var(--color-ink)]',
+                  'px-[22px] py-[14px] font-body font-semibold text-base',
+                  'transition-[transform,background] duration-[180ms]',
+                  'hover:bg-[var(--color-rust-2)] hover:translate-y-px',
+                  'active:translate-y-[2px]',
+                  'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-rust)]',
+                )}
               >
-                ↵
-              </span>
-            </a>
+                {COPY.nav.primaryCta.label}
+                <span
+                  aria-hidden="true"
+                  className="inline-block rounded-[var(--radius-r1)] border border-[var(--color-paper)]/40 px-[5px] py-[1px] font-mono text-[10px] tracking-[0.04em]"
+                >
+                  ↵
+                </span>
+              </a>
+            ) : (
+              <Link
+                href={COPY.nav.primaryCta.href}
+                onClick={() => onOpenChange(false)}
+                className={cn(
+                  'inline-flex w-full items-center justify-center gap-2',
+                  'bg-[var(--color-rust)] text-[var(--color-paper)]',
+                  'border-[1.5px] border-[var(--color-ink)]',
+                  'rounded-[var(--radius-r2)]',
+                  '[box-shadow:0_2px_0_var(--color-ink),0_0_0_1.5px_var(--color-ink)]',
+                  'px-[22px] py-[14px] font-body font-semibold text-base',
+                  'transition-[transform,background] duration-[180ms]',
+                  'hover:bg-[var(--color-rust-2)] hover:translate-y-px',
+                  'active:translate-y-[2px]',
+                  'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-rust)]',
+                )}
+              >
+                {COPY.nav.primaryCta.label}
+                <span
+                  aria-hidden="true"
+                  className="inline-block rounded-[var(--radius-r1)] border border-[var(--color-paper)]/40 px-[5px] py-[1px] font-mono text-[10px] tracking-[0.04em]"
+                >
+                  ↵
+                </span>
+              </Link>
+            )}
           </div>
         </Dialog.Content>
       </Dialog.Portal>

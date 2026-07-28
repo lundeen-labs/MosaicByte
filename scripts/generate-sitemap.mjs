@@ -1,6 +1,16 @@
 #!/usr/bin/env node
-// Generate dist/sitemap.xml from the static route list. No CMS yet, so we
-// hand-author the route inventory here. Update this when adding routes.
+// Generate dist/sitemap.xml and dist/robots.txt from the static route list.
+// No CMS yet, so we hand-author the route inventory here. Update this when
+// adding routes.
+//
+// robots.txt used to be a static file at public/robots.txt with a hardcoded
+// `Sitemap: https://mosaicbyte.vercel.app/sitemap.xml` line — wrong on every
+// build mode except the plain Vercel one (Vite copies public/ verbatim, with
+// no templating, so a GitHub Pages build deployed under
+// https://lundeen-labs.github.io/MosaicByte/ would still advertise the
+// Vercel sitemap URL). It's generated here instead, using the same
+// VITE_SITE_URL env var this script already reads for sitemap.xml, so both
+// files always agree on which origin actually built them.
 
 import { writeFileSync, existsSync, mkdirSync } from 'node:fs'
 import { join, dirname } from 'node:path'
@@ -36,6 +46,19 @@ const xml =
 
 const distDir = join(ROOT, 'dist')
 if (!existsSync(distDir)) mkdirSync(distDir, { recursive: true })
-const outPath = join(distDir, 'sitemap.xml')
-writeFileSync(outPath, xml, 'utf8')
-console.log(`[sitemap] ${ROUTES.length} routes -> ${outPath}`)
+
+const sitemapPath = join(distDir, 'sitemap.xml')
+writeFileSync(sitemapPath, xml, 'utf8')
+console.log(`[sitemap] ${ROUTES.length} routes -> ${sitemapPath}`)
+
+const robotsTxt =
+  `User-agent: *\n` +
+  `Allow: /\n` +
+  `Disallow: /admin\n` +
+  `Disallow: /api\n` +
+  `\n` +
+  `Sitemap: ${SITE_URL}/sitemap.xml\n`
+
+const robotsPath = join(distDir, 'robots.txt')
+writeFileSync(robotsPath, robotsTxt, 'utf8')
+console.log(`[robots] Sitemap -> ${SITE_URL}/sitemap.xml -> ${robotsPath}`)

@@ -1,5 +1,5 @@
 import { Link } from 'wouter'
-import { cn } from '@/lib/utils'
+import { cn, withBasePath } from '@/lib/utils'
 import { COPY } from '@/content/copy'
 
 export interface FooterColumn {
@@ -40,19 +40,35 @@ export function Footer({ columns, legal, colophon }: FooterProps) {
             </h2>
             <p className="text-[var(--color-ink-2)]">{COPY.cta.lede}</p>
           </div>
-          <a
-            href={COPY.cta.primary.href}
-            className={cn(
-              'inline-flex items-center gap-2 self-start',
-              'rounded-full bg-[var(--color-rust)] text-[var(--color-paper)]',
-              'px-6 py-3 text-[15px] font-semibold',
-              'transition-[background,transform] duration-[180ms]',
-              'hover:bg-[var(--color-rust-2)] hover:translate-y-[-1px]',
-              'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-rust)]',
-            )}
-          >
-            {COPY.cta.primary.label} <span aria-hidden="true">→</span>
-          </a>
+          {COPY.cta.primary.href.includes('#') ? (
+            <a
+              href={withBasePath(COPY.cta.primary.href)}
+              className={cn(
+                'inline-flex items-center gap-2 self-start',
+                'rounded-full bg-[var(--color-rust)] text-[var(--color-paper)]',
+                'px-6 py-3 text-[15px] font-semibold',
+                'transition-[background,transform] duration-[180ms]',
+                'hover:bg-[var(--color-rust-2)] hover:translate-y-[-1px]',
+                'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-rust)]',
+              )}
+            >
+              {COPY.cta.primary.label} <span aria-hidden="true">→</span>
+            </a>
+          ) : (
+            <Link
+              href={COPY.cta.primary.href}
+              className={cn(
+                'inline-flex items-center gap-2 self-start',
+                'rounded-full bg-[var(--color-rust)] text-[var(--color-paper)]',
+                'px-6 py-3 text-[15px] font-semibold',
+                'transition-[background,transform] duration-[180ms]',
+                'hover:bg-[var(--color-rust-2)] hover:translate-y-[-1px]',
+                'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-rust)]',
+              )}
+            >
+              {COPY.cta.primary.label} <span aria-hidden="true">→</span>
+            </Link>
+          )}
         </div>
 
         {/* Sitemap columns */}
@@ -72,10 +88,15 @@ export function Footer({ columns, legal, colophon }: FooterProps) {
                     'hover:text-[var(--color-ink)]',
                   )
                   if (isExternal || isHash || isStatic) {
+                    // isHash ('/#services') and isStatic ('/sitemap.xml') are
+                    // still internal, subpath-relative URLs — prefix with
+                    // withBasePath() so they resolve under the GitHub Pages
+                    // subpath deploy. isExternal (mailto:/https://) is a real
+                    // absolute URL and must stay untouched.
                     return (
                       <li key={item.href + item.label}>
                         <a
-                          href={item.href}
+                          href={isExternal ? item.href : withBasePath(item.href)}
                           className={className}
                           {...(isExternal ? { rel: 'noopener noreferrer' } : {})}
                         >

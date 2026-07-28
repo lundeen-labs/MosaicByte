@@ -1,4 +1,5 @@
 import { Component, type ErrorInfo, type ReactNode } from 'react'
+import { Link } from 'wouter'
 
 interface ErrorBoundaryProps {
   children: ReactNode
@@ -12,7 +13,10 @@ interface ErrorBoundaryState {
 
 /**
  * ErrorBoundary — catches render errors below it. Wraps the entire app
- * in `main.tsx` so a single component crash never blanks the page.
+ * in `main.tsx` (nested inside wouter's `<Router>`, not the reverse — so the
+ * fallback UI below, which uses wouter's `<Link>`, always renders inside a
+ * valid routing context even when the crash happened inside `<App />` itself)
+ * so a single component crash never blanks the page.
  *
  * Logs to console.error in dev. In production we pass through to whatever
  * error tracker is wired (Sentry/PostHog etc) — currently none, by design.
@@ -48,12 +52,12 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
         <pre className="max-w-full overflow-x-auto border border-[var(--color-paper-3)] bg-[var(--color-paper-2)] p-[var(--spacing-s4)] font-mono text-[12px] text-[var(--color-ink-2)]">
           {String(this.state.error)}
         </pre>
-        <a
+        <Link
           href="/"
           className="font-mono text-[11px] uppercase tracking-[0.08em] text-[var(--color-rust)] hover:text-[var(--color-rust-2)]"
         >
           ← Back to home
-        </a>
+        </Link>
       </div>
     )
   }

@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState, type FormEvent } from 'react'
+import { Link } from 'wouter'
 import { Layout } from '@/components/layout/Layout'
 import { Button } from '@/components/ui/Button'
 import { Seo } from '@/lib/seo'
@@ -156,7 +157,7 @@ export default function Contact() {
           </p>
           <div className="mt-12">
             <Button asChild variant="ghost">
-              <a href="/">← Back to home</a>
+              <Link href="/">← Back to home</Link>
             </Button>
           </div>
         </article>

@@ -1,5 +1,6 @@
 import { Check } from 'lucide-react'
-import { cn } from '@/lib/utils'
+import { Link } from 'wouter'
+import { cn, withBasePath } from '@/lib/utils'
 
 export interface PricingTierProps {
   eyebrow: string
@@ -78,20 +79,37 @@ export function PricingTier({
         ))}
       </ul>
 
-      <a
-        href={cta.href}
-        className={cn(
-          'mt-auto inline-flex items-center justify-center gap-2 rounded-full',
-          'px-5 py-3 text-[14px] font-semibold transition-[background,color,transform] duration-[180ms]',
-          'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-rust)]',
-          featured
-            ? 'bg-[var(--color-rust)] text-[var(--color-paper)] hover:bg-[var(--color-rust-2)] hover:translate-y-[-1px]'
-            : 'border border-[var(--color-paper-3)] text-[var(--color-ink)] hover:border-[var(--color-ink-2)] hover:bg-[var(--color-paper)]/40',
-        )}
-      >
-        {cta.label}
-        <span aria-hidden="true">→</span>
-      </a>
+      {cta.href.includes('#') ? (
+        <a
+          href={withBasePath(cta.href)}
+          className={cn(
+            'mt-auto inline-flex items-center justify-center gap-2 rounded-full',
+            'px-5 py-3 text-[14px] font-semibold transition-[background,color,transform] duration-[180ms]',
+            'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-rust)]',
+            featured
+              ? 'bg-[var(--color-rust)] text-[var(--color-paper)] hover:bg-[var(--color-rust-2)] hover:translate-y-[-1px]'
+              : 'border border-[var(--color-paper-3)] text-[var(--color-ink)] hover:border-[var(--color-ink-2)] hover:bg-[var(--color-paper)]/40',
+          )}
+        >
+          {cta.label}
+          <span aria-hidden="true">→</span>
+        </a>
+      ) : (
+        <Link
+          href={cta.href}
+          className={cn(
+            'mt-auto inline-flex items-center justify-center gap-2 rounded-full',
+            'px-5 py-3 text-[14px] font-semibold transition-[background,color,transform] duration-[180ms]',
+            'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-rust)]',
+            featured
+              ? 'bg-[var(--color-rust)] text-[var(--color-paper)] hover:bg-[var(--color-rust-2)] hover:translate-y-[-1px]'
+              : 'border border-[var(--color-paper-3)] text-[var(--color-ink)] hover:border-[var(--color-ink-2)] hover:bg-[var(--color-paper)]/40',
+          )}
+        >
+          {cta.label}
+          <span aria-hidden="true">→</span>
+        </Link>
+      )}
     </article>
   )
 }

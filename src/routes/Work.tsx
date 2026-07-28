@@ -1,6 +1,8 @@
+import { Link } from 'wouter'
 import { Layout } from '@/components/layout/Layout'
 import { Button } from '@/components/ui/Button'
 import { Seo } from '@/lib/seo'
+import { withBasePath } from '@/lib/utils'
 import { COPY } from '@/content/copy'
 
 /**
@@ -44,9 +46,15 @@ export default function Work() {
 
         <div className="mt-12 border-t border-[var(--color-paper-3)] pt-12">
           <Button asChild variant="primary" size="lg">
-            <a href={work.cta.href}>
-              {work.cta.label} <span aria-hidden="true">→</span>
-            </a>
+            {work.cta.href.includes('#') ? (
+              <a href={withBasePath(work.cta.href)}>
+                {work.cta.label} <span aria-hidden="true">→</span>
+              </a>
+            ) : (
+              <Link href={work.cta.href}>
+                {work.cta.label} <span aria-hidden="true">→</span>
+              </Link>
+            )}
           </Button>
         </div>
       </article>

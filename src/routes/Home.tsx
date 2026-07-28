@@ -1,3 +1,4 @@
+import { Link } from 'wouter'
 import { Layout } from '@/components/layout/Layout'
 import HeroA from '@/components/hero/HeroA'
 import { PricingTier } from '@/components/ui/PricingTier'
@@ -6,6 +7,7 @@ import { FAQAccordion } from '@/components/ui/FAQAccordion'
 import { Button } from '@/components/ui/Button'
 import { Seo } from '@/lib/seo'
 import { personJsonLd, orgJsonLd, faqJsonLd } from '@/lib/seo-data'
+import { withBasePath } from '@/lib/utils'
 import { COPY } from '@/content/copy'
 
 interface SectionHeaderProps {
@@ -143,12 +145,22 @@ export default function Home() {
             </div>
             <div className="flex flex-col gap-3 md:flex-row md:items-center">
               <Button asChild variant="primary" size="lg">
-                <a href={COPY.cta.primary.href}>
-                  {COPY.cta.primary.label} <span aria-hidden="true">→</span>
-                </a>
+                {COPY.cta.primary.href.includes('#') ? (
+                  <a href={withBasePath(COPY.cta.primary.href)}>
+                    {COPY.cta.primary.label} <span aria-hidden="true">→</span>
+                  </a>
+                ) : (
+                  <Link href={COPY.cta.primary.href}>
+                    {COPY.cta.primary.label} <span aria-hidden="true">→</span>
+                  </Link>
+                )}
               </Button>
               <Button asChild variant="ghost" size="lg">
-                <a href={COPY.cta.secondary.href}>{COPY.cta.secondary.label}</a>
+                {COPY.cta.secondary.href.includes('#') ? (
+                  <a href={withBasePath(COPY.cta.secondary.href)}>{COPY.cta.secondary.label}</a>
+                ) : (
+                  <Link href={COPY.cta.secondary.href}>{COPY.cta.secondary.label}</Link>
+                )}
               </Button>
             </div>
           </div>

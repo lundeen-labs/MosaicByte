@@ -1,7 +1,7 @@
 import { lazy, Suspense, useState } from 'react'
 import { Link } from 'wouter'
 import { Menu } from 'lucide-react'
-import { cn } from '@/lib/utils'
+import { cn, withBasePath } from '@/lib/utils'
 import { COPY } from '@/content/copy'
 import { ThemeToggle } from '@/components/ui/ThemeToggle'
 
@@ -83,7 +83,7 @@ export function Navbar({ current }: NavbarProps) {
               return (
                 <li key={item.href}>
                   {isHash ? (
-                    <a href={item.href} aria-current={isActive ? 'page' : undefined} className={linkClass}>
+                    <a href={withBasePath(item.href)} aria-current={isActive ? 'page' : undefined} className={linkClass}>
                       {item.label}
                     </a>
                   ) : (
@@ -100,20 +100,37 @@ export function Navbar({ current }: NavbarProps) {
         {/* Right cluster: theme toggle + primary CTA (>=768px) */}
         <div className="hidden md:flex items-center gap-3">
           <ThemeToggle />
-          <a
-            href={primaryCta.href}
-            className={cn(
-              'inline-flex items-center gap-2',
-              'rounded-full bg-[var(--color-rust)] text-[var(--color-paper)]',
-              'px-5 py-2.5 text-[14px] font-semibold',
-              'transition-[background,transform] duration-[180ms]',
-              'hover:bg-[var(--color-rust-2)] hover:translate-y-[-1px]',
-              'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-rust)]',
-            )}
-          >
-            {primaryCta.label}
-            <span aria-hidden="true">→</span>
-          </a>
+          {primaryCta.href.includes('#') ? (
+            <a
+              href={withBasePath(primaryCta.href)}
+              className={cn(
+                'inline-flex items-center gap-2',
+                'rounded-full bg-[var(--color-rust)] text-[var(--color-paper)]',
+                'px-5 py-2.5 text-[14px] font-semibold',
+                'transition-[background,transform] duration-[180ms]',
+                'hover:bg-[var(--color-rust-2)] hover:translate-y-[-1px]',
+                'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-rust)]',
+              )}
+            >
+              {primaryCta.label}
+              <span aria-hidden="true">→</span>
+            </a>
+          ) : (
+            <Link
+              href={primaryCta.href}
+              className={cn(
+                'inline-flex items-center gap-2',
+                'rounded-full bg-[var(--color-rust)] text-[var(--color-paper)]',
+                'px-5 py-2.5 text-[14px] font-semibold',
+                'transition-[background,transform] duration-[180ms]',
+                'hover:bg-[var(--color-rust-2)] hover:translate-y-[-1px]',
+                'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-rust)]',
+              )}
+            >
+              {primaryCta.label}
+              <span aria-hidden="true">→</span>
+            </Link>
+          )}
         </div>
 
         {/* Mobile hamburger (<768px) */}

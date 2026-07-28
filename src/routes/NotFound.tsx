@@ -1,6 +1,8 @@
+import { Link } from 'wouter'
 import { Layout } from '@/components/layout/Layout'
 import { Button } from '@/components/ui/Button'
 import { Seo } from '@/lib/seo'
+import { withBasePath } from '@/lib/utils'
 import { COPY } from '@/content/copy'
 
 export default function NotFound() {
@@ -27,7 +29,11 @@ export default function NotFound() {
         <p className="max-w-[60ch] text-[var(--color-ink-2)]">{COPY.notFound.body}</p>
         <div className="mt-[var(--spacing-s4)]">
           <Button asChild variant="primary" size="lg">
-            <a href={COPY.notFound.cta.href}>{COPY.notFound.cta.label} →</a>
+            {COPY.notFound.cta.href.includes('#') ? (
+              <a href={withBasePath(COPY.notFound.cta.href)}>{COPY.notFound.cta.label} →</a>
+            ) : (
+              <Link href={COPY.notFound.cta.href}>{COPY.notFound.cta.label} →</Link>
+            )}
           </Button>
         </div>
       </section>

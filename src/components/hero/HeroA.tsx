@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
-import { cn } from '@/lib/utils'
+import { Link } from 'wouter'
+import { cn, withBasePath } from '@/lib/utils'
 import { COPY } from '@/content/copy'
 import { usePrefersReducedMotion } from '@/lib/reduced-motion'
 
@@ -141,29 +142,58 @@ export default function HeroA({
             </p>
 
             <div className="fade-up fade-up-3 flex flex-wrap items-center gap-5">
-              <a
-                href={primaryCta.href}
-                className={cn(
-                  'inline-flex items-center gap-2 rounded-[2px]',
-                  'bg-[var(--color-rust)] px-6 py-3',
-                  'text-[12px] font-medium uppercase tracking-[0.08em] text-[var(--color-paper)]',
-                  'transition-opacity duration-[150ms] hover:opacity-90',
-                  'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-rust)]',
-                )}
-              >
-                {primaryCta.label}
-              </a>
-              <a
-                href={secondaryCta.href}
-                className={cn(
-                  'inline-flex items-center gap-1.5',
-                  'text-[12px] font-medium uppercase tracking-[0.08em] text-[var(--color-ink-3)]',
-                  'transition-colors duration-[150ms] hover:text-[var(--color-ink)]',
-                  'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-rust)]',
-                )}
-              >
-                {secondaryCta.label} <span aria-hidden="true">→</span>
-              </a>
+              {primaryCta.href.includes('#') ? (
+                <a
+                  href={withBasePath(primaryCta.href)}
+                  className={cn(
+                    'inline-flex items-center gap-2 rounded-[2px]',
+                    'bg-[var(--color-rust)] px-6 py-3',
+                    'text-[12px] font-medium uppercase tracking-[0.08em] text-[var(--color-paper)]',
+                    'transition-opacity duration-[150ms] hover:opacity-90',
+                    'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-rust)]',
+                  )}
+                >
+                  {primaryCta.label}
+                </a>
+              ) : (
+                <Link
+                  href={primaryCta.href}
+                  className={cn(
+                    'inline-flex items-center gap-2 rounded-[2px]',
+                    'bg-[var(--color-rust)] px-6 py-3',
+                    'text-[12px] font-medium uppercase tracking-[0.08em] text-[var(--color-paper)]',
+                    'transition-opacity duration-[150ms] hover:opacity-90',
+                    'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-rust)]',
+                  )}
+                >
+                  {primaryCta.label}
+                </Link>
+              )}
+              {secondaryCta.href.includes('#') ? (
+                <a
+                  href={withBasePath(secondaryCta.href)}
+                  className={cn(
+                    'inline-flex items-center gap-1.5',
+                    'text-[12px] font-medium uppercase tracking-[0.08em] text-[var(--color-ink-3)]',
+                    'transition-colors duration-[150ms] hover:text-[var(--color-ink)]',
+                    'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-rust)]',
+                  )}
+                >
+                  {secondaryCta.label} <span aria-hidden="true">→</span>
+                </a>
+              ) : (
+                <Link
+                  href={secondaryCta.href}
+                  className={cn(
+                    'inline-flex items-center gap-1.5',
+                    'text-[12px] font-medium uppercase tracking-[0.08em] text-[var(--color-ink-3)]',
+                    'transition-colors duration-[150ms] hover:text-[var(--color-ink)]',
+                    'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-rust)]',
+                  )}
+                >
+                  {secondaryCta.label} <span aria-hidden="true">→</span>
+                </Link>
+              )}
             </div>
 
             <ul className="fade-up fade-up-4 mt-1 flex flex-col gap-1.5 text-[11px] uppercase tracking-[0.06em] text-[var(--color-ink-3)]">
