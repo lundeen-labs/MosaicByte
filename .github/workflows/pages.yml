@@ -3,7 +3,7 @@ name: Deploy to GitHub Pages
 # Additive to the existing Vercel deployment — Vercel remains the production
 # host for the site + the api/contact.ts serverless function. This workflow
 # only builds and publishes a static mirror to GitHub Pages
-# (https://outtsett.github.io/MosaicByte/). It does not touch vercel.json,
+# (https://lundeen-labs.github.io/MosaicByte/). It does not touch vercel.json,
 # the Vercel project, or any Vercel deploy hook.
 
 on:
@@ -39,7 +39,7 @@ jobs:
       - name: Build (GitHub Pages mode)
         env:
           GITHUB_PAGES: 'true'
-          VITE_SITE_URL: https://outtsett.github.io/MosaicByte
+          VITE_SITE_URL: https://lundeen-labs.github.io/MosaicByte
           VITE_API_BASE_URL: https://mosaicbyte.vercel.app
         run: npm run build
 

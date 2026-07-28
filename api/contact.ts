@@ -15,7 +15,7 @@ const DEFAULT_FROM = 'Mosaic Byte <onboarding@resend.dev>'
 // (src/routes/Contact.tsx VITE_API_BASE_URL). Scoped to this exact origin,
 // not '*', because the endpoint accepts a POST carrying a Turnstile token
 // and should not be callable from an arbitrary third-party page.
-const ALLOWED_ORIGIN = 'https://outtsett.github.io'
+const ALLOWED_ORIGIN = 'https://lundeen-labs.github.io'
 
 function corsHeaders(origin: string | null): Record<string, string> {
   if (origin !== ALLOWED_ORIGIN) return {}
