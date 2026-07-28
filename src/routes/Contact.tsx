@@ -8,6 +8,13 @@ type Status = 'idle' | 'submitting' | 'success' | 'error'
 
 const TURNSTILE_SITE_KEY = import.meta.env.VITE_TURNSTILE_SITE_KEY as string | undefined
 
+// Empty string preserves the Vercel build's same-origin relative fetch
+// ('/api/contact'). The GitHub Pages build (static-only, no serverless
+// functions) sets VITE_API_BASE_URL to the Vercel origin at build time
+// (see .github/workflows/pages.yml) so the form posts cross-origin to the
+// real API. api/contact.ts allows that specific origin via CORS.
+const API_BASE = (import.meta.env.VITE_API_BASE_URL as string | undefined) ?? ''
+
 const inputClass =
   'w-full rounded-xl border border-[var(--color-paper-3)] bg-[var(--color-paper-2)] px-4 py-3 text-[15px] text-[var(--color-ink)] placeholder:text-[var(--color-ink-3)] focus:border-[var(--color-rust)] focus:outline-none aria-invalid:border-[var(--color-rust)] transition-[border-color] duration-[180ms]'
 
@@ -91,7 +98,7 @@ export default function Contact() {
     }
 
     try {
-      const res = await fetch('/api/contact', {
+      const res = await fetch(`${API_BASE}/api/contact`, {
         method: 'POST',
         headers: { 'content-type': 'application/json' },
         body: JSON.stringify(payload),

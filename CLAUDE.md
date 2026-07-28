@@ -152,10 +152,11 @@ src/
   lib/            cn() helper (D0); seo, analytics, theme, reduced-motion (D8/D9)
   content/        copy.ts (D7)
   test/           Vitest setup
-api/              (D4) Vercel serverless: contact.ts + _lib (turnstile, resend, ratelimit, schema)
+api/              (D4) Vercel serverless: contact.ts (+CORS for the Pages mirror) + _lib (turnstile, resend, ratelimit, schema)
 content/case-studies/   (D6) MDX
 public/og/       (D8) Open Graph PNGs
 scripts/         (D8) generate-sitemap.mjs
+.github/workflows/pages.yml   GitHub Pages static-mirror deploy (additive to Vercel)
 ```
 
 ## Justified deviations from MathLens conventions
@@ -216,6 +217,20 @@ npx vitest run api/__tests__
 - `VITE_VERCEL_ANALYTICS=1` — gates `@vercel/analytics` lazy load.
 
 Rate-limit is in-memory per Vercel instance (soft). For >1k visits/day or DDoS exposure, add `@upstash/redis` + `@upstash/ratelimit` (free tier) — small follow-up; not blocking launch.
+
+## GitHub Pages deploy path (added 2026-07-28)
+
+The site now builds and deploys to a **static GitHub Pages mirror** at `https://outtsett.github.io/MosaicByte/`, additive alongside the primary Vercel deploy. Vercel remains production; Pages is a secondary static mirror. Nothing about the Vercel build path changed — with no env vars set, `npm run build` still emits root-relative assets (`/assets/...`, `/favicon.svg`), verified 2026-07-28.
+
+- **`vite.config.ts`**: `base` is now `process.env.GITHUB_PAGES === 'true' ? '/MosaicByte/' : '/'`. Only the Pages workflow sets `GITHUB_PAGES=true`; Vercel never sets it, so Vercel's build is byte-for-byte unaffected (asset URLs stay root-relative).
+- **`src/routes/Contact.tsx`**: added `API_BASE = import.meta.env.VITE_API_BASE_URL ?? ''`; the fetch call is now `` fetch(`${API_BASE}/api/contact`, ...) ``. Empty string preserves the Vercel build's same-origin relative fetch. The Pages build sets `VITE_API_BASE_URL=https://mosaicbyte.vercel.app` at build time, so the statically-hosted form POSTs cross-origin to the real Vercel-hosted serverless function — GitHub Pages cannot host `api/contact.ts` itself (static files only).
+- **`api/contact.ts`**: added scoped CORS. `ALLOWED_ORIGIN = 'https://outtsett.github.io'` (exact origin, not `*` — this endpoint accepts a POST carrying a Turnstile token). `corsHeaders()` returns `Access-Control-Allow-Origin` + `Access-Control-Allow-Methods: POST, OPTIONS` + `Access-Control-Allow-Headers: content-type` + `Vary: Origin` only when the request's `Origin` header matches exactly; every response (including a new `OPTIONS` preflight branch returning 204) now threads those headers through the shared `json()` helper's new `extraHeaders` param. No CORS handling existed anywhere in `api/_lib/*` before this — this is net-new, not a replacement.
+- **`.github/workflows/pages.yml`** (new): triggers on push to `main` + `workflow_dispatch`. `npm ci` → `npm run build` with `GITHUB_PAGES=true`, `VITE_SITE_URL=https://outtsett.github.io/MosaicByte`, `VITE_API_BASE_URL=https://mosaicbyte.vercel.app` → copies `dist/index.html` to `dist/404.html` (GitHub Pages SPA-fallback trick — Wouter's client-side router then renders the correct route from the URL on any direct hit/refresh to a non-root path, since Pages has no server-side rewrite) → `actions/upload-pages-artifact@v3` → `actions/deploy-pages@v4` with `permissions: {pages: write, id-token: write}` and `environment: github-pages`.
+- **`eslint.config.js`**: `.remember` (a Claude-tooling scratch directory, gitignored, unrelated to this site's source) added to `globalIgnores` alongside `dist`/`node_modules`/`.vercel` — a stray timestamp file in there (`.remember/tmp/last-ndc.ts`) was tripping `npm run lint`, unrelated to this task but blocking the "0 lint errors" gate.
+- **No custom domain found** — `vercel.json` + `DEPLOY.md` confirm the live Vercel origin is still the `mosaicbyte.vercel.app` subdomain (no custom domain configured), so that's the value used for `VITE_API_BASE_URL` and the CORS allowlist target.
+- Deliberately **not done** (out of scope per the task): CSP/security headers from `vercel.json` are not re-declared as `<meta>` tags in `index.html` for the Pages build — the Pages mirror ships without Vercel's CSP/HSTS/X-Frame-Options headers. Flagged, not fixed.
+
+Verified 2026-07-28: `npx tsc --noEmit` 0 errors, `npm run lint` 0 errors, `npx vitest run` 58/58 (same as pre-change baseline). Pages-mode build (`GITHUB_PAGES=true VITE_SITE_URL=... VITE_API_BASE_URL=... npm run build`) confirmed `dist/index.html` references `/MosaicByte/assets/...` + `/MosaicByte/favicon.svg`, `dist/404.html` is byte-identical to `dist/index.html`, and `dist/assets/Contact-*.js` contains the literal string `mosaicbyte.vercel.app`. Plain `npm run build` (no env vars) confirmed `dist/index.html` still references bare `/assets/...` — zero `/MosaicByte/` occurrences.
 
 ## Open questions for Tyler
 

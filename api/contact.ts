@@ -10,25 +10,51 @@ export const config = { runtime: 'nodejs' }
 const RECIPIENT = process.env.CONTACT_RECIPIENT ?? 'tyler.lundeen1995@gmail.com'
 const DEFAULT_FROM = 'Mosaic Byte <onboarding@resend.dev>'
 
+// The GitHub Pages mirror (static-only — it cannot host this serverless
+// function) posts here cross-origin using an absolute URL
+// (src/routes/Contact.tsx VITE_API_BASE_URL). Scoped to this exact origin,
+// not '*', because the endpoint accepts a POST carrying a Turnstile token
+// and should not be callable from an arbitrary third-party page.
+const ALLOWED_ORIGIN = 'https://outtsett.github.io'
+
+function corsHeaders(origin: string | null): Record<string, string> {
+  if (origin !== ALLOWED_ORIGIN) return {}
+  return {
+    'Access-Control-Allow-Origin': ALLOWED_ORIGIN,
+    'Access-Control-Allow-Methods': 'POST, OPTIONS',
+    'Access-Control-Allow-Headers': 'content-type',
+    Vary: 'Origin',
+  }
+}
+
 export default async function handler(req: Request): Promise<Response> {
+  const cors = corsHeaders(req.headers.get('origin'))
+
+  // The browser preflights the actual POST because it carries a
+  // content-type: application/json header, which is not a CORS-simple
+  // request. Answer the preflight before any other check.
+  if (req.method === 'OPTIONS') {
+    return new Response(null, { status: 204, headers: cors })
+  }
+
   if (req.method !== 'POST') {
-    return json({ error: 'method-not-allowed' }, 405)
+    return json({ error: 'method-not-allowed' }, 405, cors)
   }
 
   const ip = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 'unknown'
   if (!checkRate(ip)) {
-    return json({ error: 'rate-limited' }, 429)
+    return json({ error: 'rate-limited' }, 429, cors)
   }
 
   const body = await req.json().catch(() => null)
   const parsed = ContactSchema.safeParse(body)
   if (!parsed.success) {
-    return json({ error: 'invalid', issues: parsed.error.flatten() }, 400)
+    return json({ error: 'invalid', issues: parsed.error.flatten() }, 400, cors)
   }
 
   const ok = await verifyTurnstile(parsed.data.turnstileToken, ip)
   if (!ok) {
-    return json({ error: 'turnstile-failed' }, 403)
+    return json({ error: 'turnstile-failed' }, 403, cors)
   }
 
   try {
@@ -39,17 +65,17 @@ export default async function handler(req: Request): Promise<Response> {
       replyTo: parsed.data.email,
       html: renderInquiry(parsed.data),
     })
-    return json({ ok: true })
+    return json({ ok: true }, 200, cors)
   } catch (err) {
     console.error('[contact]', err)
-    return json({ error: 'internal' }, 500)
+    return json({ error: 'internal' }, 500, cors)
   }
 }
 
-function json(data: unknown, status = 200): Response {
+function json(data: unknown, status = 200, extraHeaders: Record<string, string> = {}): Response {
   return new Response(JSON.stringify(data), {
     status,
-    headers: { 'content-type': 'application/json' },
+    headers: { 'content-type': 'application/json', ...extraHeaders },
   })
 }
 

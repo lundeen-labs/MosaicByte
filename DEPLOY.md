@@ -88,6 +88,22 @@ Commit + redeploy. The whole positioning depends on these being honest.
 
 ---
 
+## GitHub Pages (secondary static mirror, added 2026-07-28)
+
+A static mirror deploys automatically to `https://outtsett.github.io/MosaicByte/` on every push to `main`, via `.github/workflows/pages.yml`. This is **additive** — Vercel remains the production host and owns `api/contact.ts`; nothing about the Vercel build path changed.
+
+How it stays correct without a server:
+- **Asset paths**: `vite.config.ts` sets `base: '/MosaicByte/'` only when the workflow sets `GITHUB_PAGES=true` (never set for the Vercel build, so Vercel's output is unaffected).
+- **Contact form**: GitHub Pages is static-only and cannot host `api/contact.ts`. The workflow builds with `VITE_API_BASE_URL=https://mosaicbyte.vercel.app`, so `src/routes/Contact.tsx` posts to the real Vercel-hosted endpoint using an absolute URL instead of a relative one. `api/contact.ts` allows that cross-origin POST via a scoped CORS allowlist (`ALLOWED_ORIGIN = 'https://outtsett.github.io'`, not `*`), including an `OPTIONS` preflight branch.
+- **SEO tags**: the workflow sets `VITE_SITE_URL=https://outtsett.github.io/MosaicByte` so canonical/OG/JSON-LD tags on the Pages mirror point at the Pages URL, not the Vercel one.
+- **Client-side routing**: Wouter routes (`/work`, `/about`, `/contact`, `/privacy`) 404 on a direct hit or refresh under GitHub Pages (no server-side rewrite). The workflow copies `dist/index.html` to `dist/404.html` after build — GitHub Pages serves `404.html` for any unmatched path, and since it's the same SPA shell, Wouter then renders the correct route from the URL.
+
+One-time repo setup (GitHub UI, not code): Settings → Pages → Source → "GitHub Actions". No manual step is needed after that; every push to `main` redeploys.
+
+To trigger manually without a push: Actions tab → "Deploy to GitHub Pages" → Run workflow (`workflow_dispatch`).
+
+Known deviation: the Pages mirror does not carry `vercel.json`'s CSP/HSTS/security headers (GitHub Pages doesn't support custom response headers without a third-party proxy). Not fixed — flagged as a separate decision, out of scope for the mirror to function.
+
 ## Custom domain
 
 When ready:
