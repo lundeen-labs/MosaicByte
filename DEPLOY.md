@@ -1,6 +1,6 @@
 # Deploy — Mosaic Byte
 
-Status: **ready for first deploy** as of commit `6f0e918` (post-Wave-4).
+Status: **ready for first deploy**.
 
 All quality gates pass:
 - `npx tsc -b --force` → 0 errors
@@ -8,126 +8,18 @@ All quality gates pass:
 - `npx vitest run` → 89/89 tests pass
 - `npm run build` → `dist/` produced, sitemap + robots + favicon emitted
 
-P0 launch-blockers (from the 2026-05-25 deep-research audit) are fixed: Turnstile now renders (explicit mode), `vercel.json` ships security headers + CSP, contrast meets WCAG AA, `/privacy` exists, and real-user CWV is collected via Vercel Speed Insights. See `docs/improvement-roadmap.md` for the full P0/P1/P2 backlog.
-
 ---
 
-## One-time setup (you do these once, manually)
+## Deployment
 
-Three external services need accounts. All free tiers cover this site at expected traffic.
+This site is statically hosted on GitHub Pages and deployed automatically via GitHub Actions (`.github/workflows/pages.yml`) on every push to the `main` branch. 
 
-### 1. Resend (email delivery)
-
-- Sign up at https://resend.com (free tier: 3,000 emails/month, 100/day)
-- Verify your domain when ready (or use the shared `onboarding@resend.dev` sender for testing)
-- Create an API key under "API Keys" — copy the `re_*` value
-
-### 2. Cloudflare Turnstile (spam protection)
-
-- Sign up at https://dash.cloudflare.com (free)
-- Navigate to Turnstile → Add site
-- Domain: `mosaicbyte.vercel.app` (and your custom domain when added)
-- Widget mode: Managed
-- Copy both the **site key** (public, prefixed `0x4AAA…`) and the **secret key** (server-side, prefixed `0x4AAA…`)
-
-### 3. Vercel (hosting)
-
-- Sign up at https://vercel.com (free tier covers everything here)
-- Install CLI globally: `npm install -g vercel`
-- Authenticate: `vercel login` (opens browser)
-
----
-
-## First deploy
-
-From `E:\source\repos\Applications\MosaicByte`:
-
-```bash
-# 1. Link the local repo to a new Vercel project
-vercel link --yes
-
-# 2. Add env vars to Vercel (production scope)
-#    You'll be prompted for each value — paste from the dashboards above
-vercel env add RESEND_API_KEY production
-vercel env add TURNSTILE_SECRET production
-vercel env add VITE_TURNSTILE_SITE_KEY production
-
-# 3. Optional: custom site URL for canonical tags + sitemap
-vercel env add VITE_SITE_URL production
-# Value: https://your-domain.com  (skip for now if using vercel.app subdomain)
-
-# 4. Deploy a preview
-vercel deploy
-
-# 5. Test the preview URL it prints
-#    - Visit /, /work, /about, /contact in a browser
-#    - Submit the contact form (should return 200 + email arrives at tyler.lundeen1995@gmail.com)
-#    - View page source: confirm OG meta tags + JSON-LD blobs
-
-# 6. Promote to production
-vercel deploy --prod
-```
-
----
-
-## After deploy: replace placeholder metrics
-
-Status strip and Hero A gauge currently show invented numbers. Real-user CWV is now collected automatically via Vercel Speed Insights (`<SpeedInsights/>` in `src/main.tsx`) — read the field LCP/INP/CLS from the Vercel dashboard once traffic accrues. Until then, run a Lighthouse pass against the production URL and update `src/content/copy.ts`:
-
-```ts
-// src/content/copy.ts → COPY.status.metrics (and COPY.hero.gauge)
-metrics: {
-  lcp: 'LCP 0.93s',     // ← real number from production CrUX or Lighthouse
-  cls: 'CLS 0.02',
-  inp: 'INP 110ms',
-  jsKb: 'JS 142KB',     // ← gzip size from build output
-}
-```
-
-Commit + redeploy. The whole positioning depends on these being honest.
-
----
-
-## GitHub Pages (secondary static mirror, added 2026-07-28)
-
-A static mirror deploys automatically to `https://lundeen-labs.github.io/MosaicByte/` on every push to `main`, via `.github/workflows/pages.yml`. This is **additive** — Vercel remains the production host and owns `api/contact.ts`; nothing about the Vercel build path changed.
-
-How it stays correct without a server:
-- **Asset paths**: `vite.config.ts` sets `base: '/MosaicByte/'` only when the workflow sets `GITHUB_PAGES=true` (never set for the Vercel build, so Vercel's output is unaffected).
-- **Contact form**: GitHub Pages is static-only and cannot host `api/contact.ts`. The workflow builds with `VITE_API_BASE_URL=https://mosaicbyte.vercel.app`, so `src/routes/Contact.tsx` posts to the real Vercel-hosted endpoint using an absolute URL instead of a relative one. `api/contact.ts` allows that cross-origin POST via a scoped CORS allowlist (`ALLOWED_ORIGIN = 'https://lundeen-labs.github.io'`, not `*`), including an `OPTIONS` preflight branch.
-- **SEO tags**: the workflow sets `VITE_SITE_URL=https://lundeen-labs.github.io/MosaicByte` so canonical/OG/JSON-LD tags on the Pages mirror point at the Pages URL, not the Vercel one.
-- **Client-side routing**: Wouter routes (`/work`, `/about`, `/contact`, `/privacy`) 404 on a direct hit or refresh under GitHub Pages (no server-side rewrite). The workflow copies `dist/index.html` to `dist/404.html` after build — GitHub Pages serves `404.html` for any unmatched path, and since it's the same SPA shell, Wouter then renders the correct route from the URL.
-
-One-time repo setup (GitHub UI, not code): Settings → Pages → Source → "GitHub Actions". No manual step is needed after that; every push to `main` redeploys.
-
-To trigger manually without a push: Actions tab → "Deploy to GitHub Pages" → Run workflow (`workflow_dispatch`).
-
-Known deviation: the Pages mirror does not carry `vercel.json`'s CSP/HSTS/security headers (GitHub Pages doesn't support custom response headers without a third-party proxy). Not fixed — flagged as a separate decision, out of scope for the mirror to function.
-
-## Custom domain
-
-When ready:
-
-1. Buy domain (Namecheap, Cloudflare Registrar, etc.)
-2. Vercel dashboard → Project → Settings → Domains → Add
-3. Vercel shows the DNS records to add at your registrar (CNAME or A)
-4. Update `VITE_SITE_URL` env var to the real URL
-5. Redeploy production
-
-Vercel handles SSL automatically.
-
----
-
-## Outstanding items (from Phase E audit)
-
-| Item | Owner | When |
-|---|---|---|
-| Replace status-strip placeholder numbers with real Lighthouse output | Tyler | Post first prod deploy |
-| Replace 3 invented case studies (Acme/Pulse/Orbital) with real client work or rebrand as "samples" | Tyler | Before public announce |
-| Add real 1200×630 OG images for /, /work, /about, /contact | Tyler / designer | Before social sharing |
-| Migrate WorkDetail.tsx from inline data to MDX (deferred from D6) | Optional | Follow-up |
-| Lazy-mount MobileDrawer to drop raw bundle below 200KB gate | Optional | Perf hardening |
-| Wire Cal.com modal to primary CTAs | Optional | Nice-to-have |
+### Setting up a custom domain
+1. Ensure the `public/CNAME` file contains your domain name (e.g. `mosaicbyte.design`).
+2. Add your custom domain to your GitHub repository settings under Settings → Pages.
+3. Update DNS settings at your domain registrar.
+   - Create a `CNAME` record pointing your domain (or a subdomain) to your GitHub Pages URL (e.g., `lundeen-labs.github.io`).
+   - If you are using an apex domain, configure the necessary `A` records to point to GitHub's IPs.
 
 ---
 
@@ -151,9 +43,6 @@ npm run test:ui       # vitest UI dashboard
 - `src/lib/seo.tsx` + `src/lib/seo-data.ts` — Helmet wrapper + JSON-LD blobs (Person, ProfessionalService, FAQPage)
 - `src/components/{hero,ui,layout,case-study}/` — domain-grouped components
 - `src/routes/` — 7 lazy-loaded route components (Home, Work, WorkDetail, About, Contact, Privacy, NotFound)
-- `api/contact.ts` — Vercel serverless POST handler (Zod + Turnstile + Resend + soft rate-limit)
 - `scripts/generate-sitemap.mjs` — runs at build time, emits `dist/sitemap.xml` (8 routes)
-- `vercel.json` — runtime config, route rewrites, security headers + CSP
-- `src/main.tsx` — root render; mounts `<SpeedInsights/>` for real-user CWV
-- `docs/plans/launch-multiple-agents-to-glittery-wolf.md` — original multi-agent pipeline plan
+- `src/main.tsx` — root render
 - `C:\tmp\mosaicbyte-research\` — research artifacts (competitor analysis, design system, mockups, task graph, audit report)

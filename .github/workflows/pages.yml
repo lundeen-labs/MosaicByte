@@ -1,10 +1,6 @@
 name: Deploy to GitHub Pages
 
-# Additive to the existing Vercel deployment — Vercel remains the production
-# host for the site + the api/contact.ts serverless function. This workflow
-# only builds and publishes a static mirror to GitHub Pages
-# (https://lundeen-labs.github.io/MosaicByte/). It does not touch vercel.json,
-# the Vercel project, or any Vercel deploy hook.
+# This workflow builds and publishes a static mirror to GitHub Pages
 
 on:
   push:
@@ -40,7 +36,6 @@ jobs:
         env:
           GITHUB_PAGES: 'true'
           VITE_SITE_URL: https://mosaicbyte.design
-          VITE_API_BASE_URL: https://mosaicbyte.vercel.app
         run: npm run build
 
       - name: SPA fallback for client-side routing

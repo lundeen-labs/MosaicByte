@@ -12,8 +12,7 @@ This project follows the **Developer-Action** model. Claude (Developer) is respo
 ## Tech Stack
 
 - **Frontend:** React 19, Vite, TypeScript, Tailwind v4, Wouter, Framer Motion, Radix UI.
-- **Backend:** Node.js Serverless Functions (Vercel).
-- **Communication:** Resend (Email), Cloudflare Turnstile (Bot Protection).
+- **Backend:** Static (GitHub Pages), Mailto links for contact.
 
 ## Directory Structure
 

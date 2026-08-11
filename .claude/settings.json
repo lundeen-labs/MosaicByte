@@ -80,7 +80,7 @@
       "WebSearch",
       "WebFetch(domain:resend.com)",
       "WebFetch(domain:cloudflare.com)",
-      "WebFetch(domain:vercel.com)",
+
       "WebFetch(domain:web.dev)",
       "WebFetch(domain:developer.mozilla.org)",
       "WebFetch(domain:react.dev)",
@@ -99,8 +99,7 @@
       "Bash(rm -rf:*)",
       "Bash(rm -rf /:*)",
       "Bash(npm publish:*)",
-      "Bash(npx vercel deploy --prod)",
-      "Bash(npx vercel --prod)",
+
       "Read(//e/source/repos/Applications/MosaicByte/.env)",
       "Read(//e/source/repos/Applications/MosaicByte/.env.local)",
       "Read(//e/source/repos/Applications/MosaicByte/.env.production)"
@@ -108,7 +107,6 @@
   },
   "env": {
     "NODE_ENV": "development",
-    "VITE_SITE_URL": "https://mosaicbyte.vercel.app"
   },
   "hooks": {
     "PostToolUse": [
@@ -125,3 +123,4 @@
     ]
   }
 }
+
