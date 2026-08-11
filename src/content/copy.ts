@@ -244,7 +244,7 @@ export const COPY = {
     successBody:
       'I’ll reply within two business days. If you’re urgent, reply to the confirmation email and say so.',
     errorHeading: 'Didn’t send.',
-    errorBody: 'Try again, or email hello@mosaicbyte.co directly.',
+    errorBody: 'Try again, or email hello@mosaicbyte.design directly.',
   },
 
   cta: {
@@ -344,7 +344,7 @@ export const COPY = {
         {
           heading: 'Contact',
           body: [
-            'For any privacy question or deletion request, email hello@mosaicbyte.co.',
+            'For any privacy question or deletion request, email hello@mosaicbyte.design.',
           ],
         },
       ],

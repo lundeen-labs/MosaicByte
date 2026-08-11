@@ -5,13 +5,9 @@ import tailwindcss from '@tailwindcss/vite'
 import mdx from '@mdx-js/rollup'
 
 export default defineConfig({
-  // Vercel serves this site from the domain root ('/'), so that stays the
-  // default. GitHub Pages project sites serve from a subpath
-  // (https://lundeen-labs.github.io/MosaicByte/), so the Pages build sets
-  // GITHUB_PAGES=true (see .github/workflows/pages.yml) to rewrite every
-  // asset URL to that subpath at build time. The Vercel build never sets
-  // this env var, so its output is unaffected.
-  base: process.env.GITHUB_PAGES === 'true' ? '/MosaicByte/' : '/',
+  // Vercel and GitHub Pages (with custom domain) both serve this site
+  // from the domain root ('/'), so that stays the default.
+  base: '/',
   plugins: [
     { enforce: 'pre', ...mdx({ providerImportSource: '@mdx-js/react' }) },
     react(),

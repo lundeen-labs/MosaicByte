@@ -6,7 +6,7 @@ import { checkRate } from './_lib/ratelimit'
 export const config = { runtime: 'nodejs' }
 
 // Recipient lives in env so the studio can change it without a redeploy
-// (e.g. flip to hello@mosaicbyte.co once that mailbox is provisioned).
+// (e.g. flip to hello@mosaicbyte.design once that mailbox is provisioned).
 const RECIPIENT = process.env.CONTACT_RECIPIENT ?? 'tyler.lundeen1995@gmail.com'
 const DEFAULT_FROM = 'Mosaic Byte <onboarding@resend.dev>'
 

@@ -15,7 +15,7 @@ Branch: `feature/mosaicbyte-rebrand` (off `feature/p0-launch-blockers`).
 - `/work` is now an honest "currently taking our first clients" notice (`src/routes/Work.tsx` + `COPY.work`). `/work/:slug` route + WorkDetail.tsx deleted from `src/App.tsx` + sitemap.
 - Dead-component purge (architecture audit P2 #14 closed): 16 dead components + 3 colocated tests removed — HeroB, OscilloscopeChart, DefinitionBlock, HeroSub, HeroEyebrow, HeroTitle, Marginalia, InstrumentGauge, StatusStrip, InstrumentationBlock, TestimonialCarousel, Marquee, RuleTick, KbdHint, MarginaliaLabel, WorkPreview, MetricsBlock. None were reachable from any route.
 - Architecture-audit DIP fix: `Navbar` and `MobileDrawer` now consume `COPY.nav.primary` / `COPY.nav.primaryCta` instead of duplicating the list locally (architecture audit #7 closed).
-- API recipient now env-configurable: `api/contact.ts` reads `CONTACT_RECIPIENT` (default still `tyler.lundeen1995@gmail.com` for technical continuity; flip to `hello@mosaicbyte.co` via Vercel env when that mailbox exists).
+- API recipient now env-configurable: `api/contact.ts` reads `CONTACT_RECIPIENT` (default still `tyler.lundeen1995@gmail.com` for technical continuity; flip to `hello@mosaicbyte.design` via Vercel env when that mailbox exists).
 - Verified after content chunk: tsc 0, lint 0, **58/58 vitest pass** (was 89/89; the drop is the 3 deleted dead-component test files, not regressions).
 
 **Done in the second chunk (visual identity):**
