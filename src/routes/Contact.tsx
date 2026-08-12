@@ -46,8 +46,8 @@ export default function Contact() {
                 variant="primary"
                 size="lg"
               >
-                <a href="mailto:hello@mosaicbyte.design">
-                  Email hello@mosaicbyte.design
+                <a href="mailto:mosaicbyte.design@gmail.com">
+                  Email mosaicbyte.design@gmail.com
                 </a>
               </Button>
             </div>
