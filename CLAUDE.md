@@ -245,4 +245,7 @@ Every statistical analysis is visualized and **every data column gets its own gr
 small-multiples grid, each panel labelled with the column's full name, controls to re-bin/sort/
 filter/log-scale. The eight-number distribution rule still holds; the plot is in addition to it.
 
+Every symbol in a formula is defined in plain words beside it — glyph, full-word name, what it
+holds, units, current value — so the formula reads left to right in English.
+
 Full rule: `~/.claude/CLAUDE.md` → *Visualize every explanation*.
