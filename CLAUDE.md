@@ -230,3 +230,19 @@ Verified 2026-07-28: same `tsc`/`lint`/`vitest` (58/58) green after this fix. Pa
 5. Calendar embed (Cal.com modal) — Wave 5 follow-up; not blocking v1.
 6. Status-strip honesty — post-deploy, replace `COPY.status.metrics` with real Lighthouse output.
 
+## Visualize every explanation
+
+Every explanation ships with an **interactive** visualization built in the same reply — controls
+Tyler can drag, step, scrub or toggle, with the picture recomputing live from them. Never a static
+image where a control would do. ONE Artifact per task, republished in place so the URL survives.
+Okabe-Ito palette, never red/green for meaning. Skip it only when the reply carries no explanation
+(a yes/no, a single number, "committed and pushed").
+
+Sigma/summation notation and formulas get the same treatment: rendered with KaTeX/MathJax, terms
+expanded, index steppable, each term lighting up in the sum and the running total as he moves it.
+
+Every statistical analysis is visualized and **every data column gets its own graphic** — a
+small-multiples grid, each panel labelled with the column's full name, controls to re-bin/sort/
+filter/log-scale. The eight-number distribution rule still holds; the plot is in addition to it.
+
+Full rule: `~/.claude/CLAUDE.md` → *Visualize every explanation*.
