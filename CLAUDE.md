@@ -234,8 +234,10 @@ Verified 2026-07-28: same `tsc`/`lint`/`vitest` (58/58) green after this fix. Pa
 
 Every explanation ships with an **interactive** visualization built in the same reply — controls
 Tyler can drag, step, scrub or toggle, with the picture recomputing live from them. Never a static
-image where a control would do. ONE Artifact per task, republished in place so the URL survives.
-Okabe-Ito palette, never red/green for meaning. Skip it only when the reply carries no explanation
+image where a control would do. It is a **marimo notebook** reading from **DuckDB**, never an
+HTML artifact (standing, 2026-09-11): `mo.ui.slider` / `dropdown` / `range_slider` / `altair_chart`
+wired to cells that re-run, with the numbers landing in a DuckDB table or view so they can still be
+queried after the reply is gone. Okabe-Ito palette, never red/green for meaning. Skip it only when the reply carries no explanation
 (a yes/no, a single number, "committed and pushed").
 
 Sigma/summation notation and formulas get the same treatment: rendered with KaTeX/MathJax, terms
@@ -248,4 +250,6 @@ filter/log-scale. The eight-number distribution rule still holds; the plot is in
 Every symbol in a formula is defined in plain words beside it — glyph, full-word name, what it
 holds, units, current value — so the formula reads left to right in English.
 
+**Never publish an Artifact or write a standalone `.html` for analysis** — a page cannot be
+queried, re-run or joined to anything.
 Full rule: `~/.claude/CLAUDE.md` → *Visualize every explanation*.
