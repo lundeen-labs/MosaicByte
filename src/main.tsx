@@ -1,5 +1,5 @@
 import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
+import { createRoot, hydrateRoot } from 'react-dom/client'
 import { Router } from 'wouter'
 import App from './App'
 import { ErrorBoundary } from './components/ErrorBoundary'
@@ -19,7 +19,8 @@ import './index.css'
 // remainder, and is a no-op on the root deploy ('/'.replace(/\/$/, '') === '').
 const ROUTER_BASE = import.meta.env.BASE_URL.replace(/\/$/, '')
 
-createRoot(document.getElementById('root')!).render(
+const rootElement = document.getElementById('root')!
+const app = (
   <StrictMode>
     {/* Router wraps ErrorBoundary (not the reverse) so that even the
         error-fallback UI — rendered in place of a crashed <App /> — still sits
@@ -31,3 +32,9 @@ createRoot(document.getElementById('root')!).render(
     </Router>
   </StrictMode>
 )
+
+if (rootElement.hasChildNodes()) {
+  hydrateRoot(rootElement, app)
+} else {
+  createRoot(rootElement).render(app)
+}
