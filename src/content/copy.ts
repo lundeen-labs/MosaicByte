@@ -122,20 +122,8 @@ export const COPY = {
         'Small content updates (1-2/month)',
         'Software/plugin updates',
       ],
-        
-      name: 'Growth Retainer',
-      price: '$400 - $800/mo',
-      cadence: 'monthly · 3-month minimum',
-      scope: [
-        'Everything in the Care Plan',
-        'Monthly blog post or content update',
-        'Basic social media graphics',
-        'Google Business Profile Management',
-        'Monthly SEO/anaylitics report',
-      ],
       cta: { label: 'Discuss a retainer', href: '/contact?tier=retainer' },
     },
-    ],
   },
 
   process: {
