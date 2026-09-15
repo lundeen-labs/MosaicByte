@@ -27,8 +27,7 @@ async function prerender() {
 
   console.log('Launching Puppeteer...');
   const browser = await puppeteer.launch({ 
-    headless: 'new',
-    channel: 'chrome' // Use system Chrome to avoid missing executable issues
+    headless: 'new'
   });
   const page = await browser.newPage();
   
