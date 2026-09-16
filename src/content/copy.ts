@@ -124,8 +124,7 @@ export const COPY = {
       ],
       cta: { label: 'Discuss a retainer', href: '/contact?tier=retainer' },
     },
-    ],
-  },
+  ],
 
   process: {
     heading: 'How it works',
