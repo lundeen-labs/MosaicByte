@@ -18,7 +18,7 @@ import { fileURLToPath } from 'node:url'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const ROOT = join(__dirname, '..')
-const SITE_URL = process.env.VITE_SITE_URL || 'https://mosaicbyte.vercel.app'
+const SITE_URL = process.env.VITE_SITE_URL || 'https://mosaicbyte.design'
 
 const ROUTES = [
   { path: '/', priority: '1.0', changefreq: 'weekly' },

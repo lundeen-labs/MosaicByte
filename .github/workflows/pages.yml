@@ -38,14 +38,31 @@ jobs:
           VITE_SITE_URL: https://mosaicbyte.design
         run: npm run build
 
-      - name: SPA fallback for client-side routing
-        # Wouter does client-side history-API routing (/, /work, /about,
-        # /contact, /privacy). GitHub Pages has no server-side rewrite rule,
-        # so a direct hit or refresh on any non-root path 404s. GitHub Pages
-        # serves 404.html for any unmatched path; since it's the same SPA
-        # shell as index.html, Wouter's client-side router then renders the
-        # correct route from the URL.
-        run: cp dist/index.html dist/404.html
+      - name: Verify prerendered output
+        # scripts/prerender.mjs writes dist/<route>/index.html for every real
+        # route AND a dist/404.html prerendered from the NotFound route, so
+        # GitHub Pages serves real markup for a direct hit on any path and a
+        # genuine 404 page (not a copy of the homepage) for an unmatched one.
+        # Both are still full SPA shells, so Wouter hydrates and takes over.
+        # This step fails the build if the prerender silently produced nothing.
+        run: |
+          set -euo pipefail
+          required="index.html 404.html work/index.html about/index.html contact/index.html privacy/index.html sitemap.xml robots.txt CNAME"
+          for f in $required; do
+            if [ ! -s "dist/$f" ]; then
+              echo "::error::missing or empty dist/$f"
+              exit 1
+            fi
+          done
+          if ! grep -q '<h1' dist/index.html; then
+            echo "::error::dist/index.html has no <h1> - prerender did not run"
+            exit 1
+          fi
+          if ! grep -q '404' dist/404.html; then
+            echo "::error::dist/404.html is not the prerendered NotFound page"
+            exit 1
+          fi
+          echo "prerendered output verified"
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3

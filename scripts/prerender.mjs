@@ -26,8 +26,16 @@ async function prerender() {
   console.log(`Server running at ${urlBase}`);
 
   console.log('Launching Puppeteer...');
-  const browser = await puppeteer.launch({ 
-    headless: 'new'
+  const browser = await puppeteer.launch({
+    headless: true,
+    // GitHub Actions' ubuntu runners sit on Ubuntu 23.10+, where AppArmor
+    // blocks unprivileged user namespaces. Puppeteer's *downloaded* Chrome
+    // ships no AppArmor profile of its own, so its zygote aborts with
+    // "No usable sandbox!" and the whole build fails. Disabling the sandbox
+    // is the documented workaround (https://pptr.dev/troubleshooting) and is
+    // safe here: this browser only ever loads localhost:4173, serving dist/
+    // built from this repo in the same job. It never visits the network.
+    args: ['--no-sandbox', '--disable-setuid-sandbox'],
   });
   const page = await browser.newPage();
   
