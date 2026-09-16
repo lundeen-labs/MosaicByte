@@ -26,6 +26,7 @@ const isCI = !!process.env.CI
 
 /** Specs that depend on Chromium-only measurement APIs or pixel baselines. */
 const CHROMIUM_ONLY = ['**/performance.spec.ts', '**/visual.spec.ts']
+
 /** Specs that are meaningful on every engine. */
 const CROSS_BROWSER = [
   '**/routing.spec.ts',
@@ -34,6 +35,24 @@ const CROSS_BROWSER = [
   '**/accessibility.spec.ts',
   '**/responsive.spec.ts',
 ]
+
+/**
+ * The same set minus the viewport matrix.
+ *
+ * `responsive.spec.ts` drives six viewports from 320px to 1920px. Running that
+ * inside a device-emulated context means setting a 1920x1080 viewport on a
+ * browser that also reports `isMobile: true` and a touch screen — a device that
+ * does not exist, so the assertions stop describing anything real. It is also
+ * where the suite's only flake lived: repeated resizes under WebKit mobile
+ * emulation pushed a cold run from 25s to 1.1m and timed nine checks out.
+ *
+ * The matrix itself already covers phone widths, and the mobile projects still
+ * run routing, features, SEO and accessibility, which is where device
+ * emulation actually matters.
+ */
+const CROSS_BROWSER_NO_VIEWPORT_MATRIX = CROSS_BROWSER.filter(
+  (glob) => glob !== '**/responsive.spec.ts',
+)
 
 export default defineConfig({
   testDir: './e2e',
@@ -98,6 +117,7 @@ export default defineConfig({
     {
       name: 'chromium-mobile',
       use: { ...devices['Pixel 7'] },
+      testIgnore: '**/responsive.spec.ts',
     },
     {
       name: 'firefox',
@@ -112,7 +132,7 @@ export default defineConfig({
     {
       name: 'mobile-safari',
       use: { ...devices['iPhone 14'] },
-      testMatch: CROSS_BROWSER,
+      testMatch: CROSS_BROWSER_NO_VIEWPORT_MATRIX,
     },
   ],
 

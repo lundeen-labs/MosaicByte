@@ -11,7 +11,7 @@ import { expect, type Page, type Request, type Response } from '@playwright/test
 import AxeBuilder from '@axe-core/playwright'
 
 /** Canonical origin the production build stamps into its SEO tags. */
-export const SITE_ORIGIN = 'https://mosaicbyte.design'
+export const SITE_ORIGIN = 'https://www.mosaicbyte.design'
 
 export interface RouteSpec {
   /** URL path as served. */

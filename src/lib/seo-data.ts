@@ -1,7 +1,7 @@
 import { COPY } from '@/content/copy'
 
 const SITE_URL =
-  (import.meta.env.VITE_SITE_URL as string | undefined) ?? 'https://mosaicbyte.design'
+  (import.meta.env.VITE_SITE_URL as string | undefined) ?? 'https://www.mosaicbyte.design'
 
 export { SITE_URL }
 

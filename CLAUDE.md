@@ -135,7 +135,7 @@ is tapped.
 `e2e/` - Playwright, run against the built `dist/` through
 `e2e/static-server.mjs`, which reproduces GitHub Pages' file resolution. Seven
 specs: routing, features, seo, accessibility, performance, responsive, visual.
-Five browser projects. 832 checks, 16 documented skips (Safari does not Tab to
+Five browser projects. 774 checks, 16 documented skips (Safari does not Tab to
 links without Full Keyboard Access), 0 failures. See README "Testing" for the
 per-spec breakdown and the reasoning behind the browser matrix.
 
@@ -159,6 +159,11 @@ without publishing. Node bumped 20 -> 22 (puppeteer@25 declares
 - `.tsbuildinfo` now writes to `node_modules/.cache/typescript/`; deleted the
   empty `.env.example` and a stale `tsconfig.api.tsbuildinfo` from a removed
   project reference.
+- `docs/architecture.html` documents all 26 stack layers - role, rationale, what was
+  rejected, and the cost - with an interactive pipeline diagram. Every rationale in it is
+  traceable to a file, a commit or a measurement; where the repo records no reason, it says
+  so rather than inventing one. Regenerate the reasoning by re-reading the source, not by
+  paraphrasing the doc.
 - **Do not edit files through shell heredocs.** Two stray `0x08` bytes were
   written into regex literals this session that way (`\b` collapsing to a
   backspace), one of which silently broke a test for an hour. Use the Write/Edit
@@ -347,7 +352,7 @@ Verified 2026-07-28: same `tsc`/`lint`/`vitest` (58/58) green after this fix. Pa
 
 1. Hero archetype for `/`: defaults to **Hero A** (productized-promise) per A3 cold-traffic data.
 2. Real client logos / testimonials — none yet; copy ships with placeholders (Acme Cloud, Pulse, Orbital).
-3. Custom domain — defaults to `mosaicbyte.design`; JSON-LD URLs templated against `import.meta.env.VITE_SITE_URL`.
+3. Custom domain — **`www.mosaicbyte.design`** (settled 2026-09-16). The apex 301-redirects to it. Canonical, OG, sitemap and robots URLs all derive from `VITE_SITE_URL`, set in the deploy workflow; `public/CNAME` must match the custom domain in the repo's Pages settings.
 4. Brand wordmark — `'Mosaic Byte'` in `src/content/copy.ts`.
 5. Calendar embed (Cal.com modal) — Wave 5 follow-up; not blocking v1.
 6. Status-strip honesty — post-deploy, replace `COPY.status.metrics` with real Lighthouse output.

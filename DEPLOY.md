@@ -15,7 +15,7 @@ All quality gates pass:
 This site is statically hosted on GitHub Pages and deployed automatically via GitHub Actions (`.github/workflows/pages.yml`) on every push to the `main` branch. 
 
 ### Setting up a custom domain
-1. Ensure the `public/CNAME` file contains your domain name (e.g. `mosaicbyte.design`).
+1. Ensure the `public/CNAME` file contains your domain name (currently `www.mosaicbyte.design`). It must match the custom domain configured in the repository's Pages settings, or a deploy will move the domain.
 2. Add your custom domain to your GitHub repository settings under Settings → Pages.
 3. Update DNS settings at your domain registrar.
    - Create a `CNAME` record pointing your domain (or a subdomain) to your GitHub Pages URL (e.g., `lundeen-labs.github.io`).

@@ -65,7 +65,8 @@ scripts/
   generate-og.mjs      per-route 1200x630 share cards -> dist/og/*.png
   generate-sitemap.mjs dist/sitemap.xml + dist/robots.txt
 public/                favicon.svg, CNAME, .nojekyll
-docs/                  improvement-roadmap.md, competitive-edge.md, project-audit.md, github-pages-research.md
+docs/                  architecture.html (the stack, layer by layer), improvement-roadmap.md,
+                       competitive-edge.md, project-audit.md, github-pages-research.md
 ```
 
 Tooling configs: `vite.config.ts`, `vitest.config.ts`, `eslint.config.js`, and a TypeScript project-references set (`tsconfig.json` → `tsconfig.app.json` / `tsconfig.node.json`). `@/*` is aliased to `src/*`.
@@ -79,7 +80,7 @@ npm run build          # tsc -b && vite build && prerender && og cards && sitema
 npm run preview        # serve dist/ on http://localhost:4173
 npm run lint           # eslint .
 npm test               # vitest run (48 unit tests across 8 files)
-npm run test:e2e       # build, then playwright test (848 checks across 5 browser projects)
+npm run test:e2e       # build, then playwright test (790 checks across 5 browser projects)
 npm run test:e2e:ui    # playwright --ui, for stepping through a failure
 npm run test:e2e:update  # re-baseline the visual snapshots, deliberately
 npm run test:e2e:report  # open the last HTML report
@@ -124,7 +125,13 @@ user enables Full Keyboard Access, so on those engines the assertions measure a
 Safari setting rather than anything about this site. The same journeys run on
 Chromium and Firefox.
 
-Current: **48 unit tests and 832 end-to-end checks pass, 0 failures.**
+`responsive.spec.ts` does not run on the two device-emulated projects. Setting a
+1920x1080 viewport on a browser that also reports `isMobile` and a touch screen
+describes a device that does not exist, and the repeated resizes under WebKit
+mobile emulation were the suite's only flake. The matrix already covers phone
+widths itself.
+
+Current: **48 unit tests and 774 end-to-end checks pass, 0 failures** (plus 16 documented skips).
 
 Visual snapshots are a **local** gate. The committed baselines are `-win32`,
 taken on the dev machine, so on the Linux CI runner Playwright would not find
@@ -149,7 +156,7 @@ The status strip publishes real metrics, so the budgets below are treated as pro
 | Lighthouse Accessibility | 100 (WCAG 2.1 AA) |
 | Lighthouse Best Practices | 100 |
 | Lighthouse SEO | 100 |
-| Initial JS gzip (any route) | < 150 KB (currently ~152 KB — within ~2 KB) |
+| Initial JS gzip (any route) | < 150 KB — **currently 87.5 KiB**, measured, 62.5 KiB spare |
 
 Non-negotiable UX rules: visible focus ring on every interactive element, `prefers-reduced-motion` respected on all motion, full keyboard reachability in DOM order, labeled form inputs, titled/`aria-label`led semantic SVGs, and a skip-to-content link as the first focusable element.
 
@@ -173,7 +180,7 @@ Live at **https://www.mosaicbyte.design** (the apex 301-redirects to `www`).
   genuine 404 page served at a 404 status.
 - Per-route Open Graph cards generated from the site's own design tokens.
 - WCAG 2.1 AA verified by axe on every route in both themes, not asserted.
-- 48 unit tests and 832 end-to-end checks pass; tsc and ESLint clean. CI runs
+- 48 unit tests and 774 end-to-end checks pass; tsc and ESLint clean. CI runs
   all of it before anything publishes.
 
 GitHub repo: `lundeen-labs/MosaicByte`. The original static-HTML prototype lives
@@ -183,4 +190,7 @@ at `lundeej/mosaicbyte`, preserved as a design reference.
 
 - `CLAUDE.md` — agent operating notes + rebrand change log
 - `DEPLOY.md` — deployment information
+- `docs/architecture.html` — **the stack, layer by layer**: what each choice does here, why it
+  was made, what was rejected and what it costs, plus an interactive diagram of the build and
+  delivery pipeline. Open it in a browser.
 - `docs/improvement-roadmap.md` — audit findings + P0/P1/P2 backlog

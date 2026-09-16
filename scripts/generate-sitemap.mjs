@@ -19,7 +19,7 @@ import { ROUTES } from './routes.mjs'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const ROOT = join(__dirname, '..')
-const SITE_URL = process.env.VITE_SITE_URL || 'https://mosaicbyte.design'
+const SITE_URL = process.env.VITE_SITE_URL || 'https://www.mosaicbyte.design'
 
 const today = new Date().toISOString().slice(0, 10)
 

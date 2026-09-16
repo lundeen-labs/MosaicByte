@@ -50,7 +50,7 @@ jobs:
 
       - name: Build (GitHub Pages mode)
         env:
-          VITE_SITE_URL: https://mosaicbyte.design
+          VITE_SITE_URL: https://www.mosaicbyte.design
         run: npm run build
 
       - name: Verify prerendered output

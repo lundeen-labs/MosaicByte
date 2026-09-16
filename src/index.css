@@ -188,9 +188,17 @@
    elapses (no FOUC) and the `to` state after the animation ends. The LCP
    <h1> deliberately does NOT carry this class — animating the LCP element
    delays the metric by the full fade duration. */
+/* Entrance animation for section content.
+   `pointer-events` is animated alongside opacity because an element at
+   `opacity: 0` still receives clicks: for the ~0.6s these run, an invisible
+   block sitting 16px out of place can sit over a button and swallow the tap.
+   e2e/features.spec.ts caught exactly that - the hero's secondary CTA was
+   intercepted by a still-fading sibling on roughly one mobile run in six.
+   `pointer-events` animates discretely, so it flips to auto halfway through,
+   by which point the element is visible and in very nearly its final place. */
 @keyframes fade-up-anim {
-  from { opacity: 0; transform: translateY(16px); }
-  to   { opacity: 1; transform: translateY(0); }
+  from { opacity: 0; transform: translateY(16px); pointer-events: none; }
+  to   { opacity: 1; transform: translateY(0); pointer-events: auto; }
 }
 .fade-up   { animation: fade-up-anim 0.6s var(--ease-out) both; }
 .fade-up-1 { animation-delay: 0.04s; }
