@@ -159,6 +159,12 @@ without publishing. Node bumped 20 -> 22 (puppeteer@25 declares
 - `.tsbuildinfo` now writes to `node_modules/.cache/typescript/`; deleted the
   empty `.env.example` and a stale `tsconfig.api.tsbuildinfo` from a removed
   project reference.
+- `docs/glossary.html` defines the 237 technical terms this project uses, in plain English,
+  each with an "in this project" note naming the file, config value or number it refers to
+  here. Built by harvesting the vocabulary that actually appears in the repo and its docs
+  rather than writing a generic web-dev glossary. The term data is a plain array in the page;
+  the text is HTML-escaped on injection, because a definition quoting a script tag would
+  otherwise render as one.
 - `docs/architecture.html` documents all 26 stack layers - role, rationale, what was
   rejected, and the cost - with an interactive pipeline diagram. Every rationale in it is
   traceable to a file, a commit or a measurement; where the repo records no reason, it says

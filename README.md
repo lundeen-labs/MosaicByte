@@ -65,7 +65,8 @@ scripts/
   generate-og.mjs      per-route 1200x630 share cards -> dist/og/*.png
   generate-sitemap.mjs dist/sitemap.xml + dist/robots.txt
 public/                favicon.svg, CNAME, .nojekyll
-docs/                  architecture.html (the stack, layer by layer), improvement-roadmap.md,
+docs/                  architecture.html (the stack, layer by layer), glossary.html (237 terms),
+                       improvement-roadmap.md,
                        competitive-edge.md, project-audit.md, github-pages-research.md
 ```
 
@@ -193,4 +194,7 @@ at `lundeej/mosaicbyte`, preserved as a design reference.
 - `docs/architecture.html` — **the stack, layer by layer**: what each choice does here, why it
   was made, what was rejected and what it costs, plus an interactive diagram of the build and
   delivery pipeline. Open it in a browser.
+- `docs/glossary.html` — **237 terms in plain English**, each with a note on what it points at in
+  this codebase specifically. Searchable, filterable by category, cross-linked. The companion to
+  the architecture doc.
 - `docs/improvement-roadmap.md` — audit findings + P0/P1/P2 backlog
