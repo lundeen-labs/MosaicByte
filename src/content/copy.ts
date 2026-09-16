@@ -111,7 +111,7 @@ export const COPY = {
         cta: { label: 'Get a quote', href: '/contact?tier=site' },
       },
     ],
-    retainer: [
+    retainer:
       {
       eyebrow: 'MONTHLY RETAINER OPTIONS',
       name: 'Care Plan',
@@ -124,7 +124,6 @@ export const COPY = {
       ],
       cta: { label: 'Discuss a retainer', href: '/contact?tier=retainer' },
     },
-  ],
   },
 
   process: {
