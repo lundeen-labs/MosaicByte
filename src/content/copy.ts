@@ -19,7 +19,7 @@
 export const COPY = {
   brand: {
     wordmark: 'Mosaic Byte',
-    tagline: 'Digital',
+    tagline: 'Digital Studio',
     full: 'Mosaic Byte',
     description:
       'A small digital studio designing brand systems and landing pages from Mount Vernon, WA.',
@@ -124,6 +124,7 @@ export const COPY = {
       ],
       cta: { label: 'Discuss a retainer', href: '/contact?tier=retainer' },
     },
+    ],
   },
 
   process: {
