@@ -19,7 +19,7 @@
 export const COPY = {
   brand: {
     wordmark: 'Mosaic Byte',
-    tagline: 'Digital Studio',
+    tagline: 'Digital',
     full: 'Mosaic Byte',
     description:
       'A small digital studio designing brand systems and landing pages from Mount Vernon, WA.',
