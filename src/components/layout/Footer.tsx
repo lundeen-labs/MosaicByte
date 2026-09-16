@@ -45,7 +45,7 @@ export function Footer({ columns, legal, colophon }: FooterProps) {
               href={withBasePath(COPY.cta.primary.href)}
               className={cn(
                 'inline-flex items-center gap-2 self-start',
-                'rounded-full bg-[var(--color-rust)] text-[var(--color-paper)]',
+                'rounded-full bg-[var(--color-rust)] text-[var(--color-on-accent)]',
                 'px-6 py-3 text-[15px] font-semibold',
                 'transition-[background,transform] duration-[180ms]',
                 'hover:bg-[var(--color-rust-2)] hover:translate-y-[-1px]',
@@ -59,7 +59,7 @@ export function Footer({ columns, legal, colophon }: FooterProps) {
               href={COPY.cta.primary.href}
               className={cn(
                 'inline-flex items-center gap-2 self-start',
-                'rounded-full bg-[var(--color-rust)] text-[var(--color-paper)]',
+                'rounded-full bg-[var(--color-rust)] text-[var(--color-on-accent)]',
                 'px-6 py-3 text-[15px] font-semibold',
                 'transition-[background,transform] duration-[180ms]',
                 'hover:bg-[var(--color-rust-2)] hover:translate-y-[-1px]',

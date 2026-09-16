@@ -17,7 +17,7 @@ export default function Privacy() {
         className="mx-auto w-full max-w-[760px] px-6 py-24 md:px-8 md:py-32"
       >
         <header className="mb-12 flex flex-col gap-4">
-          <span className="text-[12px] font-medium uppercase tracking-[0.08em] text-[var(--color-rust)]">
+          <span className="text-[12px] font-medium uppercase tracking-[0.08em] text-[var(--color-rust-text)]">
             {privacy.eyebrow}
           </span>
           <h1

@@ -57,7 +57,7 @@ export function MobileDrawer({ open, onOpenChange, nav }: MobileDrawerProps) {
                   'inline-flex h-9 w-9 items-center justify-center',
                   'rounded-[var(--radius-r2)] border border-[var(--color-ink)]',
                   'text-[var(--color-ink)] transition-colors duration-[180ms]',
-                  'hover:text-[var(--color-rust)] hover:border-[var(--color-rust)]',
+                  'hover:text-[var(--color-rust-text)] hover:border-[var(--color-rust)]',
                   'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-rust)]',
                 )}
               >
@@ -77,12 +77,12 @@ export function MobileDrawer({ open, onOpenChange, nav }: MobileDrawerProps) {
                 'group flex items-baseline gap-[var(--spacing-s3)]',
                 'border-b border-[var(--color-paper-3)] py-[var(--spacing-s3)]',
                 'font-display text-[1.75rem] leading-none tracking-[-0.02em] text-[var(--color-ink)]',
-                'transition-colors duration-[180ms] hover:text-[var(--color-rust)]',
+                'transition-colors duration-[180ms] hover:text-[var(--color-rust-text)]',
                 'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-rust)]',
               )
               const content = (
                 <>
-                  <span className="font-mono text-[11px] uppercase tracking-[0.08em] text-[var(--color-ink-3)] group-hover:text-[var(--color-rust)]">
+                  <span className="font-mono text-[11px] uppercase tracking-[0.08em] text-[var(--color-ink-3)] group-hover:text-[var(--color-rust-text)]">
                     {num}
                   </span>
                   <span>{item.label}</span>
@@ -120,7 +120,7 @@ export function MobileDrawer({ open, onOpenChange, nav }: MobileDrawerProps) {
                 onClick={() => onOpenChange(false)}
                 className={cn(
                   'inline-flex w-full items-center justify-center gap-2',
-                  'bg-[var(--color-rust)] text-[var(--color-paper)]',
+                  'bg-[var(--color-rust)] text-[var(--color-on-accent)]',
                   'border-[1.5px] border-[var(--color-ink)]',
                   'rounded-[var(--radius-r2)]',
                   '[box-shadow:0_2px_0_var(--color-ink),0_0_0_1.5px_var(--color-ink)]',
@@ -145,7 +145,7 @@ export function MobileDrawer({ open, onOpenChange, nav }: MobileDrawerProps) {
                 onClick={() => onOpenChange(false)}
                 className={cn(
                   'inline-flex w-full items-center justify-center gap-2',
-                  'bg-[var(--color-rust)] text-[var(--color-paper)]',
+                  'bg-[var(--color-rust)] text-[var(--color-on-accent)]',
                   'border-[1.5px] border-[var(--color-ink)]',
                   'rounded-[var(--radius-r2)]',
                   '[box-shadow:0_2px_0_var(--color-ink),0_0_0_1.5px_var(--color-ink)]',

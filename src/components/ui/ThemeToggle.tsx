@@ -48,7 +48,7 @@ export function ThemeToggle({ className }: ThemeToggleProps) {
         'rounded-full border border-[var(--color-paper-3)] bg-[var(--color-paper-2)]',
         'text-[var(--color-ink)]',
         'transition-colors duration-[180ms]',
-        'hover:border-[var(--color-rust)] hover:text-[var(--color-rust)]',
+        'hover:border-[var(--color-rust)] hover:text-[var(--color-rust-text)]',
         'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-rust)]',
         className,
       )}

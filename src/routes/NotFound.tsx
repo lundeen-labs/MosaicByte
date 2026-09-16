@@ -13,12 +13,12 @@ export default function NotFound() {
         aria-labelledby="notfound-heading"
         className="mx-auto flex w-full max-w-[800px] flex-col gap-[var(--spacing-s5)] px-[var(--spacing-s5)] py-[var(--spacing-s8)] md:px-[var(--spacing-s7)]"
       >
-        <span className="font-mono text-[11px] uppercase tracking-[0.08em] text-[var(--color-rust)]">
+        <span className="font-mono text-[11px] uppercase tracking-[0.08em] text-[var(--color-rust-text)]">
           STATUS: ROUTE NOT FOUND · 404
         </span>
         <h1
           id="notfound-heading"
-          className="font-display text-[6rem] leading-[0.9] tracking-[-0.04em] text-[var(--color-rust)] md:text-[10rem]"
+          className="font-display text-[6rem] leading-[0.9] tracking-[-0.04em] text-[var(--color-rust-text)] md:text-[10rem]"
           style={{ fontVariationSettings: '"opsz" 144, "wght" 700' }}
         >
           {COPY.notFound.code}

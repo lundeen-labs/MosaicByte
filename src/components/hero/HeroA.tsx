@@ -19,9 +19,17 @@ interface HeroAProps {
 }
 
 /* Mosaic tile grid — 8 cols × 6 rows. Each tile is one of the brand accents,
-   randomly "lit" (opacity 1), "mid" (0.55), or dormant (0.15). The active set
-   re-rolls every 2.2s on a setInterval; on prefers-reduced-motion the initial
-   roll renders once and stops. */
+   "lit" (opacity 1), "mid" (0.55), or dormant (0.15). The active set re-rolls
+   every 2.2s on a setInterval; on prefers-reduced-motion it never re-rolls.
+
+   The FIRST render is deterministic on purpose. scripts/prerender.mjs captures
+   this component's DOM into dist/index.html, and the browser then hydrates that
+   markup. Seeding useState from Math.random() meant the prerendered opacities
+   could never match the client's first render, so every visit threw React
+   error #418, React discarded the whole prerendered tree, and the hoisted
+   <title>/<meta>/<link rel=canonical> tags were re-appended as duplicates —
+   two of every SEO tag on every page. Randomness now starts in the effect,
+   after hydration has matched. */
 const TILE_COLS = 8
 const TILE_ROWS = 6
 const TILE_COUNT = TILE_COLS * TILE_ROWS
@@ -36,7 +44,12 @@ const LIT_COUNT = Math.floor(TILE_COUNT * 0.38)
 const MID_COUNT = Math.floor(LIT_COUNT * 0.4)
 const TILE_INTERVAL_MS = 2200
 
-function rollTileSets(): { lit: Set<number>; mid: Set<number> } {
+interface TileSets {
+  lit: Set<number>
+  mid: Set<number>
+}
+
+function rollTileSets(): TileSets {
   const lit = new Set<number>()
   while (lit.size < LIT_COUNT) lit.add(Math.floor(Math.random() * TILE_COUNT))
   const mid = new Set<number>()
@@ -47,12 +60,33 @@ function rollTileSets(): { lit: Set<number>; mid: Set<number> } {
   return { lit, mid }
 }
 
+/**
+ * The one arrangement that is identical in the prerendered HTML and in the
+ * browser's first render. A fixed stride rather than a literal list so it stays
+ * correct if the grid is resized; co-prime with TILE_COUNT so the lit tiles
+ * scatter instead of banding into columns.
+ */
+const INITIAL_TILE_SETS: TileSets = (() => {
+  const lit = new Set<number>()
+  for (let i = 0; lit.size < LIT_COUNT; i += 1) lit.add((i * 7 + 2) % TILE_COUNT)
+  const mid = new Set<number>()
+  for (let i = 0; mid.size < MID_COUNT && i < TILE_COUNT * 2; i += 1) {
+    const idx = (i * 5 + 1) % TILE_COUNT
+    if (!lit.has(idx)) mid.add(idx)
+  }
+  return { lit, mid }
+})()
+
 function MosaicTileGrid() {
   const reduce = usePrefersReducedMotion()
-  const [{ lit, mid }, setSets] = useState(() => rollTileSets())
+  const [{ lit, mid }, setSets] = useState<TileSets>(INITIAL_TILE_SETS)
 
   useEffect(() => {
     if (reduce) return
+    // The first roll is left to the interval rather than fired here, so this
+    // effect never calls setState synchronously (react-hooks/set-state-in-effect).
+    // The grid therefore shows INITIAL_TILE_SETS for one interval and animates
+    // after that — which is also what keeps the visual baselines stable.
     const id = setInterval(() => setSets(rollTileSets()), TILE_INTERVAL_MS)
     return () => clearInterval(id)
   }, [reduce])
@@ -114,7 +148,7 @@ export default function HeroA({
         {/* Left — editorial copy column */}
         <div className="flex flex-col justify-between border-b border-[var(--color-ink)] px-6 py-16 md:border-b-0 md:border-r md:px-10 md:py-20">
           <div className="flex flex-col gap-7">
-            <p className="fade-up fade-up-1 flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.14em] text-[var(--color-ochre)]">
+            <p className="fade-up fade-up-1 flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.14em] text-[var(--color-ochre-text)]">
               <span aria-hidden="true" className="inline-block h-[1.5px] w-6 bg-[var(--color-ochre)]" />
               {eyebrow}
             </p>
@@ -132,7 +166,7 @@ export default function HeroA({
               <span className="sr-only">{fullTitle}</span>
               <span aria-hidden="true">
                 {titleParts.plain}{' '}
-                <em className="italic text-[var(--color-moss)]">{titleParts.italic}</em>{' '}
+                <em className="italic text-[var(--color-moss-text)]">{titleParts.italic}</em>{' '}
                 {titleParts.rest}
               </span>
             </h1>
@@ -148,7 +182,7 @@ export default function HeroA({
                   className={cn(
                     'inline-flex items-center gap-2 rounded-[2px]',
                     'bg-[var(--color-rust)] px-6 py-3',
-                    'text-[12px] font-medium uppercase tracking-[0.08em] text-[var(--color-paper)]',
+                    'text-[12px] font-medium uppercase tracking-[0.08em] text-[var(--color-on-accent)]',
                     'transition-opacity duration-[150ms] hover:opacity-90',
                     'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-rust)]',
                   )}
@@ -161,7 +195,7 @@ export default function HeroA({
                   className={cn(
                     'inline-flex items-center gap-2 rounded-[2px]',
                     'bg-[var(--color-rust)] px-6 py-3',
-                    'text-[12px] font-medium uppercase tracking-[0.08em] text-[var(--color-paper)]',
+                    'text-[12px] font-medium uppercase tracking-[0.08em] text-[var(--color-on-accent)]',
                     'transition-opacity duration-[150ms] hover:opacity-90',
                     'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-rust)]',
                   )}

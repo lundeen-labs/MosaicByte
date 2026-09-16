@@ -16,7 +16,7 @@ export default function Contact() {
         className="mx-auto w-full max-w-[1024px] px-6 py-24 md:px-8 md:py-32"
       >
         <header className="mb-12 flex flex-col gap-4">
-          <span className="text-[12px] font-medium uppercase tracking-[0.08em] text-[var(--color-rust)]">
+          <span className="text-[12px] font-medium uppercase tracking-[0.08em] text-[var(--color-rust-text)]">
             Contact
           </span>
           <h1
@@ -45,10 +45,13 @@ export default function Contact() {
                 asChild
                 variant="primary"
                 size="lg"
+                // Button is whitespace-nowrap by default, which is right for
+                // short labels. This one carries a full email address and
+                // overflowed the viewport at 320px, so it is allowed to wrap
+                // and to break inside the address when there is no room.
+                className="max-w-full whitespace-normal text-center [overflow-wrap:anywhere]"
               >
-                <a href="mailto:mosaicbyte.design@gmail.com">
-                  Email mosaicbyte.design@gmail.com
-                </a>
+                <a href={`mailto:${COPY.contact.email}`}>{COPY.contact.emailCtaLabel}</a>
               </Button>
             </div>
           </div>
@@ -62,15 +65,15 @@ export default function Contact() {
             </h2>
             <ol className="mt-[var(--spacing-s4)] flex flex-col gap-[var(--spacing-s4)] text-[var(--color-ink)]">
               <li className="flex gap-[var(--spacing-s3)]">
-                <span aria-hidden="true" className="font-mono text-[11px] tracking-[0.08em] text-[var(--color-plum)]">01</span>
+                <span aria-hidden="true" className="font-mono text-[11px] tracking-[0.08em] text-[var(--color-plum-text)]">01</span>
                 <span>I read every inquiry myself within two business days.</span>
               </li>
               <li className="flex gap-[var(--spacing-s3)]">
-                <span aria-hidden="true" className="font-mono text-[11px] tracking-[0.08em] text-[var(--color-plum)]">02</span>
+                <span aria-hidden="true" className="font-mono text-[11px] tracking-[0.08em] text-[var(--color-plum-text)]">02</span>
                 <span>If we&rsquo;re a fit, I send a 5-page audit of your current page.</span>
               </li>
               <li className="flex gap-[var(--spacing-s3)]">
-                <span aria-hidden="true" className="font-mono text-[11px] tracking-[0.08em] text-[var(--color-plum)]">03</span>
+                <span aria-hidden="true" className="font-mono text-[11px] tracking-[0.08em] text-[var(--color-plum-text)]">03</span>
                 <span>You decide: keep the audit, or roll the cost into a project.</span>
               </li>
             </ol>

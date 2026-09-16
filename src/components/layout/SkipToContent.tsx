@@ -19,7 +19,7 @@ export function SkipToContent() {
         'absolute left-[-9999px] top-auto h-px w-px overflow-hidden',
         // When focused, become a fixed rust banner top-left
         'focus:fixed focus:left-0 focus:top-0 focus:z-[100] focus:h-auto focus:w-auto focus:overflow-visible',
-        'focus:bg-[var(--color-rust)] focus:text-[var(--color-paper)]',
+        'focus:bg-[var(--color-rust)] focus:text-[var(--color-on-accent)]',
         'focus:px-[var(--spacing-s4)] focus:py-[var(--spacing-s3)]',
         'focus:font-mono focus:text-xs focus:uppercase focus:tracking-[0.08em] focus:font-medium',
         'focus:outline-2 focus:outline-offset-2 focus:outline-[var(--color-ink)]',

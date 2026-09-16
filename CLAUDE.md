@@ -42,6 +42,128 @@ Branch: `feature/mosaicbyte-rebrand` (off `feature/p0-launch-blockers`).
 
 Single source of truth for the rebrand brief: `docs/improvement-roadmap.md` (MB section).
 
+## Launch + test suite (2026-09-16)
+
+### The site was not deploying
+
+Every GitHub Pages run from 2026-09-15 06:09 onward failed, so the live site was
+frozen on the 2026-09-15 build and seven copy commits from Jesenia never shipped.
+
+Root cause: commit `9c2b1cf` removed `channel: 'chrome'` from
+`scripts/prerender.mjs`, which moved the prerender onto Puppeteer's *downloaded*
+Chrome. That binary ships no AppArmor profile, and ubuntu-latest blocks
+unprivileged user namespaces, so Chrome aborted with "No usable sandbox!" and
+took the build with it. Fixed by launching with `--no-sandbox
+--disable-setuid-sandbox` (and `headless: true`, the string form being
+deprecated) - one launch config that works identically on the runner and on
+Windows, against the Chrome build pinned in `package-lock.json`. Do not restore
+`channel: 'chrome'`: it binds the build to an unpinned, auto-updating browser
+that is absent on machines without system Chrome.
+
+Also fixed in the same pass: the workflow's `cp dist/index.html dist/404.html`
+was overwriting the prerendered NotFound page with a copy of the homepage, and
+`scripts/generate-sitemap.mjs` still defaulted `VITE_SITE_URL` to the removed
+`mosaicbyte.vercel.app` host.
+
+### Prerender is a DOM snapshot, so the app does not hydrate
+
+`scripts/prerender.mjs` captures a DOM snapshot out of a real browser. That is
+not React SSR output, and the difference matters twice:
+
+1. **Head tags.** React 19 hoists `<title>`/`<meta>`/`<link>` into `<head>`, but
+   it has no hydration record for the copies sitting in a snapshot, so it
+   appended a second copy of every one. Measured on `/privacy`: 23 head children
+   served, 38 after hydration - two titles, two canonicals, two of every og: and
+   twitter: tag on every page. Fixed by having the prerenderer stamp
+   `data-prerendered-seo` on the tags it captured and having `src/main.tsx`
+   remove them immediately before mounting. A JS-less crawler still reads them
+   from the served HTML; a browser ends up with exactly one of each.
+2. **Text nodes.** React separates adjacent text nodes in server output with
+   `<!-- -->` markers so it can rebuild the boundaries. A snapshot has none, so
+   `{a}{' '}{b}` comes back as one text node where React expects three. That is
+   unfixable from the snapshot side.
+
+So `src/main.tsx` uses `createRoot`, never `hydrateRoot`. React was already
+discarding the prerendered tree on every route via error #418 and re-rendering -
+`createRoot` does the same work without the error and without a wasted hydration
+pass. The prerendered HTML is what it actually is: real markup for crawlers and
+for first paint. **Genuine hydration needs a real SSR build
+(`renderToPipeableStream`) rather than a Puppeteer snapshot** - tracked in
+`docs/improvement-roadmap.md`.
+
+`src/App.tsx` routes are no longer `React.lazy`. With lazy routes the client's
+first commit was the 206-character Suspense fallback rather than the route, so
+the prerendered markup could never match. Making them eager also shrank the
+initial gzip payload, because the per-route chunks stopped duplicating shared
+code: ~90 KB gzip for `/` versus ~92 KB before, and every other route now costs
+zero extra requests. `MobileDrawer` stays lazy - that is the Radix Dialog weight,
+and `e2e/features.spec.ts` asserts its chunk is not fetched until the hamburger
+is tapped.
+
+### Defects the new suite found and fixed
+
+- **Every social share card 404'd.** `src/lib/seo.tsx` had always advertised
+  `og:image` at `/og/index.png`, and no `og/` directory ever existed. Now
+  `scripts/generate-og.mjs` renders a 1200x630 card per route at build time from
+  the tokens in `src/index.css`, and `seo.tsx` points each route at its own card.
+- **WCAG AA failures on the primary CTA.** Rust measured 3.85:1 against paper and
+  ochre 3.38:1, on a site that publicly claims 2.1 AA. The accents are now
+  darkened to clear 4.5:1, and the two jobs one token was doing are split:
+  `--color-on-accent` (fixed across themes) for text on an accent background, and
+  `--color-{rust,moss,ochre,plum}-text` for an accent used as text, which flip
+  per theme. Values are tuned against every surface the text can land on
+  (`#f5f2ec`, `#f3efe8`, `#efe9df`, `#e2dcd1`), not just paper.
+- **Structured data contradicted the pricing.** `priceRange` was hardcoded
+  `$2500-$15000` while the tiers read $1,500 to $5,000. It is derived from
+  `COPY.services.tiers` now, and a `/mo` tier no longer has its digits
+  advertised as a one-off price.
+- **Dead Cloudflare Turnstile** loaded on every page for a contact form that no
+  longer exists. Removed, with its ambient types.
+- **The privacy policy described a system that is gone** - a contact form,
+  Resend, Cloudflare Turnstile and Vercel Analytics, none of which exist. Rewritten
+  to describe the static site: no form, no analytics, no cookies beyond the theme
+  preference; GitHub Pages and Google Fonts are the only parties that see a request.
+- **Three different email addresses** across the site, one of them Tyler's
+  personal address on the client-facing crash screen. All route through
+  `COPY.contact.email` now.
+- **Contact CTA overflowed the viewport** at 320px, and **focus was lost** when
+  the mobile drawer closed (the drawer unmounts before Radix can restore it, so
+  `Navbar` restores focus from an effect after unmount).
+
+### The test suite
+
+`e2e/` - Playwright, run against the built `dist/` through
+`e2e/static-server.mjs`, which reproduces GitHub Pages' file resolution. Seven
+specs: routing, features, seo, accessibility, performance, responsive, visual.
+Five browser projects. 832 checks, 16 documented skips (Safari does not Tab to
+links without Full Keyboard Access), 0 failures. See README "Testing" for the
+per-spec breakdown and the reasoning behind the browser matrix.
+
+`.github/workflows/pages.yml` now gates the deploy on lint, tsc, unit tests, the
+prerender/OG output check and the full e2e suite. Pull requests run the gate
+without publishing. Node bumped 20 -> 22 (puppeteer@25 declares
+`engines >= 22.12.0`).
+
+### Housekeeping
+
+- Removed nine unused runtime dependencies plus `@mdx-js/rollup` and
+  `@types/mdx`: `framer-motion`, `three`, `@react-three/fiber`,
+  `@react-three/drei`, `@mdx-js/react`, `zustand`, `zod`, and the Radix
+  popover/tabs/tooltip primitives. None were imported. `node_modules` went
+  449 MB -> 269 MB. The MDX Vite plugin went with them (no `.mdx` files exist).
+- `scripts/routes.mjs` is now the single route inventory, shared by
+  `prerender.mjs`, `generate-og.mjs` and `generate-sitemap.mjs`, so the three
+  cannot drift. `e2e/seo.spec.ts` asserts the sitemap and the test manifest agree.
+- `vitest.config.ts` restricts collection to `src/` - it was picking up the
+  Playwright specs and failing to load seven files.
+- `.tsbuildinfo` now writes to `node_modules/.cache/typescript/`; deleted the
+  empty `.env.example` and a stale `tsconfig.api.tsbuildinfo` from a removed
+  project reference.
+- **Do not edit files through shell heredocs.** Two stray `0x08` bytes were
+  written into regex literals this session that way (`\b` collapsing to a
+  backspace), one of which silently broke a test for an hour. Use the Write/Edit
+  tools, or a Python script written to disk first.
+
 ## Operating mode
 
 **Tyler is product. Claude is the developer.** Tyler describes intent and outcome. Claude implements: writes code, runs commands, runs tests, commits, deploys, audits, fixes, iterates. Default to action.

@@ -10,13 +10,13 @@ const toneClasses: Record<NonNullable<BadgeProps['tone']>, string> = {
   neutral:
     'bg-[var(--color-paper-2)] text-[var(--color-ink-2)] border-[var(--color-paper-3)]',
   rust:
-    'bg-[var(--color-rust)] text-[var(--color-paper)] border-[var(--color-rust-2)]',
+    'bg-[var(--color-rust)] text-[var(--color-on-accent)] border-[var(--color-rust-2)]',
   moss:
-    'bg-[var(--color-moss)] text-[var(--color-paper)] border-[var(--color-moss)]',
+    'bg-[var(--color-moss)] text-[var(--color-on-accent)] border-[var(--color-moss)]',
   ochre:
-    'bg-[var(--color-ochre)] text-[var(--color-paper)] border-[var(--color-ochre)]',
+    'bg-[var(--color-ochre)] text-[var(--color-on-accent)] border-[var(--color-ochre)]',
   plum:
-    'bg-[var(--color-plum)] text-[var(--color-paper)] border-[var(--color-plum)]',
+    'bg-[var(--color-plum)] text-[var(--color-on-accent)] border-[var(--color-plum)]',
 }
 
 export const Badge = forwardRef<HTMLSpanElement, BadgeProps>(function Badge(

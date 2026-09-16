@@ -1,5 +1,5 @@
 import { StrictMode } from 'react'
-import { createRoot, hydrateRoot } from 'react-dom/client'
+import { createRoot } from 'react-dom/client'
 import { Router } from 'wouter'
 import App from './App'
 import { ErrorBoundary } from './components/ErrorBoundary'
@@ -19,6 +19,19 @@ import './index.css'
 // remainder, and is a no-op on the root deploy ('/'.replace(/\/$/, '') === '').
 const ROUTER_BASE = import.meta.env.BASE_URL.replace(/\/$/, '')
 
+/**
+ * Hand the <head> back to React before it mounts.
+ *
+ * scripts/prerender.mjs stamps `data-prerendered-seo` on every head tag that
+ * src/lib/seo.tsx produced, because the prerendered file is a DOM snapshot
+ * rather than React SSR output: React has no hydration record for those nodes,
+ * so it appended a second copy of each one and reported a hydration mismatch
+ * that discarded the prerendered tree. Removing them here means a JS-less
+ * crawler still reads them from the served HTML, while a real browser ends up
+ * with exactly one of each — React's own.
+ */
+document.querySelectorAll('[data-prerendered-seo]').forEach((el) => el.remove())
+
 const rootElement = document.getElementById('root')!
 const app = (
   <StrictMode>
@@ -33,8 +46,26 @@ const app = (
   </StrictMode>
 )
 
-if (rootElement.hasChildNodes()) {
-  hydrateRoot(rootElement, app)
-} else {
-  createRoot(rootElement).render(app)
-}
+/**
+ * Always createRoot — never hydrateRoot, even though dist/ ships prerendered
+ * markup.
+ *
+ * What scripts/prerender.mjs writes is a DOM *snapshot* taken out of a real
+ * browser, not React SSR output, and the two are not interchangeable. React
+ * separates adjacent text nodes in server output with `<!-- -->` markers so it
+ * can rebuild the same text-node boundaries on the client; a snapshot has no
+ * such markers, so the parser merges `{a}{' '}{b}` into one text node where
+ * React expects three. That is unfixable from the snapshot side and it made
+ * every route throw hydration error #418, on which React discards the
+ * prerendered tree and re-renders anyway — the same work as createRoot, plus a
+ * console error and a wasted hydration pass.
+ *
+ * So the prerendered HTML is treated as what it actually is: real markup for
+ * crawlers and for first paint, which React then replaces with an identical
+ * tree. e2e/routing.spec.ts asserts the served HTML still carries each route's
+ * real content, and e2e/performance.spec.ts asserts no hydration error.
+ *
+ * The fix for genuine hydration is a real SSR build (renderToPipeableStream)
+ * rather than a Puppeteer snapshot — tracked in docs/improvement-roadmap.md.
+ */
+createRoot(rootElement).render(app)

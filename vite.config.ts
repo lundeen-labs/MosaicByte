@@ -2,14 +2,12 @@ import { defineConfig } from 'vite'
 import path from 'node:path'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
-import mdx from '@mdx-js/rollup'
 
 export default defineConfig({
   // Vercel and GitHub Pages (with custom domain) both serve this site
   // from the domain root ('/'), so that stays the default.
   base: '/',
   plugins: [
-    { enforce: 'pre', ...mdx({ providerImportSource: '@mdx-js/react' }) },
     react(),
     tailwindcss(),
   ],

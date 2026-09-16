@@ -42,7 +42,7 @@ export function PricingTier({
       )}
     >
       {featured ? (
-        <span className="absolute -top-3 left-7 inline-flex items-center gap-1 rounded-full bg-[var(--color-rust)] px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.06em] text-[var(--color-paper)]">
+        <span className="absolute -top-3 left-7 inline-flex items-center gap-1 rounded-full bg-[var(--color-rust)] px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.06em] text-[var(--color-on-accent)]">
           Most picked
         </span>
       ) : null}
@@ -72,7 +72,7 @@ export function PricingTier({
               size={16}
               strokeWidth={2}
               aria-hidden="true"
-              className="mt-0.5 shrink-0 text-[var(--color-rust)]"
+              className="mt-0.5 shrink-0 text-[var(--color-rust-text)]"
             />
             <span>{item}</span>
           </li>
@@ -87,7 +87,7 @@ export function PricingTier({
             'px-5 py-3 text-[14px] font-semibold transition-[background,color,transform] duration-[180ms]',
             'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-rust)]',
             featured
-              ? 'bg-[var(--color-rust)] text-[var(--color-paper)] hover:bg-[var(--color-rust-2)] hover:translate-y-[-1px]'
+              ? 'bg-[var(--color-rust)] text-[var(--color-on-accent)] hover:bg-[var(--color-rust-2)] hover:translate-y-[-1px]'
               : 'border border-[var(--color-paper-3)] text-[var(--color-ink)] hover:border-[var(--color-ink-2)] hover:bg-[var(--color-paper)]/40',
           )}
         >
@@ -102,7 +102,7 @@ export function PricingTier({
             'px-5 py-3 text-[14px] font-semibold transition-[background,color,transform] duration-[180ms]',
             'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-rust)]',
             featured
-              ? 'bg-[var(--color-rust)] text-[var(--color-paper)] hover:bg-[var(--color-rust-2)] hover:translate-y-[-1px]'
+              ? 'bg-[var(--color-rust)] text-[var(--color-on-accent)] hover:bg-[var(--color-rust-2)] hover:translate-y-[-1px]'
               : 'border border-[var(--color-paper-3)] text-[var(--color-ink)] hover:border-[var(--color-ink-2)] hover:bg-[var(--color-paper)]/40',
           )}
         >

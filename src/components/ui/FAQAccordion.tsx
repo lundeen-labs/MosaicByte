@@ -26,7 +26,7 @@ export function FAQAccordion({ items, className }: FAQAccordionProps) {
           <Accordion.Header asChild>
             <h3 className="m-0">
               <Accordion.Trigger
-                className="flex w-full items-center justify-between gap-6 py-5 text-left font-body text-base font-medium text-[var(--color-ink)] transition-colors duration-[180ms] hover:text-[var(--color-rust)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-rust)]"
+                className="flex w-full items-center justify-between gap-6 py-5 text-left font-body text-base font-medium text-[var(--color-ink)] transition-colors duration-[180ms] hover:text-[var(--color-rust-text)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-rust)]"
                 aria-label={item.q}
               >
                 <span className="flex-1">{item.q}</span>
@@ -34,7 +34,7 @@ export function FAQAccordion({ items, className }: FAQAccordionProps) {
                   size={18}
                   strokeWidth={1.5}
                   aria-hidden="true"
-                  className="shrink-0 text-[var(--color-ink-3)] transition-transform duration-[360ms] [transition-timing-function:var(--ease-out)] group-data-[state=open]:rotate-180 group-data-[state=open]:text-[var(--color-rust)]"
+                  className="shrink-0 text-[var(--color-ink-3)] transition-transform duration-[360ms] [transition-timing-function:var(--ease-out)] group-data-[state=open]:rotate-180 group-data-[state=open]:text-[var(--color-rust-text)]"
                 />
               </Accordion.Trigger>
             </h3>

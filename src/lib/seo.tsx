@@ -23,14 +23,23 @@ export interface SeoProps {
   jsonLd?: Record<string, unknown> | Record<string, unknown>[]
 }
 
-const DEFAULT_TITLE = `${COPY.brand.full} — SaaS Landing Pages That Convert`
+const DEFAULT_TITLE = `${COPY.brand.full} — ${COPY.brand.tagline}`
 const DEFAULT_DESCRIPTION = COPY.brand.description
-const DEFAULT_OG = `${SITE_URL}/og/index.png`
+/**
+ * Each route gets its own share card, rendered at build time by
+ * scripts/generate-og.mjs into dist/og/<id>.png. The id is the canonical path
+ * with its slash stripped, and the root is 'index' — the same ids listed in
+ * scripts/routes.mjs, which is what the generator walks.
+ */
+function ogImageFor(canonicalPath: string): string {
+  const id = canonicalPath === '/' ? 'index' : canonicalPath.replace(/^\//, '').replace(/\/$/, '')
+  return `${SITE_URL}/og/${id}.png`
+}
 
 export function Seo({ title, description, ogImage, canonicalPath = '/', jsonLd }: SeoProps) {
   const t = title ?? DEFAULT_TITLE
   const d = description ?? DEFAULT_DESCRIPTION
-  const og = ogImage ?? DEFAULT_OG
+  const og = ogImage ?? ogImageFor(canonicalPath)
   const canonical = `${SITE_URL}${canonicalPath}`
 
   const blobs = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : []

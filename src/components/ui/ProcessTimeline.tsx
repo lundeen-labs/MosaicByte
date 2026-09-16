@@ -39,7 +39,7 @@ export function ProcessTimeline({ steps, currentStep, className }: ProcessTimeli
               <span
                 className={cn(
                   'text-[28px] font-semibold tracking-[-0.02em]',
-                  isActive ? 'text-[var(--color-rust)]' : 'text-[var(--color-ink-3)]',
+                  isActive ? 'text-[var(--color-rust-text)]' : 'text-[var(--color-ink-3)]',
                 )}
               >
                 {stepNum}

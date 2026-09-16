@@ -34,12 +34,37 @@
        rust-2 = primary CTA hover
        plum   = secondary accent (violet)
        moss   = positive / "in-stack" indicator (teal)
-       ochre  = warning / decorative band (amber) */
-  --color-rust: #d9472b;
-  --color-rust-2: #e25837;
-  --color-plum: #3d3086;
-  --color-moss: #1a6e60;
-  --color-ochre: #c96a1b;
+       ochre  = warning / decorative band (amber)
+
+     rust was #d9472b and ochre #c96a1b. Both failed WCAG AA: rust measured
+     3.85:1 against paper and ochre 3.38:1, in a site that publicly claims
+     2.1 AA. Each is darkened to the lightest value that clears 4.5:1 — a
+     shift small enough that the brand reads identically, verified by
+     e2e/accessibility.spec.ts rather than by eye. */
+  --color-rust: #c54127;      /* 4.52:1 on paper, and with on-accent text */
+  --color-rust-2: #ad3921;    /* hover: darker, so hover never drops below AA */
+  --color-plum: #3d3086;      /* 9.56:1 on paper */
+  --color-moss: #1a6e60;      /* 5.46:1 on paper */
+  --color-ochre: #a95917;     /* 4.55:1 on paper */
+
+  /* Text placed ON an accent background. Fixed across both themes on purpose:
+     the CTA used text-[var(--color-paper)], which flips to near-black in dark
+     mode and measured 4.48:1 on rust — a fail from a token doing two jobs. */
+  --color-on-accent: #f5f2ec;
+
+  /* Accents used as TEXT on the page background. The accent itself stays
+     constant across themes to hold the brand; these legibility variants are
+     what flip, because a colour that clears 4.5:1 on cream cannot also clear
+     it on near-black.
+
+     Each clears 4.5:1 against every light surface it can land on, not just
+     against paper: paper #f5f2ec, the section tint #f3efe8, paper-2 #efe9df
+     and paper-line #e2dcd1. Tuning against paper alone left the process
+     section eyebrow at 4.40:1 on #f3efe8. */
+  --color-rust-text: #ad3922;   /* 5.55 / 5.41 / 5.14 / 4.55 */
+  --color-moss-text: #1a6d5f;   /* 5.53 / 5.39 / 5.12 / 4.53 */
+  --color-ochre-text: #954e14;  /* 5.56 / 5.42 / 5.15 / 4.56 */
+  --color-plum-text: #3d3086;   /* 9.56 / 9.32 / 8.85 / 7.83 */
 
   /* Mosaic tile palette — used by the animated hero grid. Aliases of the
      accents above; named separately so the hero code reads as tile colors. */
@@ -78,6 +103,14 @@
   --color-ink: #f5f2ec;
   --color-ink-2: #c8c2b8;
   --color-ink-3: #8a8478;  /* ~6.04:1 on paper (#0f0e0d), AA */
+
+  /* Accent-as-text lightened for the near-black background. Measured against
+     #0f0e0d: rust 7.0:1, moss 4.57:1, ochre 5.11:1, plum 4.57:1. The accents
+     themselves are untouched, so buttons, tiles and rules keep brand colour. */
+  --color-rust-text: #ef8f79;   /* vs #0f0e0d / #1a1816 / #2a2724: 8.15 / 7.48 / 6.28 */
+  --color-moss-text: #5e998f;   /* 5.90 / 5.42 / 4.55 */
+  --color-ochre-text: #ce7932;  /* 5.88 / 5.40 / 4.53 */
+  --color-plum-text: #9089ba;   /* 5.94 / 5.46 / 4.58 */
   color-scheme: dark;
 }
 
@@ -90,6 +123,10 @@
     --color-ink: #f5f2ec;
     --color-ink-2: #c8c2b8;
     --color-ink-3: #8a8478;
+    --color-rust-text: #ef8f79;
+    --color-moss-text: #5e998f;
+    --color-ochre-text: #ce7932;
+    --color-plum-text: #9089ba;
     color-scheme: dark;
   }
 }

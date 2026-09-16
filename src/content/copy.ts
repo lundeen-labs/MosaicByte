@@ -16,6 +16,14 @@
  * Updates here propagate to every route. Do not duplicate copy in components.
  */
 
+/**
+ * The studio's public address, in one place. The contact CTA, the privacy
+ * policy and the crash screen all read it, so changing where inquiries land is
+ * a one-line edit. Kept outside COPY because COPY's own literal cannot
+ * reference itself.
+ */
+const CONTACT_EMAIL = 'mosaicbyte.design@gmail.com'
+
 export const COPY = {
   brand: {
     wordmark: 'Mosaic Byte',
@@ -227,25 +235,11 @@ export const COPY = {
     heading: 'Tell me about your project.',
     lede:
       'I read every inquiry myself. Two-business-day response on weekdays. If something is urgent, mention it — I keep one rush slot per quarter.',
-    fields: {
-      nameLabel: 'Your name',
-      emailLabel: 'Email',
-      companyLabel: 'Company (optional)',
-      budgetLabel: 'Budget',
-      projectLabel: 'What are you working on?',
-      submitLabel: 'Send inquiry',
-    },
-    budgetOptions: [
-      { value: '<5k', label: 'Under $5K' },
-      { value: '5-10k', label: '$5K – $10K' },
-      { value: '10-25k', label: '$10K – $25K' },
-      { value: '25k+', label: '$25K+' },
-    ],
-    successHeading: 'Got it.',
-    successBody:
-      'I’ll reply within two business days. If you’re urgent, reply to the confirmation email and say so.',
-    errorHeading: 'Didn’t send.',
-    errorBody: 'Try again, or email hello@mosaicbyte.design directly.',
+    // Single source of truth for the studio's public address. The contact page,
+    // the footer, the privacy policy and the crash screen all read this, so
+    // changing the address is a one-line edit rather than a grep.
+    email: CONTACT_EMAIL,
+    emailCtaLabel: `Email ${CONTACT_EMAIL}`,
   },
 
   cta: {
@@ -312,28 +306,30 @@ export const COPY = {
         'Mosaic Byte is a small design studio. This policy explains exactly what data this site collects, why, who processes it, and how to have it deleted. No dark patterns, no surprises.',
       sections: [
         {
-          heading: 'What the contact form collects',
+          heading: 'What this site collects',
           body: [
-            'When you submit the contact form, I receive the name, email address, optional company name, selected budget range, and project description you entered. That is the entire dataset — there are no hidden fields and no tracking pixels in the form.',
+            'Nothing. This site is a set of static files with no contact form, no server of its own, no analytics, no tracking pixels, and no advertising cookies. Browsing it creates no record I can see or query.',
+            'The one thing stored in your browser is your light/dark theme choice, kept in this site’s own local storage under the key "mosaic-theme". It never leaves your device, and clearing site data removes it.',
           ],
         },
         {
-          heading: 'How that data is used',
+          heading: 'What happens when you email me',
           body: [
+            'The contact page opens your own email client against a published address — nothing is submitted through this site. I receive whatever you choose to write, and it lands in my inbox like any other email.',
             'It is used for one purpose only: to read and reply to your inquiry. Your email address is never added to a mailing list, never sold, and never shared with third parties for marketing.',
           ],
         },
         {
-          heading: 'Who processes it',
+          heading: 'Who else sees a request',
           body: [
-            'Form submissions are delivered to my inbox through Resend, an email-delivery provider, and stored in that email thread. Spam protection is handled by Cloudflare Turnstile, which evaluates browser signals (including your IP address) to confirm you are human; it does not set advertising cookies.',
-            'Site performance and traffic are measured with Vercel Speed Insights and Vercel Analytics. Both are cookieless and report only aggregate, anonymized data (page views, Core Web Vitals such as LCP, INP, and CLS). They do not identify individual visitors.',
+            'The site is hosted on GitHub Pages, so GitHub serves every page and, like any web host, records standard request logs that include your IP address. Their handling is governed by the GitHub Privacy Statement.',
+            'Two typefaces (DM Serif Display and DM Mono) load from Google Fonts, which means Google receives the request for those font files, including your IP address. Nothing else on the page is loaded from a third party.',
           ],
         },
         {
           heading: 'Retention',
           body: [
-            'Inquiry emails are kept as long as needed to respond and to maintain a record of the conversation, then deleted on request. Aggregate analytics are retained by Vercel under their standard retention window.',
+            'Inquiry emails are kept as long as needed to respond and to maintain a record of the conversation, then deleted on request. There is no other store of visitor data, because none is collected.',
           ],
         },
         {
@@ -345,7 +341,7 @@ export const COPY = {
         {
           heading: 'Contact',
           body: [
-            'For any privacy question or deletion request, email hello@mosaicbyte.design.',
+            `For any privacy question or deletion request, email ${CONTACT_EMAIL}.`,
           ],
         },
       ],

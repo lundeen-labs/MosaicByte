@@ -26,7 +26,7 @@ function SectionHeader({ eyebrow, heading, intro, align = 'left' }: SectionHeade
           : 'mb-12 flex max-w-[60ch] flex-col gap-4'
       }
     >
-      <span className="text-[12px] font-medium uppercase tracking-[0.08em] text-[var(--color-rust)]">
+      <span className="text-[12px] font-medium uppercase tracking-[0.08em] text-[var(--color-rust-text)]">
         {eyebrow}
       </span>
       <h2 className="font-display text-[2.25rem] font-semibold leading-[1.08] tracking-[-0.025em] text-[var(--color-ink)] md:text-[3rem]">
@@ -132,7 +132,7 @@ export default function Home() {
         <div className="rounded-3xl border border-[var(--color-paper-3)] bg-[var(--color-paper-2)] p-10 md:p-14">
           <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
             <div className="flex max-w-[40ch] flex-col gap-3">
-              <span className="text-[12px] font-medium uppercase tracking-[0.08em] text-[var(--color-rust)]">
+              <span className="text-[12px] font-medium uppercase tracking-[0.08em] text-[var(--color-rust-text)]">
                 Now booking
               </span>
               <h2

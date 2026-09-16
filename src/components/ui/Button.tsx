@@ -14,11 +14,11 @@ const baseClasses =
 
 const variantClasses: Record<NonNullable<ButtonProps['variant']>, string> = {
   primary:
-    'bg-[var(--color-rust)] text-[var(--color-paper)] font-semibold hover:bg-[var(--color-rust-2)] hover:translate-y-[-1px]',
+    'bg-[var(--color-rust)] text-[var(--color-on-accent)] font-semibold hover:bg-[var(--color-rust-2)] hover:translate-y-[-1px]',
   ghost:
     'bg-transparent text-[var(--color-ink)] border border-[var(--color-paper-3)] hover:border-[var(--color-ink-2)] hover:bg-[var(--color-paper-2)]',
   icon:
-    'bg-[var(--color-paper-2)] text-[var(--color-ink)] border border-[var(--color-paper-3)] p-0 h-9 w-9 hover:border-[var(--color-rust)] hover:text-[var(--color-rust)]',
+    'bg-[var(--color-paper-2)] text-[var(--color-ink)] border border-[var(--color-paper-3)] p-0 h-9 w-9 hover:border-[var(--color-rust)] hover:text-[var(--color-rust-text)]',
 }
 
 const sizeClasses: Record<NonNullable<ButtonProps['size']>, string> = {

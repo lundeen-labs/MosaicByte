@@ -19,7 +19,7 @@ export default function About() {
         className="mx-auto w-full max-w-[1280px] px-6 py-24 md:px-8 md:py-32"
       >
         <header className="mb-12 flex flex-col gap-4">
-          <span className="text-[12px] font-medium uppercase tracking-[0.08em] text-[var(--color-rust)]">
+          <span className="text-[12px] font-medium uppercase tracking-[0.08em] text-[var(--color-rust-text)]">
             About
           </span>
           <h1

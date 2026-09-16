@@ -1,4 +1,4 @@
-import { lazy, Suspense, useState } from 'react'
+import { lazy, Suspense, useEffect, useRef, useState } from 'react'
 import { Link } from 'wouter'
 import { Menu } from 'lucide-react'
 import { cn, withBasePath } from '@/lib/utils'
@@ -28,6 +28,27 @@ export interface NavbarProps {
  */
 export function Navbar({ current }: NavbarProps) {
   const [open, setOpen] = useState(false)
+  const hamburgerRef = useRef<HTMLButtonElement>(null)
+
+  /**
+   * Return focus to the hamburger when the drawer closes.
+   *
+   * Radix restores focus to whatever was focused when a Dialog opened, but it
+   * does that from the Dialog's own unmount effect — and the drawer is rendered
+   * as `{open && <MobileDrawer/>}`, so flipping `open` to false tears the
+   * subtree down before that runs. A keyboard user who pressed Escape was left
+   * with focus on <body>, back at the top of the tab order.
+   *
+   * This has to happen in an effect rather than inside the state setter: at
+   * setter time the drawer is still mounted and Radix's focus scope is still
+   * live, so it takes the focus straight back. By the time this effect runs the
+   * drawer is gone and the focus sticks.
+   */
+  const wasOpen = useRef(false)
+  useEffect(() => {
+    if (wasOpen.current && !open) hamburgerRef.current?.focus()
+    wasOpen.current = open
+  }, [open])
   const nav = COPY.nav.primary
   const navForDrawer = nav.map(({ label, href }) => ({ label, href }))
   const primaryCta = COPY.nav.primaryCta
@@ -105,7 +126,7 @@ export function Navbar({ current }: NavbarProps) {
               href={withBasePath(primaryCta.href)}
               className={cn(
                 'inline-flex items-center gap-2',
-                'rounded-full bg-[var(--color-rust)] text-[var(--color-paper)]',
+                'rounded-full bg-[var(--color-rust)] text-[var(--color-on-accent)]',
                 'px-5 py-2.5 text-[14px] font-semibold',
                 'transition-[background,transform] duration-[180ms]',
                 'hover:bg-[var(--color-rust-2)] hover:translate-y-[-1px]',
@@ -120,7 +141,7 @@ export function Navbar({ current }: NavbarProps) {
               href={primaryCta.href}
               className={cn(
                 'inline-flex items-center gap-2',
-                'rounded-full bg-[var(--color-rust)] text-[var(--color-paper)]',
+                'rounded-full bg-[var(--color-rust)] text-[var(--color-on-accent)]',
                 'px-5 py-2.5 text-[14px] font-semibold',
                 'transition-[background,transform] duration-[180ms]',
                 'hover:bg-[var(--color-rust-2)] hover:translate-y-[-1px]',
@@ -135,6 +156,7 @@ export function Navbar({ current }: NavbarProps) {
 
         {/* Mobile hamburger (<768px) */}
         <button
+          ref={hamburgerRef}
           type="button"
           aria-label="Open menu"
           aria-expanded={open}
@@ -144,7 +166,7 @@ export function Navbar({ current }: NavbarProps) {
             'rounded-full border border-[var(--color-paper-3)]',
             'text-[var(--color-ink)] bg-[var(--color-paper-2)]',
             'transition-colors duration-[180ms]',
-            'hover:border-[var(--color-rust)] hover:text-[var(--color-rust)]',
+            'hover:border-[var(--color-rust)] hover:text-[var(--color-rust-text)]',
             'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-rust)]',
           )}
         >

@@ -6,6 +6,27 @@ const SITE_URL =
 export { SITE_URL }
 
 /**
+ * Numeric price of a tier, or null for a recurring plan.
+ *
+ * `priceRange` used to be hardcoded as '$2500-$15000' while COPY.services
+ * advertised $1,500 to $5,000 — structured data telling Google one thing and
+ * the page telling a visitor another. It is derived here so the two cannot
+ * disagree again, and e2e/seo.spec.ts asserts the derived range actually
+ * brackets the rendered tier prices.
+ */
+function oneOffPriceOf(tier: { price: string }): number | null {
+  if (/\/(mo|month|yr|year)\b/i.test(tier.price)) return null
+  const digits = tier.price.replace(/[^0-9]/g, '')
+  return digits ? Number(digits) : null
+}
+
+const oneOffPrices = COPY.services.tiers
+  .map(oneOffPriceOf)
+  .filter((n): n is number => n !== null)
+
+const priceRange = `$${Math.min(...oneOffPrices)}-$${Math.max(...oneOffPrices)}`
+
+/**
  * Person blob for the studio lead (Jesenia). Surfaces on the About route.
  * `sameAs` is intentionally empty until real public profiles are linked.
  */
@@ -35,7 +56,7 @@ export const orgJsonLd: Record<string, unknown> = {
   description: COPY.brand.description,
   founder: { '@id': `${SITE_URL}/#jesenia` },
   areaServed: { '@type': 'Country', name: 'United States' },
-  priceRange: '$2500-$15000',
+  priceRange,
   serviceType: 'Brand & Landing Page Design',
   address: {
     '@type': 'PostalAddress',
@@ -46,12 +67,19 @@ export const orgJsonLd: Record<string, unknown> = {
   hasOfferCatalog: {
     '@type': 'OfferCatalog',
     name: 'Services',
-    itemListElement: COPY.services.tiers.map((tier) => ({
-      '@type': 'Offer',
-      name: tier.name,
-      priceCurrency: 'USD',
-      price: tier.price.replace(/[^0-9]/g, '').slice(0, 5),
-    })),
+    itemListElement: COPY.services.tiers.map((tier) => {
+      const oneOff = oneOffPriceOf(tier)
+      return {
+        '@type': 'Offer',
+        name: tier.name,
+        priceCurrency: 'USD',
+        // A recurring plan has no single price; advertising the bare digits of
+        // '$150/mo' as a one-off price of 150 misrepresents it in search.
+        ...(oneOff === null
+          ? { priceSpecification: { '@type': 'UnitPriceSpecification', priceCurrency: 'USD', price: tier.price } }
+          : { price: String(oneOff) }),
+      }
+    }),
   },
 }
 

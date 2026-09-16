@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // Generate dist/sitemap.xml and dist/robots.txt from the static route list.
-// No CMS yet, so we hand-author the route inventory here. Update this when
-// adding routes.
+// The route inventory lives in scripts/routes.mjs, shared with prerender.mjs
+// and generate-og.mjs so the three cannot drift apart.
 //
 // robots.txt used to be a static file at public/robots.txt with a hardcoded
 // `Sitemap: https://mosaicbyte.vercel.app/sitemap.xml` line — wrong on every
@@ -15,18 +15,11 @@
 import { writeFileSync, existsSync, mkdirSync } from 'node:fs'
 import { join, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
+import { ROUTES } from './routes.mjs'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const ROOT = join(__dirname, '..')
 const SITE_URL = process.env.VITE_SITE_URL || 'https://mosaicbyte.design'
-
-const ROUTES = [
-  { path: '/', priority: '1.0', changefreq: 'weekly' },
-  { path: '/work', priority: '0.6', changefreq: 'monthly' },
-  { path: '/about', priority: '0.7', changefreq: 'monthly' },
-  { path: '/contact', priority: '0.7', changefreq: 'monthly' },
-  { path: '/privacy', priority: '0.3', changefreq: 'yearly' },
-]
 
 const today = new Date().toISOString().slice(0, 10)
 

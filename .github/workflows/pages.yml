@@ -1,9 +1,13 @@
 name: Deploy to GitHub Pages
 
-# This workflow builds and publishes a static mirror to GitHub Pages
+# Builds the static site, gates it behind the full quality suite, and publishes
+# to GitHub Pages. Nothing reaches mosaicbyte.design that has not passed lint,
+# type-check, unit tests and the end-to-end suite against the built artifact.
 
 on:
   push:
+    branches: [main]
+  pull_request:
     branches: [main]
   workflow_dispatch:
 
@@ -26,15 +30,26 @@ jobs:
       - name: Set up Node
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          # puppeteer@25 (scripts/prerender.mjs) declares engines >= 22.12.0 and
+          # vite@8 wants ^20.19 || >=22.12. Node 22 satisfies the whole tree, and
+          # the runner already forces Node 24 on the actions themselves.
+          node-version: '22'
           cache: npm
 
       - name: Install dependencies
         run: npm ci
 
+      - name: Lint
+        run: npm run lint
+
+      - name: Type-check
+        run: npx tsc --noEmit
+
+      - name: Unit tests
+        run: npm test
+
       - name: Build (GitHub Pages mode)
         env:
-          GITHUB_PAGES: 'true'
           VITE_SITE_URL: https://mosaicbyte.design
         run: npm run build
 
@@ -43,11 +58,11 @@ jobs:
         # route AND a dist/404.html prerendered from the NotFound route, so
         # GitHub Pages serves real markup for a direct hit on any path and a
         # genuine 404 page (not a copy of the homepage) for an unmatched one.
-        # Both are still full SPA shells, so Wouter hydrates and takes over.
-        # This step fails the build if the prerender silently produced nothing.
+        # scripts/generate-og.mjs writes the share cards the SEO tags point at.
+        # This step fails the build if any of that silently produced nothing.
         run: |
           set -euo pipefail
-          required="index.html 404.html work/index.html about/index.html contact/index.html privacy/index.html sitemap.xml robots.txt CNAME"
+          required="index.html 404.html work/index.html about/index.html contact/index.html privacy/index.html sitemap.xml robots.txt CNAME og/index.png og/about.png og/work.png og/contact.png og/privacy.png og/404.png"
           for f in $required; do
             if [ ! -s "dist/$f" ]; then
               echo "::error::missing or empty dist/$f"
@@ -64,12 +79,34 @@ jobs:
           fi
           echo "prerendered output verified"
 
+      - name: Install Playwright browsers
+        # Chromium, Firefox and WebKit: the e2e projects in playwright.config.ts
+        # cover all three plus two mobile emulations, because engine differences
+        # are exactly what a cross-browser suite exists to catch.
+        run: npx playwright install --with-deps chromium firefox webkit
+
+      - name: End-to-end tests
+        # Runs against dist/ through e2e/static-server.mjs, which reproduces
+        # GitHub Pages' file resolution — so this exercises the artifact that is
+        # about to be published, not a dev server.
+        run: npx playwright test
+
+      - name: Upload test report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 14
+
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: dist
 
   deploy:
+    # Pull requests are gated but never published.
+    if: github.event_name != 'pull_request'
     needs: build
     runs-on: ubuntu-latest
     environment:
