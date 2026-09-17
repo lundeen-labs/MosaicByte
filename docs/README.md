@@ -3,6 +3,17 @@
 Reference material for the Mosaic Byte site. The two HTML documents are meant to be opened in a
 browser — they are interactive, and the diagrams do not survive as plain text.
 
+> **Read the two HTML documents at these links, not by clicking the files here.**
+> GitHub serves a `.html` file as plain text, so opening `architecture.html` or
+> `glossary.html` in this folder shows the source code rather than the page.
+>
+> - **[How this site is built](https://www.mosaicbyte.design/docs/architecture.html)**
+> - **[Glossary](https://www.mosaicbyte.design/docs/glossary.html)**
+>
+> Both are published from this folder on every deploy, so the links always match
+> what is committed here. To read them offline instead, clone the repo and open
+> the files directly from disk.
+
 ## Start here
 
 - **`architecture.html`** — how the site is built. All 26 stack layers: what each one does in this

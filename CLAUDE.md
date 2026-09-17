@@ -159,6 +159,13 @@ without publishing. Node bumped 20 -> 22 (puppeteer@25 declares
 - `.tsbuildinfo` now writes to `node_modules/.cache/typescript/`; deleted the
   empty `.env.example` and a stale `tsconfig.api.tsbuildinfo` from a removed
   project reference.
+- **The HTML docs are published, because GitHub will not render them.** A `.html` file in a
+  repo is served as `text/plain`, so clicking `docs/glossary.html` on github.com shows 189 KB
+  of source. `scripts/copy-docs.mjs` copies `docs/*.html` into `dist/docs/` on every build and
+  stamps `noindex` on each, so they live at `https://www.mosaicbyte.design/docs/<name>.html`
+  without competing with the marketing pages in search. `docs/` stays the single source of
+  truth - never add a second copy under `public/`. CI fails the build if the published copies
+  are missing.
 - `docs/glossary.html` defines the 237 technical terms this project uses, in plain English,
   each with an "in this project" note naming the file, config value or number it refers to
   here. Built by harvesting the vocabulary that actually appears in the repo and its docs

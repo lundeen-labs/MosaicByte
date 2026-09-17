@@ -62,7 +62,7 @@ jobs:
         # This step fails the build if any of that silently produced nothing.
         run: |
           set -euo pipefail
-          required="index.html 404.html work/index.html about/index.html contact/index.html privacy/index.html sitemap.xml robots.txt CNAME og/index.png og/about.png og/work.png og/contact.png og/privacy.png og/404.png"
+          required="index.html 404.html work/index.html about/index.html contact/index.html privacy/index.html sitemap.xml robots.txt CNAME og/index.png og/about.png og/work.png og/contact.png og/privacy.png og/404.png docs/index.html docs/architecture.html docs/glossary.html"
           for f in $required; do
             if [ ! -s "dist/$f" ]; then
               echo "::error::missing or empty dist/$f"
