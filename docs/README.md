@@ -3,16 +3,13 @@
 Reference material for the Mosaic Byte site. The two HTML documents are meant to be opened in a
 browser — they are interactive, and the diagrams do not survive as plain text.
 
-> **Read the two HTML documents at these links, not by clicking the files here.**
-> GitHub serves a `.html` file as plain text, so opening `architecture.html` or
-> `glossary.html` in this folder shows the source code rather than the page.
+> **These two `.html` files do not render on github.com.** GitHub serves a
+> `.html` file from a repository as plain text, so clicking `architecture.html`
+> or `glossary.html` here shows the source, not the page.
 >
-> - **[How this site is built](https://www.mosaicbyte.design/docs/architecture.html)**
-> - **[Glossary](https://www.mosaicbyte.design/docs/glossary.html)**
->
-> Both are published from this folder on every deploy, so the links always match
-> what is committed here. To read them offline instead, clone the repo and open
-> the files directly from disk.
+> To read them: clone or download the repository and open the file from disk —
+> they are self-contained, so double-clicking works. They are deliberately **not**
+> published with the website; see the access note at the bottom of this file.
 
 ## Start here
 
@@ -39,3 +36,12 @@ browser — they are interactive, and the diagrams do not survive as plain text.
 - `../CLAUDE.md` — the operating notes and the running change log, including the detail behind
   each decision recorded in `architecture.html`.
 - `../DEPLOY.md` — custom domain and DNS setup.
+
+## Why these are not on the website
+
+They were briefly published at `www.mosaicbyte.design/docs/` and have been taken
+down: a GitHub Pages site is public to anyone with the URL, and restricting who
+can view one requires GitHub Enterprise Cloud, which this organisation does not
+have. `noindex` keeps a page out of search results; it does not keep anyone out.
+
+So these documents are read from the repository rather than from a URL.

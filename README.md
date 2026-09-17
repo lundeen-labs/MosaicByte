@@ -6,17 +6,11 @@ React 19 + Vite single-page app hosted on GitHub Pages. Design + brand direction
 
 ## Documentation
 
-Two reference documents, written to be read in a browser. **GitHub shows `.html`
-files as raw source**, so open them at these links rather than clicking the files
-in `docs/`:
-
-| | |
-|---|---|
-| **[How this site is built](https://www.mosaicbyte.design/docs/architecture.html)** | Every layer of the stack: what each choice does here, why it was made, what was rejected, and what it costs. Includes an interactive diagram of the pipeline from a source edit to a served page. |
-| **[Glossary](https://www.mosaicbyte.design/docs/glossary.html)** | 237 technical terms in plain English, each with a note on what it points at in this codebase. Searchable and filterable. |
-
-Both are published from `docs/` on every deploy and carry `noindex`, so they are
-reachable by link but never appear in search results next to the studio's pages.
+Two reference documents live in `docs/`, written to be read in a browser:
+`architecture.html` (how the site is built, layer by layer) and `glossary.html`
+(237 technical terms in plain English). They are **not** published with the site
+and are not readable on github.com — GitHub serves `.html` as plain text. Clone
+the repo and open them from disk, or see `docs/README.md`.
 
 ## Tech stack
 
