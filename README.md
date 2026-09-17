@@ -6,11 +6,13 @@ React 19 + Vite single-page app hosted on GitHub Pages. Design + brand direction
 
 ## Documentation
 
-Two reference documents live in `docs/`, written to be read in a browser:
-`architecture.html` (how the site is built, layer by layer) and `glossary.html`
-(237 technical terms in plain English). They are **not** published with the site
-and are not readable on github.com — GitHub serves `.html` as plain text. Clone
-the repo and open them from disk, or see `docs/README.md`.
+The architecture reference and the glossary live in
+**[lundeen-labs/mosaicbyte-docs](https://github.com/lundeen-labs/mosaicbyte-docs)**
+— a private repository, readable only by invited collaborators. They are not in
+this repository and not on the website, because both are public.
+
+Everything else stays in `docs/`: the improvement roadmap, the GitHub Pages
+research, positioning notes and the early project audit.
 
 ## Tech stack
 
@@ -73,8 +75,7 @@ scripts/
   generate-og.mjs      per-route 1200x630 share cards -> dist/og/*.png
   generate-sitemap.mjs dist/sitemap.xml + dist/robots.txt
 public/                favicon.svg, CNAME, .nojekyll
-docs/                  architecture.html (the stack, layer by layer), glossary.html (237 terms),
-                       improvement-roadmap.md,
+docs/                  improvement-roadmap.md,
                        competitive-edge.md, project-audit.md, github-pages-research.md
 ```
 

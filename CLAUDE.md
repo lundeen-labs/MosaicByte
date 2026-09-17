@@ -159,24 +159,20 @@ without publishing. Node bumped 20 -> 22 (puppeteer@25 declares
 - `.tsbuildinfo` now writes to `node_modules/.cache/typescript/`; deleted the
   empty `.env.example` and a stale `tsconfig.api.tsbuildinfo` from a removed
   project reference.
-- **The HTML docs are published, because GitHub will not render them.** A `.html` file in a
-  repo is served as `text/plain`, so clicking `docs/glossary.html` on github.com shows 189 KB
-  of source. `scripts/copy-docs.mjs` copies `docs/*.html` into `dist/docs/` on every build and
-  stamps `noindex` on each, so they live at `https://www.mosaicbyte.design/docs/<name>.html`
-  without competing with the marketing pages in search. `docs/` stays the single source of
-  truth - never add a second copy under `public/`. CI fails the build if the published copies
-  are missing.
-- `docs/glossary.html` defines the 237 technical terms this project uses, in plain English,
-  each with an "in this project" note naming the file, config value or number it refers to
-  here. Built by harvesting the vocabulary that actually appears in the repo and its docs
-  rather than writing a generic web-dev glossary. The term data is a plain array in the page;
-  the text is HTML-escaped on injection, because a definition quoting a script tag would
-  otherwise render as one.
-- `docs/architecture.html` documents all 26 stack layers - role, rationale, what was
-  rejected, and the cost - with an interactive pipeline diagram. Every rationale in it is
-  traceable to a file, a commit or a measurement; where the repo records no reason, it says
-  so rather than inventing one. Regenerate the reasoning by re-reading the source, not by
-  paraphrasing the doc.
+- **The architecture and glossary documents live in a PRIVATE repo**,
+  `lundeen-labs/mosaicbyte-docs`, not here. `architecture.html` covers all 26 stack layers -
+  role, rationale, what was rejected, the cost - with an interactive pipeline diagram;
+  `glossary.html` defines 237 terms in plain English, each with an "in this project" note.
+  Every rationale in both is traceable to a file, a commit or a measurement; where the repo
+  records no reason, they say so rather than inventing one.
+  **Do not move them back into this repository and do not publish them with the site.** This
+  repo is public (a free-plan Pages site can only publish from a public repo), and a Pages site
+  cannot be access-restricted without GitHub Enterprise Cloud - `noindex` hides a page from
+  search, it does not restrict it. Regenerate their content by re-reading the source, never by
+  paraphrasing the documents.
+  Known gap: the versions pushed here on 2026-09-16 remain retrievable from this repository's
+  public git history. Purging them would need a history rewrite and a force-push, which is
+  Tyler's call.
 - **Do not edit files through shell heredocs.** Two stray `0x08` bytes were
   written into regex literals this session that way (`\b` collapsing to a
   backspace), one of which silently broke a test for an hour. Use the Write/Edit
