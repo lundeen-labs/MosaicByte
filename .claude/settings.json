@@ -70,13 +70,13 @@
       "Bash(tail:*)",
       "Bash(sleep:*)",
       "Bash(until curl:*)",
-      "Read(//e/source/repos/Business/MosaicByte/**)",
+      "Read(//e/source/repos/Websites/MosaicByte/**)",
       "Read(//c/tmp/mosaicbyte-research/**)",
-      "Read(//e/source/repos/Applications/MathLens/**)",
-      "Edit(//e/source/repos/Business/MosaicByte/**)",
-      "Write(//e/source/repos/Business/MosaicByte/**)",
-      "Glob(//e/source/repos/Business/MosaicByte/**)",
-      "Grep(//e/source/repos/Business/MosaicByte/**)",
+      "Read(//e/source/repos/Apps/MathLens/**)",
+      "Edit(//e/source/repos/Websites/MosaicByte/**)",
+      "Write(//e/source/repos/Websites/MosaicByte/**)",
+      "Glob(//e/source/repos/Websites/MosaicByte/**)",
+      "Grep(//e/source/repos/Websites/MosaicByte/**)",
       "WebSearch",
       "WebFetch(domain:resend.com)",
       "WebFetch(domain:cloudflare.com)",
@@ -100,9 +100,9 @@
       "Bash(rm -rf /:*)",
       "Bash(npm publish:*)",
 
-      "Read(//e/source/repos/Business/MosaicByte/.env)",
-      "Read(//e/source/repos/Business/MosaicByte/.env.local)",
-      "Read(//e/source/repos/Business/MosaicByte/.env.production)"
+      "Read(//e/source/repos/Websites/MosaicByte/.env)",
+      "Read(//e/source/repos/Websites/MosaicByte/.env.local)",
+      "Read(//e/source/repos/Websites/MosaicByte/.env.production)"
     ]
   },
   "hooks": {

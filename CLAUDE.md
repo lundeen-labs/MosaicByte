@@ -236,7 +236,7 @@ Concrete checks when reviewing or writing component code:
 
 ## Project root
 
-`E:\source\repos\Business\MosaicByte` — always use absolute Windows paths.
+`E:\source\repos\Websites\MosaicByte` — always use absolute Windows paths.
 
 Dev verification screenshots (gitignored, ephemeral) live under `screenshots/rebrand/` (visual-identity captures, `mb-*.png`) and `screenshots/verification/` (P0/P1 launch-blocker captures, `p0-*.png`, `p1-*.png`). `.gitignore` covers the whole `screenshots/` tree — save new captures there, not at project root.
 
