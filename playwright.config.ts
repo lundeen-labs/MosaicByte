@@ -32,6 +32,7 @@ const CROSS_BROWSER = [
   '**/routing.spec.ts',
   '**/features.spec.ts',
   '**/seo.spec.ts',
+  '**/security.spec.ts',
   '**/accessibility.spec.ts',
   '**/responsive.spec.ts',
 ]
