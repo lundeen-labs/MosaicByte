@@ -178,6 +178,12 @@ without publishing. Node bumped 20 -> 22 (puppeteer@25 declares
   backspace), one of which silently broke a test for an hour. Use the Write/Edit
   tools, or a Python script written to disk first.
 
+## Release hardening (2026-10-30, branch `deploy/first-release-2026-10-30`)
+
+- **Copy consistency (MB14).** `src/content/copy.ts` quotes only the real tiers ($1,500 / $3,000 / from $5,000), states 10 / 14 / 20 days wherever a duration appears, and derives the closing banner heading ("Two slots open this month.") from `STUDIO_AVAILABLE` and `OPEN_SLOTS`, the same constants that feed `COPY.status`. `src/content/__tests__/copy.test.ts` fails the unit suite if a price, duration or typo drifts. Jesenia still needs to confirm the wording and the prices (Zoho PR05).
+- **Meta CSP and referrer policy (MB10).** GitHub Pages sends no headers, so `scripts/security-meta.mjs` (a Vite build plugin, wired in `vite.config.ts`) stamps `<meta http-equiv="Content-Security-Policy">` into the built `index.html`, computing the sha256 of the inline theme script so the pin can never go stale. `index.html` carries the static `<meta name="referrer" content="strict-origin-when-cross-origin">`. The prerenderer snapshots the head, so every `dist/**/index.html` and `404.html` keeps both. Policy: scripts `self` + the pinned hash (no unsafe-inline, no eval); styles `self` + fonts.googleapis.com + inline (the lazy mobile drawer's Radix scroll-lock injects a `<style>` whose body embeds the measured scrollbar width, so it cannot be hash-pinned; `e2e/security.spec.ts` caught it blocked); fonts fonts.gstatic.com; everything else `self`; `object-src 'none'`. Not expressible in a meta tag: `frame-ancestors`, `report-uri`, HSTS (needs Cloudflare in front, tracked as W04). Covered by `src/lib/__tests__/security-meta.test.ts` and `e2e/security.spec.ts` (served-document checks plus a `securitypolicyviolation` listener across every route and the lazy mobile drawer).
+- **Secret scanning (C17).** GitHub secret scanning and push protection are enabled on `lundeen-labs/MosaicByte`. `.github/workflows/pages.yml` runs a pinned, checksum-verified gitleaks 8.30.1 over the full history (`fetch-depth: 0`) before anything else. Local check: `gitleaks git --no-banner --redact .` (63 commits, no leaks on 2026-10-30).
+
 ## Operating mode
 
 **Tyler is product. Claude is the developer.** Tyler describes intent and outcome. Claude implements: writes code, runs commands, runs tests, commits, deploys, audits, fixes, iterates. Default to action.
