@@ -24,6 +24,25 @@
  */
 const CONTACT_EMAIL = 'mosaicbyte.design@gmail.com'
 
+/**
+ * Availability, in one place. `status` (hero badge, navbar pill) and the
+ * closing call-to-action heading below are both derived from these two
+ * constants, so the number of open slots can never disagree between them.
+ */
+const STUDIO_AVAILABLE: boolean = true
+const OPEN_SLOTS: number = 2
+
+const NUMBER_WORDS = [
+  'No', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten',
+] as const
+
+/** "Two slots open this month." / "One slot open this month." / "Fully booked this month." */
+function slotsHeading(available: boolean, slots: number): string {
+  if (!available || slots <= 0) return 'Fully booked this month.'
+  const word = slots < NUMBER_WORDS.length ? NUMBER_WORDS[slots] : String(slots)
+  return `${word} ${slots === 1 ? 'slot' : 'slots'} open this month.`
+}
+
 export const COPY = {
   brand: {
     wordmark: 'Mosaic Byte',
@@ -35,8 +54,8 @@ export const COPY = {
   },
 
   status: {
-    available: true,
-    slots: 2,
+    available: STUDIO_AVAILABLE,
+    slots: OPEN_SLOTS,
     week: 'OPEN NOW',
   },
 
@@ -51,7 +70,7 @@ export const COPY = {
     primaryCta: { label: 'Start a project', href: '/contact' },
     secondaryCta: { label: 'See how I work', href: '/#process' },
     reassureLines: [
-      'Fixed-fee, two-week landing pages.',
+      'Fixed-fee, 10 to 20 day builds.',
       'Copy, design, and build delivered together.',
       'Built in whatever stack your team uses. You own the source on day one.',
     ],
@@ -79,14 +98,14 @@ export const COPY = {
         price: '$1,500',
         cadence: 'fixed-fee · 10 days',
         scope: [
-          '5-page brouchure site',
+          '5-page brochure site',
           'Mobile responsive',
           'Basic on-page SEO',
           'Contact form',
-          'One revision rounds',
+          'One revision round',
           'You own every source file from day one',
         ],
-        cta: { label: 'Start a starter', href: '/contact?tier=starter' },
+        cta: { label: 'Start with Starter', href: '/contact?tier=starter' },
       },
       {
         eyebrow: 'TIER 02 · MOST PICKED',
@@ -96,8 +115,8 @@ export const COPY = {
         scope: [
           'Up to 10 pages',
           'Custom design (not a stock template reskin)',
-          'blog/news section',
-          'Google Business Profile Setup',
+          'Blog/news section',
+          'Google Business Profile setup',
           'Basic local SEO',
           'Two revision rounds inside the 14-day window',
         ],
@@ -111,9 +130,9 @@ export const COPY = {
         cadence: 'fixed-fee · 20 days',
         scope: [
           'Fully custom design',
-          'e-commerce or booking integration',
+          'E-commerce or booking integration',
           'Copywriting included',
-          'Advanced SEO/schema setup',
+          'Advanced SEO and schema setup',
           'Launch support',
         ],
         cta: { label: 'Get a quote', href: '/contact?tier=site' },
@@ -137,7 +156,8 @@ export const COPY = {
   process: {
     heading: 'How it works',
     sectionMark: { number: '02', label: 'PROCESS' },
-    intro: 'Four phases across fourteen days. Every step has a written deliverable.',
+    intro:
+      'Four phases, shown on the 14-day Growth timeline. Starter runs 10 days and Signature 20, on the same four phases. Every step has a written deliverable.',
     steps: [
       {
         day: 'DAY 01-02',
@@ -172,8 +192,8 @@ export const COPY = {
     items: [
       {
         id: 'duration',
-        q: 'How long does a landing page project take?',
-        a: 'Two weeks from kickoff to launch. Week 1: research, copy, wireframe. Week 2: design, build, QA, ship.',
+        q: 'How long does a project take?',
+        a: 'It depends on the package: Starter takes 10 days, Growth 14 days and Signature 20 days from kickoff to launch. Every package follows the same four phases: discovery, copy and wireframe, design and build, then QA and ship.',
       },
       {
         id: 'copy',
@@ -182,8 +202,8 @@ export const COPY = {
       },
       {
         id: 'scope',
-        q: 'What is included at $4,500?',
-        a: 'Discovery interviews, voice-of-customer research, conversion copy, bespoke design, responsive build in your stack, analytics + heatmap setup, two revision rounds, launch.',
+        q: 'What is included in each package?',
+        a: 'Starter ($1,500, 10 days): a 5-page brochure site, mobile responsive, basic on-page SEO, a contact form and one revision round. Growth ($3,000, 14 days): up to 10 pages, custom design, a blog/news section, Google Business Profile setup, basic local SEO and two revision rounds. Signature (from $5,000, 20 days): fully custom design, e-commerce or booking integration, copywriting, advanced SEO and schema setup, and launch support. Every package: you own every source file from day one.',
       },
       {
         id: 'engineering',
@@ -219,7 +239,7 @@ export const COPY = {
     lede:
       'I’m Jesenia Lundeen. I design landing pages and brand systems for small teams that want their site to look the way their product feels.',
     body: [
-      'Mosaic Byte is the deliberate small thing. One designer, one or two clients at a time, fixed-fee, two-week engagements. The constraint is the value — I can’t afford to ship a page that doesn’t work, so I don’t.',
+      'Mosaic Byte is the deliberate small thing. One designer, one or two clients at a time, fixed-fee engagements of 10 to 20 days. The constraint is the value — I can’t afford to ship a page that doesn’t work, so I don’t.',
       'I do the research, I write the copy, I design the page. When a build calls for engineering that goes beyond what a no-code tool can handle — custom interactions, analytics rigging, a CMS that has to behave — my husband Tyler builds it. He’s a software engineer, and the reason every page that leaves this studio meets WCAG 2.1 AA accessibility standards and ships with real performance instrumentation.',
       'If you have a small product, a landing page or brand that’s leaking, and a budget under $15K — I’m probably the right person to talk to.',
     ],
@@ -244,7 +264,7 @@ export const COPY = {
 
   cta: {
     sectionMark: { number: '06', label: 'NEXT' },
-    heading: 'Two slots open this month.',
+    heading: slotsHeading(STUDIO_AVAILABLE, OPEN_SLOTS),
     lede: 'Start with a 15-minute call. No pitch.',
     primary: { label: 'Start a project', href: '/contact' },
     secondary: { label: 'Read the process', href: '/#process' },
@@ -301,7 +321,7 @@ export const COPY = {
     privacy: {
       eyebrow: 'LEGAL',
       heading: 'Privacy Policy',
-      updated: 'Last updated: May 26, 2026',
+      updated: 'Last updated: October 30, 2026',
       intro:
         'Mosaic Byte is a small design studio. This policy explains exactly what data this site collects, why, who processes it, and how to have it deleted. No dark patterns, no surprises.',
       sections: [
