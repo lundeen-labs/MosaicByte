@@ -19,3 +19,6 @@ playwright-report/
 # Dev-server screenshots (ephemeral, never committed)
 screenshots/
 
+
+# Separate repo (lundeen-labs/mosaicbyte-docs), cloned inside this tree
+/mosaicbyte-docs/
