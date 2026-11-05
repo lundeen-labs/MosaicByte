@@ -106,5 +106,5 @@ Branch: `feature/mosaicbyte-rebrand` (off `feature/p0-launch-blockers`).
 | Font "Fraunces / Inter Tight / JetBrains Mono", cream/oxblood palette | **Geist / Geist Mono**, dark palette (`index.css:5-7,20-34`) |
 | Bundle "447 KB raw / 142 KB gz, only raw fails" | Home initial ≈ **667 KB raw / 206 KB gz — both gates fail** (P1 #6/#7 address this) |
 | "87 tests" | **89 tests** |
-| `DEPLOY.md` path `E:\source\repos\lundeen-studio` | `E:\source\repos\Applications\lundeen-studio` |
+| `DEPLOY.md` path `E:\source\repos\lundeen-studio` | `E:\source\repos\Apps\lundeen-studio` |
 | "6 lazy-loaded routes" | **7** (added `/privacy`) |

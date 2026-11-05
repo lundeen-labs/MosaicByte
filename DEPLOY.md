@@ -12,7 +12,7 @@ All quality gates pass:
 
 ## Deployment
 
-This site is statically hosted on GitHub Pages and deployed automatically via GitHub Actions (`.github/workflows/pages.yml`) on every push to the `main` branch. 
+This site is hosted on Vercel. The GitHub Actions Pages deploy was removed on 2026-11-04, so pushes to `main` no longer publish the GitHub Pages mirror. 
 
 ### Setting up a custom domain
 1. Ensure the `public/CNAME` file contains your domain name (currently `www.mosaicbyte.design`). It must match the custom domain configured in the repository's Pages settings, or a deploy will move the domain.

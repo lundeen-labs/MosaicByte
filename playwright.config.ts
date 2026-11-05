@@ -32,6 +32,7 @@ const CROSS_BROWSER = [
   '**/routing.spec.ts',
   '**/features.spec.ts',
   '**/seo.spec.ts',
+  '**/security.spec.ts',
   '**/accessibility.spec.ts',
   '**/responsive.spec.ts',
 ]
@@ -123,6 +124,12 @@ export default defineConfig({
       name: 'firefox',
       use: { ...devices['Desktop Firefox'], viewport: { width: 1440, height: 900 } },
       testMatch: CROSS_BROWSER,
+      // Local Windows only: with many Firefox workers at once, Firefox's software
+      // compositor (WebRender SWGL, "failed mapping default framebuffer") stalls and
+      // goto/evaluate/boundingBox calls time out (up to 81 of 795 tests). One Firefox
+      // worker passes 100%. This caps only this project; the global worker pool still
+      // runs chromium and webkit in parallel. CI (Linux) is unaffected.
+      workers: isCI ? undefined : 1,
     },
     {
       name: 'webkit',

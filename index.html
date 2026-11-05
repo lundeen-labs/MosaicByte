@@ -6,6 +6,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#f5f2ec" />
     <!--
+      Referrer policy. GitHub Pages cannot send a Referrer-Policy header, so the
+      meta form is the only lever: outbound clicks reveal this site's origin but
+      never a path. The Content-Security-Policy meta is stamped in at build time
+      by scripts/security-meta.mjs, because it must carry the sha256 of the inline
+      theme script below.
+    -->
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <!--
       Theme pre-paint. Runs synchronously before React mounts so a user who
       chose dark in localStorage doesn't see a flash of light theme during
       hydration. Three states: 'light' / 'dark' / null (= follow system).

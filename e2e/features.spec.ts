@@ -300,6 +300,33 @@ test.describe('home page sections', () => {
     }
   })
 
+  test('FAQ pricing and timeline agree with the tiers, and the closing heading reflects the open slots', async ({ page }) => {
+    await page.goto('/')
+    const faq = page.locator('#faq')
+
+    // The package answer must quote every tier's price, and never the retired $4,500.
+    const scope = COPY.faq.items.find((item) => item.id === 'scope')!
+    await faq.getByRole('button', { name: scope.q }).click()
+    for (const tier of COPY.services.tiers) await expect(faq).toContainText(tier.price)
+    await expect(page.locator('body')).not.toContainText('$4,500')
+
+    // The timeline answer must name each tier's duration, not "two weeks".
+    const duration = COPY.faq.items.find((item) => item.id === 'duration')!
+    await faq.getByRole('button', { name: duration.q }).click()
+    for (const tier of COPY.services.tiers) {
+      const days = tier.cadence.match(/\d+ days/)![0]
+      await expect(faq).toContainText(days)
+    }
+
+    // The closing banner is derived from status.slots, so the two cannot drift.
+    const slotWord = ['No', 'One', 'Two', 'Three', 'Four', 'Five'][COPY.status.slots]
+    // First match only: the banner currently renders in both the page body and the
+    // footer (tracked as MB03), and this assertion is about the wording, not the count.
+    await expect(
+      page.getByRole('heading', { name: new RegExp(`^${slotWord} slots? open this month`) }).first(),
+    ).toBeVisible()
+  })
+
   test('the hero secondary CTA scrolls to its in-page anchor', async ({ page }) => {
     // WebKit gets a longer budget for this one. Smooth scrolling is the only
     // assertion in the suite that waits on the compositor, and under parallel

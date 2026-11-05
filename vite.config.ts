@@ -2,6 +2,7 @@ import { defineConfig } from 'vite'
 import path from 'node:path'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
+import { securityMeta } from './scripts/security-meta.mjs'
 
 export default defineConfig({
   // Vercel and GitHub Pages (with custom domain) both serve this site
@@ -10,6 +11,10 @@ export default defineConfig({
   plugins: [
     react(),
     tailwindcss(),
+    // Meta Content-Security-Policy for the built pages (GitHub Pages sends no
+    // headers). Computed from index.html so the inline theme script's sha256
+    // can never go stale. See scripts/security-meta.mjs.
+    securityMeta(),
   ],
   resolve: {
     alias: { '@': path.resolve(__dirname, 'src') },
