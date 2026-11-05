@@ -1,5 +1,7 @@
 # Mosaic Byte — Agent Notes
 
+No CI: GitHub Actions was removed on 2026-11-04 (Tyler's decision; version control only). Run the checks locally: `npm run lint`, `npx tsc --noEmit`, `npm test`, `npm run test:e2e` (all four: `npm run test:all`); secret scan: `gitleaks git --no-banner --redact .`.
+
 Production marketing site for the **Mosaic Byte** brand (Jesenia Lundeen). Same codebase as the prior "Lundeen Studio" identity — rebranded 2026-05-26 (see "Rebrand to Mosaic Byte" below). The local directory is still named `lundeen-studio\` to avoid churn; the deployed brand and the destination GitHub repo are `mosaicbyte`.
 
 Single source of truth for the original implementation plan: `C:\tmp\mosaicbyte-research\phase-c-task-graph.md` (historical — predates the rebrand).
@@ -139,9 +141,8 @@ Five browser projects. 774 checks, 16 documented skips (Safari does not Tab to
 links without Full Keyboard Access), 0 failures. See README "Testing" for the
 per-spec breakdown and the reasoning behind the browser matrix.
 
-`.github/workflows/pages.yml` now gates the deploy on lint, tsc, unit tests, the
-prerender/OG output check and the full e2e suite. Pull requests run the gate
-without publishing. Node bumped 20 -> 22 (puppeteer@25 declares
+The gate (lint, tsc, unit tests, the prerender/OG output check and the full e2e
+suite) now runs locally via `npm run test:all`; the GitHub Actions workflow that ran it was removed 2026-11-04. Node bumped 20 -> 22 (puppeteer@25 declares
 `engines >= 22.12.0`).
 
 ### Housekeeping
@@ -182,7 +183,7 @@ without publishing. Node bumped 20 -> 22 (puppeteer@25 declares
 
 - **Copy consistency (MB14).** `src/content/copy.ts` quotes only the real tiers ($1,500 / $3,000 / from $5,000), states 10 / 14 / 20 days wherever a duration appears, and derives the closing banner heading ("Two slots open this month.") from `STUDIO_AVAILABLE` and `OPEN_SLOTS`, the same constants that feed `COPY.status`. `src/content/__tests__/copy.test.ts` fails the unit suite if a price, duration or typo drifts. Jesenia still needs to confirm the wording and the prices (Zoho PR05).
 - **Meta CSP and referrer policy (MB10).** GitHub Pages sends no headers, so `scripts/security-meta.mjs` (a Vite build plugin, wired in `vite.config.ts`) stamps `<meta http-equiv="Content-Security-Policy">` into the built `index.html`, computing the sha256 of the inline theme script so the pin can never go stale. `index.html` carries the static `<meta name="referrer" content="strict-origin-when-cross-origin">`. The prerenderer snapshots the head, so every `dist/**/index.html` and `404.html` keeps both. Policy: scripts `self` + the pinned hash (no unsafe-inline, no eval); styles `self` + fonts.googleapis.com + inline (the lazy mobile drawer's Radix scroll-lock injects a `<style>` whose body embeds the measured scrollbar width, so it cannot be hash-pinned; `e2e/security.spec.ts` caught it blocked); fonts fonts.gstatic.com; everything else `self`; `object-src 'none'`. Not expressible in a meta tag: `frame-ancestors`, `report-uri`, HSTS (needs Cloudflare in front, tracked as W04). Covered by `src/lib/__tests__/security-meta.test.ts` and `e2e/security.spec.ts` (served-document checks plus a `securitypolicyviolation` listener across every route and the lazy mobile drawer).
-- **Secret scanning (C17).** GitHub secret scanning and push protection are enabled on `lundeen-labs/MosaicByte`. `.github/workflows/pages.yml` runs a pinned, checksum-verified gitleaks 8.30.1 over the full history (`fetch-depth: 0`) before anything else. Local check: `gitleaks git --no-banner --redact .` (63 commits, no leaks on 2026-10-30).
+- **Secret scanning (C17).** GitHub secret scanning and push protection are enabled on `lundeen-labs/MosaicByte`. The CI gitleaks step was removed with GitHub Actions on 2026-11-04. Run by hand: `gitleaks git --no-banner --redact .` (63 commits, no leaks on 2026-10-30).
 
 ## Operating mode
 
@@ -296,7 +297,6 @@ api/              (D4) Vercel serverless: contact.ts (+CORS for the Pages mirror
 content/case-studies/   (D6) MDX
 public/og/       (D8) Open Graph PNGs
 scripts/         (D8) generate-sitemap.mjs
-.github/workflows/pages.yml   GitHub Pages static-mirror deploy (additive to Vercel)
 ```
 
 ## Justified deviations from MathLens conventions
@@ -351,7 +351,7 @@ npx vitest run api/__tests__
 
 ### GitHub Pages routing fix (2026-07-28) — the mirror 404'd on every URL
 
-Root cause and fix are documented in full in `docs/github-pages-research.md`. Summary: the workflow above (`.github/workflows/pages.yml`) and the `dist/index.html` → `dist/404.html` copy were both already correct — GitHub Pages serves 404.html's content AT the originally-requested URL with no redirect, so `location.pathname` stays correct (e.g. `/MosaicByte/about`). The actual bug was that **wouter (the client router) was never told about the `/MosaicByte` subpath**, so route matching failed against every `<Route path="...">` even though the pathname was correct, and separately every plain `<a href="/...">` bypassed subpath-awareness entirely (only wouter's own `<Link>` accounts for it).
+Root cause and fix are documented in full in `docs/github-pages-research.md`. Summary: the (since removed) Pages workflow and the `dist/index.html` → `dist/404.html` copy were both already correct — GitHub Pages serves 404.html's content AT the originally-requested URL with no redirect, so `location.pathname` stays correct (e.g. `/MosaicByte/about`). The actual bug was that **wouter (the client router) was never told about the `/MosaicByte` subpath**, so route matching failed against every `<Route path="...">` even though the pathname was correct, and separately every plain `<a href="/...">` bypassed subpath-awareness entirely (only wouter's own `<Link>` accounts for it).
 
 Fixed:
 

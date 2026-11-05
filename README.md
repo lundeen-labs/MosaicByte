@@ -94,7 +94,7 @@ npm run test:e2e       # build, then playwright test (790 checks across 5 browse
 npm run test:e2e:ui    # playwright --ui, for stepping through a failure
 npm run test:e2e:update  # re-baseline the visual snapshots, deliberately
 npm run test:e2e:report  # open the last HTML report
-npm run test:all       # lint + tsc + unit + e2e, the same gate CI runs
+npm run test:all       # lint + tsc + unit + e2e, the full local gate
 ```
 
 `npx tsc --noEmit` for a standalone type-check.
@@ -144,11 +144,10 @@ widths itself.
 Current: **48 unit tests and 774 end-to-end checks pass, 0 failures** (plus 16 documented skips).
 
 Visual snapshots are a **local** gate. The committed baselines are `-win32`,
-taken on the dev machine, so on the Linux CI runner Playwright would not find
+taken on the dev machine, so on a Linux machine Playwright would not find
 them, would silently write new ones and pass - reading as covered while
-comparing nothing. `ignoreSnapshots` is therefore on in CI, and every other
-spec still runs there. Generating Linux baselines in a container would let CI
-gate on them too.
+comparing nothing. `ignoreSnapshots` is therefore on when the `CI` env var is
+set, and every other spec still runs.
 
 A failing visual test is a prompt to look, not automatically a bug. Open the
 report, compare, then either fix the regression or re-baseline deliberately.
@@ -172,7 +171,7 @@ Non-negotiable UX rules: visible focus ring on every interactive element, `prefe
 
 ## Deploy
 
-Hosted on GitHub Pages via GitHub Actions (`.github/workflows/pages.yml`). Deployments happen automatically on push to `main`. 
+No CI: GitHub Actions was removed on 2026-11-04 (version control only). Run the checks locally with `npm run test:all`. The GitHub Pages mirror is no longer deployed automatically. 
 
 See `DEPLOY.md` for information on setting up custom domains and DNS.
 
@@ -190,8 +189,8 @@ Live at **https://www.mosaicbyte.design** (the apex 301-redirects to `www`).
   genuine 404 page served at a 404 status.
 - Per-route Open Graph cards generated from the site's own design tokens.
 - WCAG 2.1 AA verified by axe on every route in both themes, not asserted.
-- 48 unit tests and 774 end-to-end checks pass; tsc and ESLint clean. CI runs
-  all of it before anything publishes.
+- 48 unit tests and 774 end-to-end checks pass; tsc and ESLint clean. Run
+  all of it locally with `npm run test:all`.
 
 GitHub repo: `lundeen-labs/MosaicByte`. The original static-HTML prototype lives
 at `lundeej/mosaicbyte`, preserved as a design reference.
